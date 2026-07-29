@@ -6,15 +6,18 @@ from pathlib import Path
 from typing import Optional
 
 from app.config import DOWNLOAD_DIR, FILE_TTL_SECONDS
-from app.services import spotdl_service, youtube_service
+from app.services import bpm_service, history_service, spotdl_service, youtube_service
 
 
 @dataclass
 class Job:
     id: str
     source: str
+    title: str = ""
+    artist: str = ""
     status: str = "pending"  # pending -> downloading -> done -> error
     file_path: Optional[Path] = None
+    bpm: Optional[float] = None
     error: Optional[str] = None
     created_at: float = field(default_factory=time.time)
 
@@ -22,8 +25,8 @@ class Job:
 _jobs: dict[str, Job] = {}
 
 
-def create_job(source: str) -> Job:
-    job = Job(id=uuid.uuid4().hex[:12], source=source)
+def create_job(source: str, title: str, artist: str) -> Job:
+    job = Job(id=uuid.uuid4().hex[:12], source=source, title=title, artist=artist)
     _jobs[job.id] = job
     return job
 
@@ -46,6 +49,20 @@ def run_job(job_id: str, source: str, ref: str, quality: str) -> None:
 
         job.file_path = file_path
         job.status = "done"
+
+        try:
+            job.bpm = bpm_service.estimate_from_file(job.id, file_path)
+        except Exception:  # noqa: BLE001
+            job.bpm = None
+
+        history_service.add_entry(
+            title=job.title,
+            artist=job.artist,
+            source=source,
+            quality=quality,
+            size_bytes=file_path.stat().st_size,
+            bpm=job.bpm,
+        )
     except Exception as exc:  # noqa: BLE001
         job.status = "error"
         job.error = str(exc)

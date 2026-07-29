@@ -35,6 +35,7 @@ def search_tracks(query: str, limit: int = 10) -> list[dict]:
             "duration_ms": track["duration_ms"],
             "thumbnail": (track["album"]["images"][0]["url"] if track["album"]["images"] else None),
             "url": track["external_urls"]["spotify"],
+            "preview_url": track.get("preview_url"),
         }
         for track in tracks
     ]

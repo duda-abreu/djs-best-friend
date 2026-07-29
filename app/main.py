@@ -8,7 +8,7 @@ from fastapi.templating import Jinja2Templates
 from starlette.middleware.base import BaseHTTPMiddleware
 
 from app.config import BASE_DIR, RATE_LIMIT_PER_MINUTE
-from app.routers import download, search
+from app.routers import download, preview, search
 from app.services import jobs
 
 app = FastAPI(title="djs-best-friend")
@@ -18,6 +18,7 @@ app.mount("/static", StaticFiles(directory=str(BASE_DIR / "app" / "static")), na
 
 app.include_router(search.router)
 app.include_router(download.router)
+app.include_router(preview.router)
 
 _hits: dict[str, list[float]] = defaultdict(list)
 
