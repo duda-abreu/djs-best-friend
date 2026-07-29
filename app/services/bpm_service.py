@@ -23,14 +23,23 @@ def _beat_track(y, sr) -> float:
     return round(float(tempo), 1)
 
 
-def estimate_from_url(cache_key: str, audio_url: str) -> Optional[float]:
+def estimate_from_url(
+    cache_key: str, audio_url: str, suffix: str = ".mp3", max_bytes: Optional[int] = None
+) -> Optional[float]:
+    """Baixa (inteiro ou so um pedaco, via max_bytes) e estima o BPM.
+
+    max_bytes limita o download via Range request — usado pra estimar BPM sem
+    baixar o audio inteiro (ex: primeiros ~800kb de um stream do YouTube, o
+    suficiente pra deteccao de batida).
+    """
     if cache_key in _cache:
         return _cache[cache_key]
 
-    resp = requests.get(audio_url, timeout=15)
+    headers = {"Range": f"bytes=0-{max_bytes}"} if max_bytes else None
+    resp = requests.get(audio_url, headers=headers, timeout=15)
     resp.raise_for_status()
 
-    with tempfile.NamedTemporaryFile(suffix=".mp3", delete=False) as tmp:
+    with tempfile.NamedTemporaryFile(suffix=suffix, delete=False) as tmp:
         tmp.write(resp.content)
         tmp_path = tmp.name
 

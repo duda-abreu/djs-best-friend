@@ -1,6 +1,7 @@
 const form = document.getElementById("search-form");
 const resultsEl = document.getElementById("results");
 const resultsTitle = document.getElementById("results-title");
+const resultLimitEl = document.getElementById("result-limit");
 
 const nowArt = document.getElementById("now-art");
 const nowTitle = document.getElementById("now-title");
@@ -18,6 +19,16 @@ const statWeek = document.getElementById("stat-week");
 
 let currentPreviewMedia = null;
 let currentPreviewBtn = null;
+
+// fila serial pra nao disparar varios calculos de bpm via youtube ao mesmo
+// tempo (cada um baixa um clipinho — em paralelo isso sobrecarrega e demora mais)
+let bpmQueue = Promise.resolve();
+function queueBpmTask(fn) {
+  bpmQueue = bpmQueue.then(fn, fn);
+}
+
+const POLL_INTERVAL_MS = 1500;
+const POLL_MAX_ATTEMPTS = 180; // ~4.5 minutos (um pouco acima do timeout do servidor)
 
 function tickClock() {
   clockEl.textContent = new Date().toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" });
@@ -47,7 +58,7 @@ async function loadStats() {
 loadStats();
 
 async function loadTrending() {
-  resultsTitle.textContent = "Em alta essa semana";
+  resultsTitle.textContent = "Em alta essa semana (eletronica)";
   resultsEl.innerHTML = "<li class='empty-hint'>Carregando sugestoes...</li>";
   try {
     const res = await fetch("/api/trending");
@@ -64,6 +75,7 @@ form.addEventListener("submit", async (e) => {
   e.preventDefault();
   const query = document.getElementById("query").value.trim();
   const source = document.getElementById("source").value;
+  const limit = resultLimitEl.value;
   if (!query) return;
 
   resultsTitle.textContent = `Resultados para "${query}"`;
@@ -71,7 +83,7 @@ form.addEventListener("submit", async (e) => {
   footerMsg.textContent = "buscando...";
 
   try {
-    const res = await fetch(`/api/search?q=${encodeURIComponent(query)}&source=${source}`);
+    const res = await fetch(`/api/search?q=${encodeURIComponent(query)}&source=${source}&limit=${limit}`);
     if (!res.ok) throw new Error((await res.json()).detail || "erro na busca");
     const items = await res.json();
     renderResults(items);
@@ -84,6 +96,8 @@ form.addEventListener("submit", async (e) => {
 
 function renderResults(items) {
   resultsEl.innerHTML = "";
+  bpmQueue = Promise.resolve();
+
   if (items.length === 0) {
     resultsEl.innerHTML = "<li class='empty-hint'>Nenhum resultado encontrado.</li>";
     return;
@@ -101,8 +115,6 @@ function renderResults(items) {
             ["mp3_320", "mp3 320k (reencode)"],
           ];
 
-    const bpmLabel = item.source === "spotify" && item.preview_url ? "bpm: calculando..." : "bpm: apos baixar";
-
     li.innerHTML = `
       <img src="${item.thumbnail || ""}" alt="" onerror="this.style.visibility='hidden'" />
       <div class="result-info">
@@ -110,7 +122,7 @@ function renderResults(items) {
         <div class="artist">${escapeHtml(item.artist)}</div>
         <div class="meta">
           <span class="duration">${formatDuration(item.duration_ms)}</span>
-          <span class="bpm">${bpmLabel}</span>
+          <span class="bpm">bpm: calculando...</span>
         </div>
       </div>
       <div class="result-actions">
@@ -138,16 +150,36 @@ function renderResults(items) {
 
     resultsEl.appendChild(li);
 
-    if (item.source === "spotify" && item.preview_url) {
-      fetchBpm(item, bpmEl);
-    }
+    queueBpmTask(() => populateBpm(item, bpmEl));
   }
 }
 
-async function fetchBpm(item, bpmEl) {
+// preenche o bpm de um resultado ANTES de baixar: usa o preview de 30s do
+// Spotify quando existe, senao acha o video equivalente no YouTube e usa um
+// clipe curto dele.
+async function populateBpm(item, bpmEl) {
   try {
-    const key = `spotify:${item.id}`;
-    const res = await fetch(`/api/bpm?key=${encodeURIComponent(key)}&preview_url=${encodeURIComponent(item.preview_url)}`);
+    if (item.source === "spotify" && item.preview_url) {
+      const key = `spotify:${item.id}`;
+      const res = await fetch(`/api/bpm?key=${encodeURIComponent(key)}&preview_url=${encodeURIComponent(item.preview_url)}`);
+      if (!res.ok) throw new Error();
+      const data = await res.json();
+      bpmEl.textContent = data.bpm ? `${data.bpm} bpm` : "bpm: --";
+      return;
+    }
+
+    let videoUrl = item.url;
+    if (item.source === "spotify") {
+      const matchId = await resolveYoutubeMatch(item);
+      if (!matchId) {
+        bpmEl.textContent = "bpm: --";
+        return;
+      }
+      videoUrl = `https://www.youtube.com/watch?v=${matchId}`;
+    }
+
+    const key = `${item.source}:${item.id}`;
+    const res = await fetch(`/api/bpm-youtube?key=${encodeURIComponent(key)}&video_url=${encodeURIComponent(videoUrl)}`);
     if (!res.ok) throw new Error();
     const data = await res.json();
     bpmEl.textContent = data.bpm ? `${data.bpm} bpm` : "bpm: --";
@@ -156,7 +188,7 @@ async function fetchBpm(item, bpmEl) {
   }
 }
 
-// resolve um video do YouTube pra usar de preview quando o Spotify nao da preview_url
+// resolve um video do YouTube pra usar de preview/bpm quando o Spotify nao da preview_url
 async function resolveYoutubeMatch(item) {
   if (item._matchId !== undefined) return item._matchId;
   try {
@@ -266,7 +298,7 @@ async function startDownload(item, quality, btn, statusEl) {
     });
     if (!res.ok) throw new Error((await res.json()).detail || "erro ao iniciar download");
     const { job_id } = await res.json();
-    pollStatus(job_id, btn, statusEl, item);
+    pollStatus(job_id, btn, statusEl, item, 0);
   } catch (err) {
     statusEl.textContent = err.message;
     statusEl.className = "status error";
@@ -277,9 +309,26 @@ async function startDownload(item, quality, btn, statusEl) {
   }
 }
 
-async function pollStatus(jobId, btn, statusEl, item) {
-  const res = await fetch(`/api/download/${jobId}/status`);
-  const data = await res.json();
+async function pollStatus(jobId, btn, statusEl, item, attempt) {
+  if (attempt >= POLL_MAX_ATTEMPTS) {
+    const msg = "download demorou demais e foi cancelado (verifique se o ffmpeg esta instalado e no PATH)";
+    statusEl.textContent = "tempo esgotado";
+    statusEl.className = "status error";
+    setNowPanel(item, msg, "error");
+    setProgress(false, 0);
+    footerMsg.textContent = "download demorou demais";
+    btn.disabled = false;
+    return;
+  }
+
+  let data;
+  try {
+    const res = await fetch(`/api/download/${jobId}/status`);
+    data = await res.json();
+  } catch {
+    setTimeout(() => pollStatus(jobId, btn, statusEl, item, attempt + 1), POLL_INTERVAL_MS);
+    return;
+  }
 
   if (data.status === "done") {
     statusEl.textContent = "pronto";
@@ -306,7 +355,7 @@ async function pollStatus(jobId, btn, statusEl, item) {
 
   statusEl.textContent = data.status;
   setNowPanel(item, data.status === "downloading" ? "baixando..." : "na fila...");
-  setTimeout(() => pollStatus(jobId, btn, statusEl, item), 1500);
+  setTimeout(() => pollStatus(jobId, btn, statusEl, item, attempt + 1), POLL_INTERVAL_MS);
 }
 
 function escapeHtml(str) {

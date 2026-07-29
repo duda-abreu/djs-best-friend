@@ -12,6 +12,32 @@ def match_video(title: str, artist: str) -> Optional[dict]:
     return results[0] if results else None
 
 
+def download_clip(video_url: str, out_dir: Path, seconds: int = 20) -> Path:
+    """Baixa so os primeiros segundos do audio (usa o corte do proprio yt-dlp/
+    ffmpeg, que remuxa certinho — um Range HTTP cru corrompe containers tipo
+    webm/m4a no meio). Usado pra estimar o BPM antes de decidir baixar a
+    musica inteira."""
+    out_dir.mkdir(parents=True, exist_ok=True)
+    outtmpl = str(out_dir / "clip.%(ext)s")
+
+    opts = {
+        "quiet": True,
+        "no_warnings": True,
+        "format": "bestaudio/best",
+        "outtmpl": outtmpl,
+        "noplaylist": True,
+        "download_ranges": lambda info, ydl: [{"start_time": 0, "end_time": seconds}],
+        "force_keyframes_at_cuts": True,
+    }
+    with yt_dlp.YoutubeDL(opts) as ydl:
+        ydl.download([video_url])
+
+    files = [f for f in out_dir.iterdir() if f.is_file()]
+    if not files:
+        raise RuntimeError("nao foi possivel baixar o clipe pra estimar o bpm")
+    return files[0]
+
+
 def search_videos(query: str, limit: int = 10) -> list[dict]:
     opts = {
         "quiet": True,

@@ -1,3 +1,4 @@
+import concurrent.futures
 import shutil
 import time
 import uuid
@@ -7,6 +8,12 @@ from typing import Optional
 
 from app.config import DOWNLOAD_DIR, FILE_TTL_SECONDS
 from app.services import bpm_service, history_service, spotdl_service, youtube_service
+
+# tempo maximo pra um download (spotdl ou yt-dlp podem ficar pendurados —
+# sem ffmpeg no PATH, por exemplo — sem isso o job fica "baixando..." pra
+# sempre e o usuario nunca sabe que algo deu errado)
+DOWNLOAD_TIMEOUT_SECONDS = 240
+_executor = concurrent.futures.ThreadPoolExecutor(max_workers=4)
 
 
 @dataclass
@@ -41,11 +48,19 @@ def run_job(job_id: str, source: str, ref: str, quality: str) -> None:
     job_dir = DOWNLOAD_DIR / job_id
     try:
         if source == "spotify":
-            file_path = spotdl_service.download_track(ref, job_dir, bitrate=quality)
+            task = _executor.submit(spotdl_service.download_track, ref, job_dir, quality)
         elif source == "youtube":
-            file_path = youtube_service.download_audio(ref, job_dir, quality=quality)
+            task = _executor.submit(youtube_service.download_audio, ref, job_dir, quality)
         else:
             raise ValueError(f"fonte desconhecida: {source}")
+
+        try:
+            file_path = task.result(timeout=DOWNLOAD_TIMEOUT_SECONDS)
+        except concurrent.futures.TimeoutError as exc:
+            raise RuntimeError(
+                "download demorou demais e foi cancelado — confira se o ffmpeg "
+                "esta instalado e no PATH (feche e reabra o terminal depois de instalar)"
+            ) from exc
 
         job.file_path = file_path
         job.status = "done"

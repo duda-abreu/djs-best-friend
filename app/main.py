@@ -1,13 +1,14 @@
+import hmac
 import time
 from collections import defaultdict
 
 from fastapi import FastAPI, Request
-from fastapi.responses import JSONResponse
+from fastapi.responses import JSONResponse, Response
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from starlette.middleware.base import BaseHTTPMiddleware
 
-from app.config import BASE_DIR, RATE_LIMIT_PER_MINUTE
+from app.config import BASIC_AUTH_PASSWORD, BASIC_AUTH_USER, BASE_DIR, RATE_LIMIT_PER_MINUTE
 from app.routers import download, preview, search
 from app.services import jobs
 
@@ -39,7 +40,31 @@ class RateLimitMiddleware(BaseHTTPMiddleware):
         return await call_next(request)
 
 
+class BasicAuthMiddleware(BaseHTTPMiddleware):
+    """So entra em acao se BASIC_AUTH_USER/BASIC_AUTH_PASSWORD estiverem
+    configurados (pensado pra quando o site estiver hospedado publicamente,
+    nao pra uso local)."""
+
+    async def dispatch(self, request: Request, call_next):
+        if not BASIC_AUTH_USER or not BASIC_AUTH_PASSWORD:
+            return await call_next(request)
+
+        auth = request.headers.get("authorization", "")
+        if auth.startswith("Basic "):
+            import base64
+
+            try:
+                user, password = base64.b64decode(auth[6:]).decode().split(":", 1)
+            except Exception:  # noqa: BLE001
+                user, password = "", ""
+            if hmac.compare_digest(user, BASIC_AUTH_USER) and hmac.compare_digest(password, BASIC_AUTH_PASSWORD):
+                return await call_next(request)
+
+        return Response(status_code=401, headers={"WWW-Authenticate": 'Basic realm="djs-best-friend"'})
+
+
 app.add_middleware(RateLimitMiddleware)
+app.add_middleware(BasicAuthMiddleware)
 
 
 @app.get("/")

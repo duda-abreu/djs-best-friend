@@ -1,5 +1,9 @@
+import shutil
+import uuid
+
 from fastapi import APIRouter, HTTPException, Query
 
+from app.config import DOWNLOAD_DIR
 from app.services import bpm_service, history_service, spotify_search, youtube_service
 
 router = APIRouter(prefix="/api", tags=["preview"])
@@ -12,6 +16,21 @@ def bpm(key: str = Query(...), preview_url: str = Query(...)):
         return {"bpm": value}
     except Exception as exc:  # noqa: BLE001
         raise HTTPException(500, f"nao foi possivel estimar o bpm: {exc}") from exc
+
+
+@router.get("/bpm-youtube")
+def bpm_youtube(key: str = Query(...), video_url: str = Query(...)):
+    """Estima o BPM antes do download baixando so os primeiros ~20s do audio
+    do YouTube (usado quando o Spotify nao da preview_url pra faixa)."""
+    tmp_dir = DOWNLOAD_DIR / f"_bpm_{uuid.uuid4().hex[:8]}"
+    try:
+        clip_path = youtube_service.download_clip(video_url, tmp_dir)
+        value = bpm_service.estimate_from_file(key, clip_path)
+        return {"bpm": value}
+    except Exception as exc:  # noqa: BLE001
+        raise HTTPException(500, f"nao foi possivel estimar o bpm: {exc}") from exc
+    finally:
+        shutil.rmtree(tmp_dir, ignore_errors=True)
 
 
 @router.get("/match")

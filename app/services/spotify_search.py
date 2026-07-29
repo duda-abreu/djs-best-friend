@@ -2,9 +2,15 @@ import requests
 import spotipy
 from spotipy.oauth2 import SpotifyClientCredentials
 
-from app.config import SPOTIFY_CLIENT_ID, SPOTIFY_CLIENT_SECRET, TRENDING_STOREFRONT
+from app.config import (
+    SPOTIFY_CLIENT_ID,
+    SPOTIFY_CLIENT_SECRET,
+    TRENDING_GENRE_ID,
+    TRENDING_STOREFRONT,
+)
 
-_APPLE_CHARTS_URL = "https://rss.marketingtools.apple.com/api/v2/{storefront}/music/most-played/{limit}/songs.json"
+# feed de charts da Apple filtrado por genero (7 = Dance/Eletronica)
+_APPLE_CHARTS_URL = "https://itunes.apple.com/{storefront}/rss/topsongs/limit={limit}/genre={genre}/json"
 
 _client = None
 
@@ -56,17 +62,18 @@ def get_trending_tracks(limit: int = 10) -> list[dict]:
     o mesmo formato de item (com preview_url, id, etc) que o resto do site usa.
     """
     resp = requests.get(
-        _APPLE_CHARTS_URL.format(storefront=TRENDING_STOREFRONT, limit=limit),
+        _APPLE_CHARTS_URL.format(storefront=TRENDING_STOREFRONT, limit=limit, genre=TRENDING_GENRE_ID),
         timeout=10,
     )
     resp.raise_for_status()
-    chart = resp.json().get("feed", {}).get("results", [])
+    chart = resp.json().get("feed", {}).get("entry", [])
 
     sp = get_client()
     tracks = []
     for entry in chart:
-        query = f"{entry['name']} {entry['artistName']}"
-        results = sp.search(q=query, type="track", limit=1)
+        name = entry["im:name"]["label"]
+        artist = entry["im:artist"]["label"]
+        results = sp.search(q=f"{name} {artist}", type="track", limit=1)
         items = results.get("tracks", {}).get("items", [])
         if items:
             tracks.append(_parse_track(items[0]))

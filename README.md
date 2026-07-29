@@ -1,4 +1,4 @@
-# djs-best-friend
+# DJ's Best Friend
 
 Ferramenta pessoal em Python (FastAPI) pra buscar musicas e baixar o audio na
 melhor qualidade disponivel, com duas fontes:
@@ -101,6 +101,23 @@ Os arquivos baixados ficam em `downloads/<job_id>/` e são apagados
 automaticamente após `FILE_TTL_SECONDS` (padrão 30 min, configuravel no
 `.env`) — entao mova o que quiser guardar pra outro lugar depois de baixar.
 
+## Hospedando (Railway)
+
+O app roda via Docker (o `Dockerfile` ja instala ffmpeg junto). Pra hospedar
+no [Railway](https://railway.app):
+
+1. Crie um projeto novo no Railway e conecte esse repositorio (voce faz login
+   e clica em "Deploy" — isso e uma etapa que so voce pode fazer)
+2. Nas variaveis de ambiente do projeto, configure `SPOTIFY_CLIENT_ID` e
+   `SPOTIFY_CLIENT_SECRET`, e **defina `BASIC_AUTH_USER` e
+   `BASIC_AUTH_PASSWORD`** — sem isso o site fica acessivel pra qualquer um
+   que descobrir a URL, ja que nao ha tela de login
+3. O Railway detecta o `Dockerfile` automaticamente e expoe a porta via `$PORT`
+   (ja tratado no `CMD` do Dockerfile)
+
+Localmente essas duas variaveis ficam em branco (uso sem senha), entao isso
+so afeta a versao hospedada.
+
 ## Uso pessoal, nao redistribua
 
 O audio baixado é só pra uso pessoal. Nao faz parte deste repositorio, nao deve
@@ -128,4 +145,5 @@ app/
   static/style.css, app.js
 downloads/                  # arquivos temporarios + historico (gitignored)
 run.ps1                     # atalho pra rodar o servidor (Windows/PowerShell)
+Dockerfile                  # build pra hospedar (ex: Railway)
 ```
