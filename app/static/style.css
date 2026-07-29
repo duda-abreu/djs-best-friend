@@ -222,6 +222,15 @@ body {
   min-height: 380px;
 }
 
+.list-title {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin: 0.25rem 0 0.5rem;
+}
+
 .search-row {
   display: flex;
   gap: 0.5rem;

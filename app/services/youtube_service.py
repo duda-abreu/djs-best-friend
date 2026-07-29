@@ -1,6 +1,15 @@
 from pathlib import Path
+from typing import Optional
 
 import yt_dlp
+
+
+def match_video(title: str, artist: str) -> Optional[dict]:
+    """Acha o video do YouTube que melhor corresponde a uma faixa (usado como
+    fallback de preview/audio quando o Spotify nao da preview_url pra ela).
+    """
+    results = search_videos(f"{title} {artist}", limit=1)
+    return results[0] if results else None
 
 
 def search_videos(query: str, limit: int = 10) -> list[dict]:

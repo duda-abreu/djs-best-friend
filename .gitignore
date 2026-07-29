@@ -3,6 +3,7 @@ __pycache__/
 .venv/
 venv/
 .env
+.cache
 downloads/*
 !downloads/.gitkeep
 .DS_Store

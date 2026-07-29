@@ -15,8 +15,8 @@ pagamento, sem distribuicao pra terceiros.
 
 ## Recursos
 
-- Busca com preview de audio antes de baixar (clipe oficial de 30s do Spotify,
-  ou embed do YouTube), pra confirmar que e a musica certa
+- Sugestoes "em alta essa semana" na tela inicial
+- Busca com preview de audio antes de baixar, pra confirmar que e a musica certa
 - Duracao da faixa e **BPM** (batidas por minuto) mostrados ao lado de cada
   resultado
 - Painel "tocando agora" com progresso do download em tempo real
@@ -24,17 +24,31 @@ pagamento, sem distribuicao pra terceiros.
   quantas foram baixadas nos ultimos 7 dias (le do seu proprio historico local,
   sem servidor nem conta)
 
-### Sobre o calculo de BPM
+### Sobre o calculo de BPM e o preview
 
 O endpoint do Spotify que entregava BPM pronto (audio-features) foi restringido
-pela Spotify pra apps novos em 2024, entao o BPM aqui e **calculado localmente**
-com deteccao de batida ([librosa](https://librosa.org/)):
+pela Spotify pra apps novos em 2024 — e, na pratica, apps criados agora tambem
+quase nunca recebem `preview_url` (o clipe oficial de 30s) nas buscas. Por isso:
 
-- Pra resultados do Spotify: roda em cima do preview oficial de 30s (o mesmo
-  clipe que toca no preview), assim que o resultado aparece na busca.
-- Pra resultados do YouTube: nao existe um preview curto oficial equivalente,
-  entao o BPM so fica disponivel depois que o download termina (calculado em
-  cima do arquivo final).
+- Quando o Spotify da o `preview_url`: o BPM e **calculado localmente**
+  ([librosa](https://librosa.org/)) em cima desse clipe, e o preview toca ele
+  direto.
+- Quando nao da (o caso mais comum hoje): o preview cai pra um video
+  correspondente no YouTube (achado automaticamente por titulo+artista) tocado
+  via embed oficial, e o BPM so fica disponivel depois que a musica e baixada
+  (calculado em cima do arquivo final e mostrado no painel "tocando agora").
+- Resultados do YouTube (fonte "YouTube" na busca) seguem o mesmo esquema: BPM
+  disponivel apos o download.
+
+### Sobre as sugestoes "em alta essa semana"
+
+A ideia original era puxar de uma playlist editorial do Spotify (tipo a "mint"),
+mas a Spotify bloqueia (403/404) o acesso ao conteudo de playlists — inclusive
+as delas — pra apps que usam Client Credentials (sem login de usuario); isso vale
+pra qualquer playlist, nao é so um ID errado. Entao as sugestoes vem do grafico
+publico "mais tocadas" da Apple Music (sem chave, sem login — configuravel por
+pais via `TRENDING_STOREFRONT` no `.env`), e cada faixa e resolvida de volta pro
+Spotify via busca normal, que essa continua funcionando.
 
 ## Sobre qualidade de audio
 
@@ -68,8 +82,17 @@ Edite o `.env` e preencha `SPOTIFY_CLIENT_ID` e `SPOTIFY_CLIENT_SECRET`.
 
 ## Rodando
 
+No Windows (PowerShell), o jeito mais simples e rodar o script pronto, que ja
+chama o uvicorn de dentro do `.venv` sem precisar ativar nada:
+
+```powershell
+.\run.ps1
+```
+
+Ou manualmente:
+
 ```bash
-uvicorn app.main:app --reload
+.venv\Scripts\uvicorn.exe app.main:app --reload
 ```
 
 Acesse http://localhost:8000
@@ -104,4 +127,5 @@ app/
   templates/index.html
   static/style.css, app.js
 downloads/                  # arquivos temporarios + historico (gitignored)
+run.ps1                     # atalho pra rodar o servidor (Windows/PowerShell)
 ```

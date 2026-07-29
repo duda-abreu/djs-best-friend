@@ -10,6 +10,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SPOTIFY_CLIENT_ID = os.getenv("SPOTIFY_CLIENT_ID", "")
 SPOTIFY_CLIENT_SECRET = os.getenv("SPOTIFY_CLIENT_SECRET", "")
 
+# pais usado pra pegar o grafico "mais tocadas" (feed publico da Apple, sem
+# precisar de chave/login) que alimenta a secao "em alta essa semana"
+TRENDING_STOREFRONT = os.getenv("TRENDING_STOREFRONT", "br")
+
 DOWNLOAD_DIR = BASE_DIR / os.getenv("DOWNLOAD_DIR", "downloads")
 DOWNLOAD_DIR.mkdir(parents=True, exist_ok=True)
 

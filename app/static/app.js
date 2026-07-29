@@ -1,5 +1,6 @@
 const form = document.getElementById("search-form");
 const resultsEl = document.getElementById("results");
+const resultsTitle = document.getElementById("results-title");
 
 const nowArt = document.getElementById("now-art");
 const nowTitle = document.getElementById("now-title");
@@ -15,7 +16,7 @@ const statCount = document.getElementById("stat-count");
 const statGb = document.getElementById("stat-gb");
 const statWeek = document.getElementById("stat-week");
 
-let currentPreviewAudio = null;
+let currentPreviewMedia = null;
 let currentPreviewBtn = null;
 
 function tickClock() {
@@ -45,12 +46,27 @@ async function loadStats() {
 }
 loadStats();
 
+async function loadTrending() {
+  resultsTitle.textContent = "Em alta essa semana";
+  resultsEl.innerHTML = "<li class='empty-hint'>Carregando sugestoes...</li>";
+  try {
+    const res = await fetch("/api/trending");
+    if (!res.ok) throw new Error((await res.json()).detail || "erro ao carregar sugestoes");
+    const items = await res.json();
+    renderResults(items);
+  } catch (err) {
+    resultsEl.innerHTML = `<li class="empty-hint">Nao foi possivel carregar sugestoes: ${escapeHtml(err.message)}</li>`;
+  }
+}
+loadTrending();
+
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
   const query = document.getElementById("query").value.trim();
   const source = document.getElementById("source").value;
   if (!query) return;
 
+  resultsTitle.textContent = `Resultados para "${query}"`;
   resultsEl.innerHTML = "<li class='empty-hint'>Buscando...</li>";
   footerMsg.textContent = "buscando...";
 
@@ -85,7 +101,7 @@ function renderResults(items) {
             ["mp3_320", "mp3 320k (reencode)"],
           ];
 
-    const canPreview = item.source === "spotify" ? !!item.preview_url : true;
+    const bpmLabel = item.source === "spotify" && item.preview_url ? "bpm: calculando..." : "bpm: apos baixar";
 
     li.innerHTML = `
       <img src="${item.thumbnail || ""}" alt="" onerror="this.style.visibility='hidden'" />
@@ -94,11 +110,11 @@ function renderResults(items) {
         <div class="artist">${escapeHtml(item.artist)}</div>
         <div class="meta">
           <span class="duration">${formatDuration(item.duration_ms)}</span>
-          <span class="bpm">${item.source === "spotify" ? "bpm: calculando..." : "bpm: apos baixar"}</span>
+          <span class="bpm">${bpmLabel}</span>
         </div>
       </div>
       <div class="result-actions">
-        <button type="button" class="glossy-btn round small preview-btn" title="Ouvir preview" ${canPreview ? "" : "disabled"}>▶</button>
+        <button type="button" class="glossy-btn round small preview-btn" title="Ouvir preview">▶</button>
         <select class="quality">
           ${qualityOptions.map(([v, label]) => `<option value="${v}">${label}</option>`).join("")}
         </select>
@@ -122,12 +138,8 @@ function renderResults(items) {
 
     resultsEl.appendChild(li);
 
-    if (item.source === "spotify") {
-      if (item.preview_url) {
-        fetchBpm(item, bpmEl);
-      } else {
-        bpmEl.textContent = "bpm: sem preview";
-      }
+    if (item.source === "spotify" && item.preview_url) {
+      fetchBpm(item, bpmEl);
     }
   }
 }
@@ -144,50 +156,76 @@ async function fetchBpm(item, bpmEl) {
   }
 }
 
-function togglePreview(item, btn) {
+// resolve um video do YouTube pra usar de preview quando o Spotify nao da preview_url
+async function resolveYoutubeMatch(item) {
+  if (item._matchId !== undefined) return item._matchId;
+  try {
+    const res = await fetch(`/api/match?title=${encodeURIComponent(item.title)}&artist=${encodeURIComponent(item.artist)}`);
+    if (!res.ok) throw new Error();
+    const data = await res.json();
+    item._matchId = data.id;
+  } catch {
+    item._matchId = null;
+  }
+  return item._matchId;
+}
+
+async function togglePreview(item, btn) {
   if (currentPreviewBtn === btn) {
     stopPreview();
     return;
   }
   stopPreview();
+  currentPreviewBtn = btn;
+  btn.disabled = true;
 
-  if (item.source === "spotify") {
-    if (!item.preview_url) return;
+  let youtubeId = null;
+  if (item.source === "spotify" && item.preview_url) {
     const audio = new Audio(item.preview_url);
     audio.addEventListener("ended", stopPreview);
     audio.play();
-    currentPreviewAudio = audio;
+    currentPreviewMedia = audio;
+  } else if (item.source === "youtube") {
+    youtubeId = item.id;
   } else {
-    const li = btn.closest(".result-card");
-    let frame = li.querySelector(".yt-embed");
-    if (!frame) {
-      frame = document.createElement("iframe");
-      frame.className = "yt-embed";
-      frame.width = "0";
-      frame.height = "0";
-      frame.allow = "autoplay";
-      frame.src = `https://www.youtube.com/embed/${item.id}?autoplay=1&controls=0`;
-      li.appendChild(frame);
-    }
-    currentPreviewAudio = frame;
+    btn.textContent = "…";
+    youtubeId = await resolveYoutubeMatch(item);
   }
 
-  currentPreviewBtn = btn;
+  if (youtubeId) {
+    const li = btn.closest(".result-card");
+    const frame = document.createElement("iframe");
+    frame.className = "yt-embed";
+    frame.width = "0";
+    frame.height = "0";
+    frame.allow = "autoplay";
+    frame.src = `https://www.youtube.com/embed/${youtubeId}?autoplay=1&controls=0`;
+    li.appendChild(frame);
+    currentPreviewMedia = frame;
+  } else if (!currentPreviewMedia) {
+    btn.textContent = "sem preview";
+    btn.disabled = false;
+    currentPreviewBtn = null;
+    return;
+  }
+
+  btn.disabled = false;
   btn.textContent = "■";
 }
 
 function stopPreview() {
-  if (currentPreviewAudio) {
-    if (currentPreviewAudio.tagName === "IFRAME") {
-      currentPreviewAudio.remove();
+  if (currentPreviewMedia) {
+    if (currentPreviewMedia.tagName === "IFRAME") {
+      currentPreviewMedia.remove();
     } else {
-      currentPreviewAudio.pause();
+      currentPreviewMedia.pause();
     }
   }
   if (currentPreviewBtn) {
     currentPreviewBtn.textContent = "▶";
+    currentPreviewBtn.disabled = false;
   }
-  currentPreviewAudio = null;
+  currentPreviewMedia = null;
   currentPreviewBtn = null;
 }
 
