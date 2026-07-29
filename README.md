@@ -47,13 +47,19 @@ Spotify" funcionar.
 
 ### Sobre as sugestoes "em alta essa semana"
 
-A ideia original era puxar de uma playlist editorial do Spotify (tipo a "mint"),
-mas a Spotify bloqueia (403/404) o acesso ao conteudo de playlists — inclusive
-as delas — pra apps que usam Client Credentials (sem login de usuario); isso vale
-pra qualquer playlist, nao é so um ID errado. Entao as sugestoes vem do grafico
-publico "mais tocadas" da Apple Music (sem chave, sem login — configuravel por
-pais via `TRENDING_STOREFRONT` no `.env`), e cada faixa e resolvida de volta pro
-Spotify via busca normal, que essa continua funcionando.
+Duas fontes possiveis, nessa ordem de prioridade:
+
+1. **Uma playlist real do Spotify** (ex: a "mint"), configurada via
+   `SPOTIFY_TRENDING_PLAYLIST_ID` no `.env` — so funciona com login feito
+   (**Conectar com Spotify**), porque a Spotify bloqueia (403/404) esse acesso
+   pra Client Credentials (testado com varias playlists, inclusive as
+   proprias da Spotify). Puxada ao vivo a cada carregamento, entao acompanha
+   as mudancas da playlist de verdade.
+2. Se nao estiver configurada, ou se falhar mesmo logado: cai pro grafico
+   publico "mais tocadas" da Apple Music (sem chave, sem login — pais/genero
+   configuraveis via `TRENDING_STOREFRONT`/`TRENDING_GENRE_ID`), resolvendo
+   cada faixa de volta pro Spotify via busca normal pra manter o mesmo
+   formato de item usado no resto do site.
 
 ## Sobre qualidade de audio
 

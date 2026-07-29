@@ -19,6 +19,13 @@ SPOTIFY_TOKEN_CACHE = BASE_DIR / ".spotify_user_token.json"
 TRENDING_STOREFRONT = os.getenv("TRENDING_STOREFRONT", "br")
 TRENDING_GENRE_ID = os.getenv("TRENDING_GENRE_ID", "7")
 
+# ID exato da playlist "mint" (ou outra) do Spotify — se preenchido E o
+# usuario estiver logado com Spotify (/auth/login), tenta puxar essa
+# playlist ao vivo em vez do grafico da Apple. Pegue o ID abrindo a playlist
+# no Spotify, "Compartilhar" > "Copiar link", e usando a parte depois de
+# open.spotify.com/playlist/
+TRENDING_PLAYLIST_ID = os.getenv("SPOTIFY_TRENDING_PLAYLIST_ID", "")
+
 DOWNLOAD_DIR = BASE_DIR / os.getenv("DOWNLOAD_DIR", "downloads")
 DOWNLOAD_DIR.mkdir(parents=True, exist_ok=True)
 

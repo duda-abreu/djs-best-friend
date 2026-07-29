@@ -62,9 +62,9 @@ def match(title: str = Query(...), artist: str = Query(...)):
 
 
 @router.get("/trending")
-def trending():
+def trending(limit: int = Query(default=10, ge=1, le=50)):
     try:
-        return spotify_search.get_trending_tracks()
+        return spotify_search.get_trending_tracks(limit=limit)
     except RuntimeError as exc:
         raise HTTPException(500, str(exc)) from exc
 

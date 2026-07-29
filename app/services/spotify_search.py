@@ -1,11 +1,16 @@
+import logging
+
 import requests
 import spotipy
 from spotipy.oauth2 import SpotifyClientCredentials
+
+log = logging.getLogger(__name__)
 
 from app.config import (
     SPOTIFY_CLIENT_ID,
     SPOTIFY_CLIENT_SECRET,
     TRENDING_GENRE_ID,
+    TRENDING_PLAYLIST_ID,
     TRENDING_STOREFRONT,
 )
 
@@ -76,17 +81,43 @@ def get_audio_features_bpm(track_id: str) -> float | None:
     return round(features[0]["tempo"], 1)
 
 
+def _get_playlist_tracks(limit: int) -> list[dict]:
+    """Tenta puxar a playlist configurada (SPOTIFY_TRENDING_PLAYLIST_ID) ao
+    vivo — so funciona se o usuario estiver logado com Spotify de verdade
+    (Client Credentials leva 403/404 em qualquer playlist, testado)."""
+    from app.services import spotify_auth
+
+    if not TRENDING_PLAYLIST_ID or not spotify_auth.is_authenticated():
+        return []
+
+    sp = spotify_auth.get_authenticated_client()
+    results = sp.playlist_items(
+        TRENDING_PLAYLIST_ID,
+        limit=min(limit, 100),
+        fields="items.track(id,name,artists,album,duration_ms,external_urls,preview_url)",
+        additional_types=["track"],
+    )
+    items = results.get("items", [])
+    return [_parse_track(i["track"]) for i in items if i.get("track")]
+
+
 def get_trending_tracks(limit: int = 10) -> list[dict]:
     """Sugestoes 'em alta essa semana'.
 
-    O endpoint de playlists/browse do Spotify (inclusive as playlists
-    editoriais deles, tipo a "mint") retorna 403/404 pra apps em Client
-    Credentials (sem login de usuario) — a Spotify restringiu esse acesso
-    em 2024. Por isso o grafico de "mais tocadas" vem do feed publico da
-    Apple Music (sem chave, sem login), e cada faixa e resolvida de volta
-    pro Spotify via busca normal (que essa continua funcionando), pra manter
-    o mesmo formato de item (com preview_url, id, etc) que o resto do site usa.
+    Se SPOTIFY_TRENDING_PLAYLIST_ID estiver configurado e o usuario logado
+    com Spotify (/auth/login), tenta puxar essa playlist ao vivo — assim ela
+    acompanha as mudancas da playlist de verdade. Caso contrario (ou se
+    falhar), cai pro grafico publico "mais tocadas" da Apple Music (sem
+    chave, sem login), resolvendo cada faixa de volta pro Spotify via busca
+    normal pra manter o mesmo formato de item usado no resto do site.
     """
+    try:
+        playlist_tracks = _get_playlist_tracks(limit)
+        if playlist_tracks:
+            return playlist_tracks
+    except Exception:  # noqa: BLE001
+        log.exception("falha ao puxar playlist %s, caindo pro grafico da Apple", TRENDING_PLAYLIST_ID)
+
     resp = requests.get(
         _APPLE_CHARTS_URL.format(storefront=TRENDING_STOREFRONT, limit=limit, genre=TRENDING_GENRE_ID),
         timeout=10,

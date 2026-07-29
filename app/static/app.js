@@ -3,6 +3,18 @@ const resultsEl = document.getElementById("results");
 const resultsTitle = document.getElementById("results-title");
 const resultLimitEl = document.getElementById("result-limit");
 
+// lembra o que esta sendo mostrado agora, pra recarregar do jeito certo
+// quando o usuario muda a quantidade de resultados
+let currentView = { type: "trending" };
+
+resultLimitEl.addEventListener("change", () => {
+  if (currentView.type === "search") {
+    form.dispatchEvent(new Event("submit", { cancelable: true }));
+  } else if (currentView.type === "trending") {
+    loadTrending();
+  }
+});
+
 const nowArt = document.getElementById("now-art");
 const nowTitle = document.getElementById("now-title");
 const nowArtist = document.getElementById("now-artist");
@@ -107,6 +119,7 @@ loadStats();
 const statsBar = document.getElementById("stats-bar");
 
 statsBar.addEventListener("click", async () => {
+  currentView = { type: "history" };
   await loadStats();
   renderHistoryList();
 });
@@ -169,10 +182,11 @@ async function deleteHistoryEntry(entryId, li) {
 }
 
 async function loadTrending() {
+  currentView = { type: "trending" };
   resultsTitle.textContent = "Em alta essa semana";
   resultsEl.innerHTML = "<li class='empty-hint'>Carregando sugestoes...</li>";
   try {
-    const res = await fetch("/api/trending");
+    const res = await fetch(`/api/trending?limit=${resultLimitEl.value}`);
     if (!res.ok) throw new Error((await res.json()).detail || "erro ao carregar sugestoes");
     const items = await res.json();
     renderResults(items);
@@ -189,6 +203,7 @@ form.addEventListener("submit", async (e) => {
   const limit = resultLimitEl.value;
   if (!query) return;
 
+  currentView = { type: "search" };
   resultsTitle.textContent = `Resultados para "${query}"`;
   resultsEl.innerHTML = "<li class='empty-hint'>Buscando...</li>";
   footerMsg.textContent = "buscando...";
