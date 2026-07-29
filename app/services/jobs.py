@@ -72,18 +72,20 @@ def run_job(job_id: str, source: str, ref: str, quality: str) -> None:
         log.info("job %s: download concluido em %s", job_id, file_path)
 
         try:
-            job.bpm = bpm_service.estimate_from_file(job.id, file_path)
+            job.bpm = bpm_service.estimate_from_file(job.id, file_path, offset=20)
         except Exception:  # noqa: BLE001
             log.exception("job %s: falha ao calcular bpm do arquivo baixado", job_id)
             job.bpm = None
 
         history_service.add_entry(
+            entry_id=job.id,
             title=job.title,
             artist=job.artist,
             source=source,
             quality=quality,
             size_bytes=file_path.stat().st_size,
             bpm=job.bpm,
+            file_path=str(file_path),
         )
     except Exception as exc:  # noqa: BLE001
         log.exception("job %s: falhou", job_id)

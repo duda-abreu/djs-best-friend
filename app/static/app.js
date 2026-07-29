@@ -39,11 +39,29 @@ async function checkSpotifyAuth() {
 }
 checkSpotifyAuth();
 
-// fila serial pra nao disparar varios calculos de bpm via youtube ao mesmo
-// tempo (cada um baixa um clipinho — em paralelo isso sobrecarrega e demora mais)
-let bpmQueue = Promise.resolve();
+// fila com um pouco de paralelismo pro calculo de bpm via youtube (nao 100%
+// paralelo pra nao sobrecarregar, mas tambem nao 100% serial pra nao demorar)
+const BPM_CONCURRENCY = 3;
+let bpmActive = 0;
+const bpmPending = [];
+
 function queueBpmTask(fn) {
-  bpmQueue = bpmQueue.then(fn, fn);
+  bpmPending.push(fn);
+  drainBpmQueue();
+}
+
+function drainBpmQueue() {
+  while (bpmActive < BPM_CONCURRENCY && bpmPending.length > 0) {
+    const fn = bpmPending.shift();
+    bpmActive++;
+    Promise.resolve()
+      .then(fn)
+      .catch(() => {})
+      .finally(() => {
+        bpmActive--;
+        drainBpmQueue();
+      });
+  }
 }
 
 const POLL_INTERVAL_MS = 1500;
@@ -79,54 +97,68 @@ async function loadStats() {
 }
 loadStats();
 
-const historyModal = document.getElementById("history-modal");
-const historyList = document.getElementById("history-list");
 const statsBar = document.getElementById("stats-bar");
-const historyClose = document.getElementById("history-close");
 
 statsBar.addEventListener("click", async () => {
   await loadStats();
-  renderHistory();
-  historyModal.classList.add("open");
+  renderHistoryList();
 });
 
-historyClose.addEventListener("click", () => historyModal.classList.remove("open"));
-historyModal.addEventListener("click", (evt) => {
-  if (evt.target === historyModal) historyModal.classList.remove("open");
-});
-
-function renderHistory() {
+function renderHistoryList() {
+  resultsTitle.textContent = "Musicas baixadas";
   const entries = lastHistory.entries || [];
+
   if (entries.length === 0) {
-    historyList.innerHTML = "<li class='empty-hint'>Nenhuma musica baixada ainda.</li>";
+    resultsEl.innerHTML = "<li class='empty-hint'>Nenhuma musica baixada ainda.</li>";
     return;
   }
 
-  historyList.innerHTML = entries
-    .map((e) => {
-      const date = new Date(e.downloaded_at * 1000).toLocaleString("pt-BR", {
-        day: "2-digit",
-        month: "2-digit",
-        hour: "2-digit",
-        minute: "2-digit",
-      });
-      const gb = (e.size_bytes / (1024 ** 3)).toFixed(3);
-      return `
-        <li class="result-card">
-          <div class="result-info">
-            <div class="title">${escapeHtml(e.title || "(sem titulo)")}</div>
-            <div class="artist">${escapeHtml(e.artist || "")}</div>
-            <div class="meta">
-              <span>${date}</span>
-              <span>${e.source} · ${e.quality}</span>
-              <span>${gb} GB</span>
-              <span>${e.bpm ? `${e.bpm} bpm` : "bpm: --"}</span>
-            </div>
-          </div>
-        </li>
-      `;
-    })
-    .join("");
+  resultsEl.innerHTML = "";
+  for (const e of entries) {
+    const li = document.createElement("li");
+    li.className = "result-card history-row";
+
+    const date = new Date(e.downloaded_at * 1000).toLocaleString("pt-BR", {
+      day: "2-digit",
+      month: "2-digit",
+      hour: "2-digit",
+      minute: "2-digit",
+    });
+    const gb = (e.size_bytes / (1024 ** 3)).toFixed(3);
+
+    li.innerHTML = `
+      <div class="result-info">
+        <div class="title">${escapeHtml(e.title || "(sem titulo)")}</div>
+        <div class="artist">${escapeHtml(e.artist || "")}</div>
+        <div class="meta">
+          <span>${date}</span>
+          <span>${e.source} · ${e.quality}</span>
+          <span>${gb} GB</span>
+          <span>${e.bpm ? `${e.bpm} bpm` : "bpm: --"}</span>
+        </div>
+      </div>
+      <div class="result-actions">
+        <button type="button" class="glossy-btn small delete-btn">Excluir</button>
+      </div>
+    `;
+
+    li.querySelector(".delete-btn").addEventListener("click", () => deleteHistoryEntry(e.id, li));
+    resultsEl.appendChild(li);
+  }
+}
+
+async function deleteHistoryEntry(entryId, li) {
+  try {
+    const res = await fetch(`/api/history/${entryId}`, { method: "DELETE" });
+    if (!res.ok) throw new Error();
+    li.remove();
+    await loadStats();
+    if ((lastHistory.entries || []).length === 0) {
+      resultsEl.innerHTML = "<li class='empty-hint'>Nenhuma musica baixada ainda.</li>";
+    }
+  } catch {
+    footerMsg.textContent = "erro ao excluir musica";
+  }
 }
 
 async function loadTrending() {
@@ -168,7 +200,7 @@ form.addEventListener("submit", async (e) => {
 
 function renderResults(items) {
   resultsEl.innerHTML = "";
-  bpmQueue = Promise.resolve();
+  bpmPending.length = 0;
 
   if (items.length === 0) {
     resultsEl.innerHTML = "<li class='empty-hint'>Nenhum resultado encontrado.</li>";

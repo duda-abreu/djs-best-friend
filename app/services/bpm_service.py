@@ -48,7 +48,7 @@ def estimate_from_url(
         tmp_path = tmp.name
 
     try:
-        y, sr = librosa.load(tmp_path, sr=22050, mono=True)
+        y, sr = librosa.load(tmp_path, sr=11025, mono=True, duration=30)
         bpm = _beat_track(y, sr)
         _cache[cache_key] = bpm
         return bpm
@@ -56,11 +56,13 @@ def estimate_from_url(
         os.remove(tmp_path)
 
 
-def estimate_from_file(cache_key: str, file_path: Path) -> Optional[float]:
+def estimate_from_file(cache_key: str, file_path: Path, offset: float = 0) -> Optional[float]:
+    """offset>0 serve pra pular intro em musicas completas — nao usar em
+    clipes curtos (ja tem so alguns segundos, pular 20s deixaria vazio)."""
     if cache_key in _cache:
         return _cache[cache_key]
 
-    y, sr = librosa.load(str(file_path), sr=22050, mono=True)
+    y, sr = librosa.load(str(file_path), sr=11025, mono=True, offset=offset, duration=30)
     bpm = _beat_track(y, sr)
     _cache[cache_key] = bpm
     return bpm

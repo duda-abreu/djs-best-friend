@@ -1,4 +1,5 @@
 import json
+import shutil
 import threading
 import time
 from pathlib import Path
@@ -23,27 +24,48 @@ def _save(entries: list[dict]) -> None:
 
 
 def add_entry(
+    entry_id: str,
     title: str,
     artist: str,
     source: str,
     quality: str,
     size_bytes: int,
     bpm: Optional[float],
+    file_path: Optional[str] = None,
 ) -> None:
     with _lock:
         entries = _load()
         entries.append(
             {
+                "id": entry_id,
                 "title": title,
                 "artist": artist,
                 "source": source,
                 "quality": quality,
                 "size_bytes": size_bytes,
                 "bpm": bpm,
+                "file_path": file_path,
                 "downloaded_at": time.time(),
             }
         )
         _save(entries)
+
+
+def delete_entry(entry_id: str) -> bool:
+    """Remove uma musica do historico e apaga o arquivo do disco se ainda existir."""
+    with _lock:
+        entries = _load()
+        remaining = [e for e in entries if e.get("id") != entry_id]
+        removed = [e for e in entries if e.get("id") == entry_id]
+        if not removed:
+            return False
+        _save(remaining)
+
+    file_path = removed[0].get("file_path")
+    if file_path:
+        job_dir = Path(file_path).parent
+        shutil.rmtree(job_dir, ignore_errors=True)
+    return True
 
 
 def get_stats() -> dict:

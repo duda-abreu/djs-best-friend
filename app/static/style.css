@@ -463,52 +463,12 @@ body {
   opacity: 0.5;
 }
 
-/* ---- historico (modal) ---- */
+/* ---- historico (mesma lista dos resultados) ---- */
 
-.modal-overlay {
-  display: none;
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.55);
-  z-index: 50;
-  align-items: center;
-  justify-content: center;
-  padding: 1.5rem;
-}
-
-.modal-overlay.open {
-  display: flex;
-}
-
-.modal {
-  width: 100%;
-  max-width: 560px;
-  max-height: 80vh;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-}
-
-.modal-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 0.75rem;
-}
-
-.modal-header h2 {
-  margin: 0;
-  font-size: 1.1rem;
-}
-
-.history-list {
-  max-height: 65vh;
-}
-
-.history-list .result-card {
+.result-card.history-row {
   cursor: default;
 }
 
-.history-list .meta {
-  color: var(--muted) !important;
+.delete-btn {
+  background: linear-gradient(180deg, #d9534f 0%, #a83a37 55%, #7d2b29 100%);
 }

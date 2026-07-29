@@ -40,7 +40,7 @@ def bpm_youtube(key: str = Query(...), video_url: str = Query(...)):
     do YouTube (usado quando o Spotify nao da preview_url pra faixa)."""
     tmp_dir = DOWNLOAD_DIR / f"_bpm_{uuid.uuid4().hex[:8]}"
     try:
-        clip_path = youtube_service.download_clip(video_url, tmp_dir)
+        clip_path = youtube_service.download_clip(video_url, tmp_dir, seconds=10)
         value = bpm_service.estimate_from_file(key, clip_path)
         return {"bpm": value}
     except Exception as exc:  # noqa: BLE001
@@ -72,3 +72,11 @@ def trending():
 @router.get("/history")
 def history():
     return history_service.get_stats()
+
+
+@router.delete("/history/{entry_id}")
+def delete_history_entry(entry_id: str):
+    removed = history_service.delete_entry(entry_id)
+    if not removed:
+        raise HTTPException(404, "entrada nao encontrada")
+    return {"removed": True}
