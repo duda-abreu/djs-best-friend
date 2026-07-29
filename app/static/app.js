@@ -58,7 +58,7 @@ async function loadStats() {
 loadStats();
 
 async function loadTrending() {
-  resultsTitle.textContent = "Em alta essa semana (eletronica)";
+  resultsTitle.textContent = "Em alta essa semana";
   resultsEl.innerHTML = "<li class='empty-hint'>Carregando sugestoes...</li>";
   try {
     const res = await fetch("/api/trending");
