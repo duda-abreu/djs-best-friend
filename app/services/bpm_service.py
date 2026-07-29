@@ -19,12 +19,30 @@ import requests
 _cache: dict[str, float] = {}
 
 
+def _correct_octave_error(bpm: float) -> float:
+    """Detectores de batida frequentemente travam numa subdivisao errada do
+    pulso (ex: acham a metade, o dobro, ou 2/3 do tempo real — comum em
+    house/techno com hi-hat sincopado). Se o valor detectado cai fora da
+    faixa tipica de musica dancante, testa multiplicar/dividir por 2 e 1.5 e
+    fica com o que cair mais perto de uma faixa plausivel.
+    """
+    if 90 <= bpm <= 180:
+        return bpm
+
+    candidates = [bpm, bpm * 2, bpm * 1.5, bpm / 1.5, bpm / 2]
+    in_range = [c for c in candidates if 90 <= c <= 180]
+    if not in_range:
+        return bpm
+    return min(in_range, key=lambda c: abs(c - 120))
+
+
 def _beat_track(y, sr) -> float:
     tempo, _ = librosa.beat.beat_track(y=y, sr=sr)
     # versoes recentes do librosa retornam tempo como array (ex: [128.003])
     # em vez de escalar, e float() direto quebra nesse caso
     value = np.asarray(tempo).reshape(-1)[0]
-    return round(float(value), 1)
+    value = _correct_octave_error(float(value))
+    return round(value, 1)
 
 
 def estimate_from_url(
