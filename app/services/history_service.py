@@ -52,14 +52,13 @@ def get_stats() -> dict:
 
     total_bytes = sum(e["size_bytes"] for e in entries)
     week_ago = time.time() - 7 * 24 * 3600
-    recent = sorted(
-        [e for e in entries if e["downloaded_at"] >= week_ago],
-        key=lambda e: e["downloaded_at"],
-        reverse=True,
-    )
+
+    all_sorted = sorted(entries, key=lambda e: e["downloaded_at"], reverse=True)
+    recent = [e for e in all_sorted if e["downloaded_at"] >= week_ago]
 
     return {
         "total_songs": len(entries),
         "total_gb": round(total_bytes / (1024 ** 3), 3),
         "recent_week": recent,
+        "entries": all_sorted,
     }

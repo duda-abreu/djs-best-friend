@@ -95,6 +95,11 @@ body {
   justify-content: space-around;
   margin-bottom: 1rem;
   padding: 0.75rem 1rem;
+  cursor: pointer;
+}
+
+.stats-bar:hover {
+  filter: brightness(1.1);
 }
 
 .stat {
@@ -456,4 +461,54 @@ body {
 
 .statusbar .sep {
   opacity: 0.5;
+}
+
+/* ---- historico (modal) ---- */
+
+.modal-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  z-index: 50;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+}
+
+.modal-overlay.open {
+  display: flex;
+}
+
+.modal {
+  width: 100%;
+  max-width: 560px;
+  max-height: 80vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.75rem;
+}
+
+.modal-header h2 {
+  margin: 0;
+  font-size: 1.1rem;
+}
+
+.history-list {
+  max-height: 65vh;
+}
+
+.history-list .result-card {
+  cursor: default;
+}
+
+.history-list .meta {
+  color: var(--muted) !important;
 }

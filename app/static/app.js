@@ -62,11 +62,14 @@ function formatDuration(ms) {
   return `${min}:${String(sec).padStart(2, "0")}`;
 }
 
+let lastHistory = { entries: [] };
+
 async function loadStats() {
   try {
     const res = await fetch("/api/history");
     if (!res.ok) return;
     const data = await res.json();
+    lastHistory = data;
     statCount.textContent = data.total_songs;
     statGb.textContent = data.total_gb;
     statWeek.textContent = data.recent_week.length;
@@ -75,6 +78,56 @@ async function loadStats() {
   }
 }
 loadStats();
+
+const historyModal = document.getElementById("history-modal");
+const historyList = document.getElementById("history-list");
+const statsBar = document.getElementById("stats-bar");
+const historyClose = document.getElementById("history-close");
+
+statsBar.addEventListener("click", async () => {
+  await loadStats();
+  renderHistory();
+  historyModal.classList.add("open");
+});
+
+historyClose.addEventListener("click", () => historyModal.classList.remove("open"));
+historyModal.addEventListener("click", (evt) => {
+  if (evt.target === historyModal) historyModal.classList.remove("open");
+});
+
+function renderHistory() {
+  const entries = lastHistory.entries || [];
+  if (entries.length === 0) {
+    historyList.innerHTML = "<li class='empty-hint'>Nenhuma musica baixada ainda.</li>";
+    return;
+  }
+
+  historyList.innerHTML = entries
+    .map((e) => {
+      const date = new Date(e.downloaded_at * 1000).toLocaleString("pt-BR", {
+        day: "2-digit",
+        month: "2-digit",
+        hour: "2-digit",
+        minute: "2-digit",
+      });
+      const gb = (e.size_bytes / (1024 ** 3)).toFixed(3);
+      return `
+        <li class="result-card">
+          <div class="result-info">
+            <div class="title">${escapeHtml(e.title || "(sem titulo)")}</div>
+            <div class="artist">${escapeHtml(e.artist || "")}</div>
+            <div class="meta">
+              <span>${date}</span>
+              <span>${e.source} · ${e.quality}</span>
+              <span>${gb} GB</span>
+              <span>${e.bpm ? `${e.bpm} bpm` : "bpm: --"}</span>
+            </div>
+          </div>
+        </li>
+      `;
+    })
+    .join("");
+}
 
 async function loadTrending() {
   resultsTitle.textContent = "Em alta essa semana";
