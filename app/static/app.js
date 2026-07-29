@@ -39,6 +39,13 @@ async function checkSpotifyAuth() {
 }
 checkSpotifyAuth();
 
+document.getElementById("home-link").addEventListener("click", () => {
+  stopPreview();
+  resetNowPanel();
+  document.getElementById("query").value = "";
+  loadTrending();
+});
+
 // fila com um pouco de paralelismo pro calculo de bpm via youtube (nao 100%
 // paralelo pra nao sobrecarregar, mas tambem nao 100% serial pra nao demorar)
 const BPM_CONCURRENCY = 3;
@@ -375,6 +382,17 @@ function stopPreview() {
   }
   currentPreviewMedia = null;
   currentPreviewBtn = null;
+}
+
+function resetNowPanel() {
+  nowArt.style.backgroundImage = "";
+  nowTitle.textContent = "Nenhum download ainda";
+  nowArtist.textContent = "Busque uma musica ao lado pra comecar";
+  nowSource.textContent = " ";
+  nowBpm.textContent = " ";
+  nowStatus.textContent = "em espera";
+  nowStatus.className = "now-status";
+  setProgress(false, 0);
 }
 
 function setNowPanel(item, statusText, statusClass) {

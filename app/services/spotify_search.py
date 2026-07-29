@@ -43,11 +43,25 @@ def _parse_track(track: dict) -> dict:
     }
 
 
+# a Spotify passou a rejeitar (400 "Invalid limit") qualquer valor de limit
+# de busca acima de 10 nesse app — pra pedidos maiores, pagina com varias
+# chamadas de 10 e concatena
+_SEARCH_PAGE_SIZE = 10
+
+
 def search_tracks(query: str, limit: int = 10) -> list[dict]:
     sp = get_client()
-    results = sp.search(q=query, type="track", limit=limit)
-    tracks = results.get("tracks", {}).get("items", [])
-    return [_parse_track(t) for t in tracks]
+    tracks: list[dict] = []
+    offset = 0
+    while len(tracks) < limit:
+        page_size = min(_SEARCH_PAGE_SIZE, limit - len(tracks))
+        results = sp.search(q=query, type="track", limit=page_size, offset=offset)
+        items = results.get("tracks", {}).get("items", [])
+        tracks.extend(items)
+        if len(items) < page_size:
+            break
+        offset += page_size
+    return [_parse_track(t) for t in tracks[:limit]]
 
 
 def get_audio_features_bpm(track_id: str) -> float | None:

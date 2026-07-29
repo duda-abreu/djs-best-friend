@@ -73,7 +73,7 @@ app.add_middleware(BasicAuthMiddleware)
 
 @app.get("/")
 def index(request: Request):
-    return templates.TemplateResponse("index.html", {"request": request})
+    return templates.TemplateResponse("index.html", {"request": request, "cache_bust": int(time.time())})
 
 
 @app.on_event("startup")

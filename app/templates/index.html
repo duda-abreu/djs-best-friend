@@ -4,13 +4,13 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>DJ's Best Friend</title>
-  <link rel="stylesheet" href="/static/style.css" />
+  <link rel="stylesheet" href="/static/style.css?v={{ cache_bust }}" />
 </head>
 <body>
   <div class="shell">
     <header class="topbar">
       <div class="titles">
-        <h1>DJ's Best Friend</h1>
+        <h1 id="home-link" title="Voltar pro inicio">DJ's Best Friend</h1>
         <p class="subtitle">Music Downloader</p>
       </div>
       <div class="topbar-right">
@@ -87,6 +87,6 @@
     </footer>
   </div>
 
-  <script src="/static/app.js"></script>
+  <script src="/static/app.js?v={{ cache_bust }}"></script>
 </body>
 </html>
