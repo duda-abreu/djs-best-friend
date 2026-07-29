@@ -43,8 +43,7 @@ async function checkSpotifyAuth() {
     const res = await fetch("/auth/status");
     const data = await res.json();
     spotifyAuthenticated = !!data.authenticated;
-    spotifyAuthBtn.textContent = spotifyAuthenticated ? "Spotify conectado" : "Conectar com Spotify";
-    spotifyAuthBtn.classList.toggle("connected", spotifyAuthenticated);
+    spotifyAuthBtn.style.display = spotifyAuthenticated ? "none" : "";
   } catch {
     spotifyAuthenticated = false;
   }

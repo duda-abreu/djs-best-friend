@@ -1,3 +1,4 @@
+import concurrent.futures
 import logging
 
 import requests
@@ -87,9 +88,14 @@ def _get_playlist_tracks(limit: int) -> list[dict]:
     (Client Credentials leva 403/404 em qualquer playlist, testado)."""
     from app.services import spotify_auth
 
-    if not TRENDING_PLAYLIST_ID or not spotify_auth.is_authenticated():
+    if not TRENDING_PLAYLIST_ID:
+        log.info("playlist trending nao configurada (SPOTIFY_TRENDING_PLAYLIST_ID vazio)")
+        return []
+    if not spotify_auth.is_authenticated():
+        log.info("playlist trending configurada (%s) mas usuario nao esta logado", TRENDING_PLAYLIST_ID)
         return []
 
+    log.info("tentando puxar playlist %s (usuario logado)", TRENDING_PLAYLIST_ID)
     sp = spotify_auth.get_authenticated_client()
     results = sp.playlist_items(
         TRENDING_PLAYLIST_ID,
@@ -98,7 +104,9 @@ def _get_playlist_tracks(limit: int) -> list[dict]:
         additional_types=["track"],
     )
     items = results.get("items", [])
-    return [_parse_track(i["track"]) for i in items if i.get("track")]
+    parsed = [_parse_track(i["track"]) for i in items if i.get("track")]
+    log.info("playlist %s retornou %d faixas", TRENDING_PLAYLIST_ID, len(parsed))
+    return parsed
 
 
 def get_trending_tracks(limit: int = 10) -> list[dict]:
@@ -126,12 +134,17 @@ def get_trending_tracks(limit: int = 10) -> list[dict]:
     chart = resp.json().get("feed", {}).get("entry", [])
 
     sp = get_client()
-    tracks = []
-    for entry in chart:
+
+    def _resolve(entry: dict) -> dict | None:
         name = entry["im:name"]["label"]
         artist = entry["im:artist"]["label"]
         results = sp.search(q=f"{name} {artist}", type="track", limit=1)
         items = results.get("tracks", {}).get("items", [])
-        if items:
-            tracks.append(_parse_track(items[0]))
-    return tracks
+        return _parse_track(items[0]) if items else None
+
+    # resolve as faixas do grafico em paralelo (senao, com limit=50 isso e
+    # 50 chamadas sequenciais a Spotify e demora uns 15s+)
+    with concurrent.futures.ThreadPoolExecutor(max_workers=10) as executor:
+        resolved = list(executor.map(_resolve, chart))
+
+    return [t for t in resolved if t is not None]
