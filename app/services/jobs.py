@@ -1,4 +1,5 @@
 import concurrent.futures
+import logging
 import shutil
 import time
 import uuid
@@ -8,6 +9,8 @@ from typing import Optional
 
 from app.config import DOWNLOAD_DIR, FILE_TTL_SECONDS
 from app.services import bpm_service, history_service, spotdl_service, youtube_service
+
+log = logging.getLogger(__name__)
 
 # tempo maximo pra um download (spotdl ou yt-dlp podem ficar pendurados —
 # sem ffmpeg no PATH, por exemplo — sem isso o job fica "baixando..." pra
@@ -46,6 +49,7 @@ def run_job(job_id: str, source: str, ref: str, quality: str) -> None:
     job = _jobs[job_id]
     job.status = "downloading"
     job_dir = DOWNLOAD_DIR / job_id
+    log.info("job %s: iniciando download (source=%s, ref=%s, quality=%s)", job_id, source, ref, quality)
     try:
         if source == "spotify":
             task = _executor.submit(spotdl_service.download_track, ref, job_dir, quality)
@@ -57,6 +61,7 @@ def run_job(job_id: str, source: str, ref: str, quality: str) -> None:
         try:
             file_path = task.result(timeout=DOWNLOAD_TIMEOUT_SECONDS)
         except concurrent.futures.TimeoutError as exc:
+            log.error("job %s: timeout depois de %ss", job_id, DOWNLOAD_TIMEOUT_SECONDS)
             raise RuntimeError(
                 "download demorou demais e foi cancelado — confira se o ffmpeg "
                 "esta instalado e no PATH (feche e reabra o terminal depois de instalar)"
@@ -64,10 +69,12 @@ def run_job(job_id: str, source: str, ref: str, quality: str) -> None:
 
         job.file_path = file_path
         job.status = "done"
+        log.info("job %s: download concluido em %s", job_id, file_path)
 
         try:
             job.bpm = bpm_service.estimate_from_file(job.id, file_path)
         except Exception:  # noqa: BLE001
+            log.exception("job %s: falha ao calcular bpm do arquivo baixado", job_id)
             job.bpm = None
 
         history_service.add_entry(
@@ -79,6 +86,7 @@ def run_job(job_id: str, source: str, ref: str, quality: str) -> None:
             bpm=job.bpm,
         )
     except Exception as exc:  # noqa: BLE001
+        log.exception("job %s: falhou", job_id)
         job.status = "error"
         job.error = str(exc)
 

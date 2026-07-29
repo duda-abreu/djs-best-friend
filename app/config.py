@@ -9,6 +9,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SPOTIFY_CLIENT_ID = os.getenv("SPOTIFY_CLIENT_ID", "")
 SPOTIFY_CLIENT_SECRET = os.getenv("SPOTIFY_CLIENT_SECRET", "")
+# precisa bater exatamente com um Redirect URI cadastrado no app do Spotify
+SPOTIFY_REDIRECT_URI = os.getenv("SPOTIFY_REDIRECT_URI", "http://127.0.0.1:8000/callback")
+SPOTIFY_TOKEN_CACHE = BASE_DIR / ".spotify_user_token.json"
 
 # pais/genero usados pra pegar o grafico "mais tocadas" (feed publico da Apple,
 # sem precisar de chave/login) que alimenta a secao "em alta essa semana".

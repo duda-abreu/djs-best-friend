@@ -50,6 +50,18 @@ def search_tracks(query: str, limit: int = 10) -> list[dict]:
     return [_parse_track(t) for t in tracks]
 
 
+def get_audio_features_bpm(track_id: str) -> float | None:
+    """BPM oficial via /v1/audio-features. So funciona com um usuario
+    autenticado de verdade (login com Spotify) — Client Credentials leva 403."""
+    from app.services import spotify_auth
+
+    sp = spotify_auth.get_authenticated_client()
+    features = sp.audio_features([track_id])
+    if not features or not features[0]:
+        return None
+    return round(features[0]["tempo"], 1)
+
+
 def get_trending_tracks(limit: int = 10) -> list[dict]:
     """Sugestoes 'em alta essa semana'.
 

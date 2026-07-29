@@ -26,19 +26,24 @@ pagamento, sem distribuicao pra terceiros.
 
 ### Sobre o calculo de BPM e o preview
 
-O endpoint do Spotify que entregava BPM pronto (audio-features) foi restringido
-pela Spotify pra apps novos em 2024 — e, na pratica, apps criados agora tambem
-quase nunca recebem `preview_url` (o clipe oficial de 30s) nas buscas. Por isso:
+O endpoint do Spotify que entrega BPM pronto (`audio-features`) leva 403 com
+Client Credentials (app sem usuario logado) — e apps novos tambem quase nunca
+recebem `preview_url` (o clipe oficial de 30s) nas buscas. Duas formas de
+contornar isso, nessa ordem de prioridade:
 
-- Quando o Spotify da o `preview_url`: o BPM e **calculado localmente**
-  ([librosa](https://librosa.org/)) em cima desse clipe, e o preview toca ele
-  direto.
-- Quando nao da (o caso mais comum hoje): o preview cai pra um video
-  correspondente no YouTube (achado automaticamente por titulo+artista) tocado
-  via embed oficial, e o BPM so fica disponivel depois que a musica e baixada
-  (calculado em cima do arquivo final e mostrado no painel "tocando agora").
-- Resultados do YouTube (fonte "YouTube" na busca) seguem o mesmo esquema: BPM
-  disponivel apos o download.
+1. **Conectar com Spotify** (botao no topo direito): faz login de verdade
+   (Authorization Code + PKCE, sem client secret, sem o app ver sua senha).
+   Autenticado como usuario real, o `audio-features` costuma funcionar —
+   assim o BPM vem oficial da Spotify, instantaneo, pra qualquer resultado.
+2. Sem estar conectado: BPM e **calculado localmente**
+   ([librosa](https://librosa.org/)) em cima do `preview_url` (quando existe)
+   ou de um clipe curto do video equivalente no YouTube (achado automaticamente
+   por titulo+artista). Resultados do YouTube (fonte "YouTube" na busca) usam
+   esse mesmo caminho.
+
+Precisa cadastrar o Redirect URI usado (`SPOTIFY_REDIRECT_URI`, padrao
+`http://127.0.0.1:8000/callback`) no dashboard do app Spotify pra "Conectar com
+Spotify" funcionar.
 
 ### Sobre as sugestoes "em alta essa semana"
 
@@ -65,9 +70,15 @@ metadados/capa embutidos) mesmo sabendo que o teto de qualidade é o mesmo.
 
 - Python 3.10+
 - [ffmpeg](https://ffmpeg.org/download.html) instalado e no PATH (usado pelo
-  spotdl, pelo yt-dlp e pelo librosa pra ler/reencodar audio)
+  spotdl, pelo yt-dlp e pelo librosa pra ler/reencodar audio) — depois de
+  instalar, **feche e abra um terminal novo** pra ele reconhecer o PATH
+- **spotdl >= 4.5.2** — versoes mais antigas tem um bug conhecido que trava
+  pra sempre em "Processing query" ([issue #2587](https://github.com/spotDL/spotify-downloader/issues/2587)).
+  O `requirements.txt` ja pede essa versao ou mais nova.
 - Uma app do Spotify criada em https://developer.spotify.com/dashboard (gratis)
-  pra obter `SPOTIFY_CLIENT_ID` e `SPOTIFY_CLIENT_SECRET`
+  pra obter `SPOTIFY_CLIENT_ID` e `SPOTIFY_CLIENT_SECRET`, com
+  `http://127.0.0.1:8000/callback` cadastrado como Redirect URI (usado pelo
+  botao "Conectar com Spotify")
 
 ## Setup
 
@@ -130,17 +141,20 @@ ferramenta pessoal de backup offline de um servico de pirataria comercial.
 app/
   main.py                 # app FastAPI, rotas estaticas, rate limit
   config.py                # variaveis de ambiente
+  logging_config.py         # grava app.log (gitignored) pra debug
   routers/
     search.py              # GET /api/search
     download.py             # POST /api/download, status e arquivo
-    preview.py               # GET /api/bpm, GET /api/history
+    preview.py               # GET /api/bpm, /api/bpm-spotify, /api/bpm-youtube, /api/trending, /api/history
+    auth.py                  # GET /auth/login, /callback, /auth/status
   services/
-    spotify_search.py      # busca via spotipy
-    spotdl_service.py       # download via spotdl (subprocess)
-    youtube_service.py      # busca e download via yt-dlp
-    bpm_service.py           # estimativa de bpm via librosa
-    history_service.py       # historico local de downloads (json)
-    jobs.py                  # fila de jobs em memoria + limpeza
+    spotify_search.py      # busca via spotipy + audio-features (autenticado)
+    spotify_auth.py          # login PKCE com Spotify
+    spotdl_service.py         # download via spotdl (subprocess)
+    youtube_service.py        # busca e download via yt-dlp
+    bpm_service.py             # estimativa de bpm via librosa
+    history_service.py         # historico local de downloads (json)
+    jobs.py                    # fila de jobs em memoria + limpeza
   templates/index.html
   static/style.css, app.js
 downloads/                  # arquivos temporarios + historico (gitignored)

@@ -13,6 +13,7 @@ from pathlib import Path
 from typing import Optional
 
 import librosa
+import numpy as np
 import requests
 
 _cache: dict[str, float] = {}
@@ -20,7 +21,10 @@ _cache: dict[str, float] = {}
 
 def _beat_track(y, sr) -> float:
     tempo, _ = librosa.beat.beat_track(y=y, sr=sr)
-    return round(float(tempo), 1)
+    # versoes recentes do librosa retornam tempo como array (ex: [128.003])
+    # em vez de escalar, e float() direto quebra nesse caso
+    value = np.asarray(tempo).reshape(-1)[0]
+    return round(float(value), 1)
 
 
 def estimate_from_url(

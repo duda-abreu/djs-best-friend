@@ -26,7 +26,8 @@ def download_track(spotify_url: str, out_dir: Path, bitrate: str = "320k") -> Pa
 
     result = subprocess.run(cmd, capture_output=True, text=True, timeout=300)
     if result.returncode != 0:
-        raise RuntimeError(f"spotdl falhou: {result.stderr[-2000:]}")
+        detail = result.stderr.strip() or result.stdout.strip()
+        raise RuntimeError(f"spotdl falhou (codigo {result.returncode}): {detail[-2000:]}")
 
     files = [f for f in out_dir.iterdir() if f.is_file()]
     if not files:

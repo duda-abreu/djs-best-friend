@@ -19,6 +19,25 @@ const statWeek = document.getElementById("stat-week");
 
 let currentPreviewMedia = null;
 let currentPreviewBtn = null;
+let spotifyAuthenticated = false;
+
+const spotifyAuthBtn = document.getElementById("spotify-auth-btn");
+spotifyAuthBtn.addEventListener("click", () => {
+  window.location.href = "/auth/login";
+});
+
+async function checkSpotifyAuth() {
+  try {
+    const res = await fetch("/auth/status");
+    const data = await res.json();
+    spotifyAuthenticated = !!data.authenticated;
+    spotifyAuthBtn.textContent = spotifyAuthenticated ? "Spotify conectado" : "Conectar com Spotify";
+    spotifyAuthBtn.classList.toggle("connected", spotifyAuthenticated);
+  } catch {
+    spotifyAuthenticated = false;
+  }
+}
+checkSpotifyAuth();
 
 // fila serial pra nao disparar varios calculos de bpm via youtube ao mesmo
 // tempo (cada um baixa um clipinho — em paralelo isso sobrecarrega e demora mais)
@@ -159,6 +178,18 @@ function renderResults(items) {
 // clipe curto dele.
 async function populateBpm(item, bpmEl) {
   try {
+    if (item.source === "spotify" && spotifyAuthenticated) {
+      const res = await fetch(`/api/bpm-spotify?track_id=${encodeURIComponent(item.id)}`);
+      if (res.ok) {
+        const data = await res.json();
+        if (data.bpm) {
+          bpmEl.textContent = `${data.bpm} bpm`;
+          return;
+        }
+      }
+      // se falhar (ex: audio-features indisponivel mesmo logado), cai pro fallback abaixo
+    }
+
     if (item.source === "spotify" && item.preview_url) {
       const key = `spotify:${item.id}`;
       const res = await fetch(`/api/bpm?key=${encodeURIComponent(key)}&preview_url=${encodeURIComponent(item.preview_url)}`);
