@@ -13,12 +13,6 @@ SPOTIFY_CLIENT_SECRET = os.getenv("SPOTIFY_CLIENT_SECRET", "")
 SPOTIFY_REDIRECT_URI = os.getenv("SPOTIFY_REDIRECT_URI", "http://127.0.0.1:8000/callback")
 SPOTIFY_TOKEN_CACHE = BASE_DIR / ".spotify_user_token.json"
 
-# pais/genero usados pra pegar o grafico "mais tocadas" (feed publico da Apple,
-# sem precisar de chave/login) que alimenta a secao "em alta essa semana".
-# genero 7 = Dance/Eletronica no catalogo da Apple Music.
-TRENDING_STOREFRONT = os.getenv("TRENDING_STOREFRONT", "br")
-TRENDING_GENRE_ID = os.getenv("TRENDING_GENRE_ID", "7")
-
 # ID exato da playlist "mint" (ou outra) do Spotify — se preenchido E o
 # usuario estiver logado com Spotify (/auth/login), tenta puxar essa
 # playlist ao vivo em vez do grafico da Apple. Pegue o ID abrindo a playlist

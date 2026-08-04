@@ -1,22 +1,12 @@
 import concurrent.futures
 import logging
 
-import requests
 import spotipy
 from spotipy.oauth2 import SpotifyClientCredentials
 
 log = logging.getLogger(__name__)
 
-from app.config import (
-    SPOTIFY_CLIENT_ID,
-    SPOTIFY_CLIENT_SECRET,
-    TRENDING_GENRE_ID,
-    TRENDING_PLAYLIST_ID,
-    TRENDING_STOREFRONT,
-)
-
-# feed de charts da Apple filtrado por genero (7 = Dance/Eletronica)
-_APPLE_CHARTS_URL = "https://itunes.apple.com/{storefront}/rss/topsongs/limit={limit}/genre={genre}/json"
+from app.config import SPOTIFY_CLIENT_ID, SPOTIFY_CLIENT_SECRET, TRENDING_PLAYLIST_ID
 
 _client = None
 
@@ -109,42 +99,60 @@ def _get_playlist_tracks(limit: int) -> list[dict]:
     return parsed
 
 
+# subgeneros usados pra montar o "em alta" quando nao tem playlist logada —
+# a Spotify marca cada faixa com genero real (tag "genre:" na busca), o que
+# da resultado bem mais preciso que um chart generico "eletronica" da Apple
+# (testado: aquele chart inclui gospel, hip-hop etc que a Apple tambem rotula
+# como "Eletronica" no catalogo dela)
+_ELECTRONIC_GENRES = [
+    "house",
+    "techno",
+    "edm",
+    "melodic house",
+    "tech house",
+    "trance",
+    "drum and bass",
+]
+
+
+def _get_genre_chart_tracks(limit: int) -> list[dict]:
+    sp = get_client()
+
+    def _search_genre(genre: str) -> list[dict]:
+        try:
+            results = sp.search(q=f'genre:"{genre}"', type="track", limit=10)
+            return results.get("tracks", {}).get("items", [])
+        except Exception:  # noqa: BLE001
+            log.exception("falha ao buscar genero %s", genre)
+            return []
+
+    with concurrent.futures.ThreadPoolExecutor(max_workers=len(_ELECTRONIC_GENRES)) as executor:
+        results = executor.map(_search_genre, _ELECTRONIC_GENRES)
+
+    by_id: dict[str, dict] = {}
+    for tracks in results:
+        for t in tracks:
+            by_id[t["id"]] = t
+
+    ranked = sorted(by_id.values(), key=lambda t: t.get("popularity", 0), reverse=True)
+    return [_parse_track(t) for t in ranked[:limit]]
+
+
 def get_trending_tracks(limit: int = 10) -> list[dict]:
     """Sugestoes 'em alta essa semana'.
 
     Se SPOTIFY_TRENDING_PLAYLIST_ID estiver configurado e o usuario logado
     com Spotify (/auth/login), tenta puxar essa playlist ao vivo — assim ela
     acompanha as mudancas da playlist de verdade. Caso contrario (ou se
-    falhar), cai pro grafico publico "mais tocadas" da Apple Music (sem
-    chave, sem login), resolvendo cada faixa de volta pro Spotify via busca
-    normal pra manter o mesmo formato de item usado no resto do site.
+    falhar), monta a lista combinando buscas por subgenero eletronico
+    (house, techno, edm, etc) ordenadas por popularidade — atualiza sozinho
+    a cada carregamento, sem cache.
     """
     try:
         playlist_tracks = _get_playlist_tracks(limit)
         if playlist_tracks:
             return playlist_tracks
     except Exception:  # noqa: BLE001
-        log.exception("falha ao puxar playlist %s, caindo pro grafico da Apple", TRENDING_PLAYLIST_ID)
+        log.exception("falha ao puxar playlist %s, caindo pra busca por genero", TRENDING_PLAYLIST_ID)
 
-    resp = requests.get(
-        _APPLE_CHARTS_URL.format(storefront=TRENDING_STOREFRONT, limit=limit, genre=TRENDING_GENRE_ID),
-        timeout=10,
-    )
-    resp.raise_for_status()
-    chart = resp.json().get("feed", {}).get("entry", [])
-
-    sp = get_client()
-
-    def _resolve(entry: dict) -> dict | None:
-        name = entry["im:name"]["label"]
-        artist = entry["im:artist"]["label"]
-        results = sp.search(q=f"{name} {artist}", type="track", limit=1)
-        items = results.get("tracks", {}).get("items", [])
-        return _parse_track(items[0]) if items else None
-
-    # resolve as faixas do grafico em paralelo (senao, com limit=50 isso e
-    # 50 chamadas sequenciais a Spotify e demora uns 15s+)
-    with concurrent.futures.ThreadPoolExecutor(max_workers=10) as executor:
-        resolved = list(executor.map(_resolve, chart))
-
-    return [t for t in resolved if t is not None]
+    return _get_genre_chart_tracks(limit)

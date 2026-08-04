@@ -51,15 +51,18 @@ Duas fontes possiveis, nessa ordem de prioridade:
 
 1. **Uma playlist real do Spotify** (ex: a "mint"), configurada via
    `SPOTIFY_TRENDING_PLAYLIST_ID` no `.env` — so funciona com login feito
-   (**Conectar com Spotify**), porque a Spotify bloqueia (403/404) esse acesso
-   pra Client Credentials (testado com varias playlists, inclusive as
-   proprias da Spotify). Puxada ao vivo a cada carregamento, entao acompanha
-   as mudancas da playlist de verdade.
-2. Se nao estiver configurada, ou se falhar mesmo logado: cai pro grafico
-   publico "mais tocadas" da Apple Music (sem chave, sem login — pais/genero
-   configuraveis via `TRENDING_STOREFRONT`/`TRENDING_GENRE_ID`), resolvendo
-   cada faixa de volta pro Spotify via busca normal pra manter o mesmo
-   formato de item usado no resto do site.
+   (**Conectar com Spotify**) e com o escopo `playlist-read-private` (ja
+   pedido automaticamente no login). Puxada ao vivo a cada carregamento,
+   entao acompanha as mudancas da playlist de verdade. Mesmo publicas,
+   algumas playlists algoritmicas da Spotify (tipo a "mint") podem nao ter
+   um ID estavel/acessivel via API — se der 404 mesmo logado, e isso.
+2. Se nao estiver configurada, ou se falhar mesmo logado: monta a lista
+   combinando buscas por subgenero eletronico (`house`, `techno`, `edm`,
+   `melodic house`, `tech house`, `trance`, `drum and bass`) direto na
+   Spotify, ordenadas por popularidade. Tentamos primeiro um grafico da
+   Apple Music filtrado por genero, mas o catalogo deles marca coisas como
+   gospel e hip-hop como "Eletronica" tambem — a busca por subgenero e mais
+   precisa. Atualiza sozinho a cada carregamento, sem cache.
 
 ## Sobre qualidade de audio
 
