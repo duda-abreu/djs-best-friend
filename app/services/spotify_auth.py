@@ -18,7 +18,7 @@ def get_auth_manager() -> SpotifyPKCE:
         _auth_manager = SpotifyPKCE(
             client_id=SPOTIFY_CLIENT_ID,
             redirect_uri=SPOTIFY_REDIRECT_URI,
-            scope=None,
+            scope="playlist-read-private playlist-read-collaborative",
             cache_path=str(SPOTIFY_TOKEN_CACHE),
             open_browser=False,
         )

@@ -25,7 +25,7 @@ def callback(code: str = Query(default=""), error: str = Query(default="")):
     # pra sempre, mesmo com o token valido. Corrige gravando de volta.
     token = auth_manager.cache_handler.get_cached_token()
     if token is not None and "scope" not in token:
-        token["scope"] = ""
+        token["scope"] = auth_manager.scope or ""
         auth_manager.cache_handler.save_token_to_cache(token)
 
     return RedirectResponse("/")
