@@ -20,6 +20,11 @@ SPOTIFY_TOKEN_CACHE = BASE_DIR / ".spotify_user_token.json"
 # open.spotify.com/playlist/
 TRENDING_PLAYLIST_ID = os.getenv("SPOTIFY_TRENDING_PLAYLIST_ID", "")
 
+# chave gratis do Last.fm (last.fm/api/account/create) — usada pra puxar o
+# "em alta" de verdade (tag.getTopTracks), atualizado automaticamente pela
+# audicao real dos usuarios do Last.fm, sem depender de lista fixa de artista
+LASTFM_API_KEY = os.getenv("LASTFM_API_KEY", "")
+
 DOWNLOAD_DIR = BASE_DIR / os.getenv("DOWNLOAD_DIR", "downloads")
 DOWNLOAD_DIR.mkdir(parents=True, exist_ok=True)
 

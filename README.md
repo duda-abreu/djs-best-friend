@@ -47,7 +47,7 @@ Spotify" funcionar.
 
 ### Sobre as sugestoes "em alta essa semana"
 
-Duas fontes possiveis, nessa ordem de prioridade:
+Tres fontes possiveis, nessa ordem de prioridade:
 
 1. **Uma playlist real do Spotify** (ex: a "mint"), configurada via
    `SPOTIFY_TRENDING_PLAYLIST_ID` no `.env` — so funciona com login feito
@@ -56,15 +56,21 @@ Duas fontes possiveis, nessa ordem de prioridade:
    entao acompanha as mudancas da playlist de verdade. Mesmo publicas,
    algumas playlists algoritmicas da Spotify (tipo a "mint") podem nao ter
    um ID estavel/acessivel via API — se der 404 mesmo logado, e isso.
-2. Se nao estiver configurada, ou se falhar mesmo logado: monta a lista
+2. **Last.fm** (`tag.getTopTracks` pra "house"/"techno") — precisa de
+   `LASTFM_API_KEY` no `.env` (gratis, crie em
+   [last.fm/api/account/create](https://www.last.fm/api/account/create)).
+   Essa e a fonte automatica de verdade: reflete a audicao real dos usuarios
+   do Last.fm pra cada tag, sem eu escolher nomes — atualiza sozinho a cada
+   carregamento. Cada faixa e resolvida de volta pro Spotify via busca
+   normal pra manter o mesmo formato de item usado no resto do site.
+3. Se nenhuma das duas funcionar (ou nao estiver configurada): fallback fixo
    buscando faixas de artistas atuais de destaque em house/techno (lista em
-   `_ELECTRONIC_ARTISTS` no `spotify_search.py` — Cloonee, Solomun, Fisher,
-   John Summit, CamelPhat, etc), intercalando entre eles. Tentamos antes
-   busca generica por genero (`genre:"house"` etc) e tambem o grafico da
-   Apple Music, mas ambos traziam faixas obscuras ou fora do estilo (a Apple
-   marca ate gospel/hip-hop como "Eletronica" no catalogo dela) — buscar por
-   artista conhecido da direto o resultado que da pra reconhecer. Atualiza
-   sozinho a cada carregamento, sem cache.
+   `_ELECTRONIC_ARTISTS` no `spotify_search.py`). Nao e automatico de
+   verdade (lista escrita a mao), mas garante que sempre aparece algo
+   reconhecivel mesmo sem nenhuma chave configurada. Tentamos antes busca
+   generica por genero (`genre:"house"` etc) e o grafico da Apple Music, mas
+   ambos traziam faixas obscuras ou fora do estilo (a Apple marca ate gospel
+   e hip-hop como "Eletronica" no catalogo dela).
 
 ## Sobre qualidade de audio
 

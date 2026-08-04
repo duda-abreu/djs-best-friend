@@ -100,11 +100,49 @@ def _get_playlist_tracks(limit: int) -> list[dict]:
     return parsed
 
 
-# busca generica por "genre:house" etc puxa o catalogo inteiro (qualquer
-# faixa marcada com a tag, de qualquer epoca/obscuridade) — pra ter nomes
-# conhecidos de verdade, busca direto por artistas atuais de destaque em
-# house/techno e pega as faixas deles. Sem endpoint de "charts" oficial
-# liberado pra esse app, essa e a aproximacao mais confiavel.
+_LASTFM_TAGS = ["house", "techno"]
+
+
+def _get_lastfm_chart_tracks(limit: int) -> list[dict]:
+    """Puxa o 'em alta' de verdade via Last.fm (tag.getTopTracks) e resolve
+    cada faixa de volta pro Spotify via busca normal — atualiza sozinho,
+    sem lista fixa de artista."""
+    from app.services import lastfm_service
+
+    sp = get_client()
+    per_tag = max(5, limit // len(_LASTFM_TAGS) + 5)
+
+    def _fetch_tag(tag: str) -> list[dict]:
+        try:
+            return lastfm_service.get_top_tracks_for_tag(tag, limit=per_tag)
+        except Exception:  # noqa: BLE001
+            log.exception("falha ao buscar tag %s no Last.fm", tag)
+            return []
+
+    with concurrent.futures.ThreadPoolExecutor(max_workers=len(_LASTFM_TAGS)) as executor:
+        by_tag = list(executor.map(_fetch_tag, _LASTFM_TAGS))
+
+    def _resolve(entry: dict) -> dict | None:
+        results = sp.search(q=f"track:{entry['title']} artist:{entry['artist']}", type="track", limit=1)
+        items = results.get("tracks", {}).get("items", [])
+        return items[0] if items else None
+
+    interleaved = [e for pair in itertools.zip_longest(*by_tag) for e in pair if e is not None]
+    with concurrent.futures.ThreadPoolExecutor(max_workers=10) as executor:
+        resolved = list(executor.map(_resolve, interleaved))
+
+    by_id: dict[str, dict] = {}
+    for t in resolved:
+        if t is not None:
+            by_id[t["id"]] = t
+
+    return [_parse_track(t) for t in list(by_id.values())[:limit]]
+
+
+# fallback final se o Last.fm nao estiver configurado/falhar: busca direto
+# por artistas atuais de destaque em house/techno. Nao e "automatico" de
+# verdade (lista escrita a mao), mas garante que sempre aparece algo
+# reconhecivel mesmo sem chave do Last.fm configurada.
 _ELECTRONIC_ARTISTS = [
     "Cloonee",
     "Solomun",
@@ -147,20 +185,28 @@ def _get_genre_chart_tracks(limit: int) -> list[dict]:
 
 
 def get_trending_tracks(limit: int = 10) -> list[dict]:
-    """Sugestoes 'em alta essa semana'.
+    """Sugestoes 'em alta essa semana', nessa ordem de prioridade:
 
-    Se SPOTIFY_TRENDING_PLAYLIST_ID estiver configurado e o usuario logado
-    com Spotify (/auth/login), tenta puxar essa playlist ao vivo — assim ela
-    acompanha as mudancas da playlist de verdade. Caso contrario (ou se
-    falhar), monta a lista buscando faixas de artistas atuais de destaque em
-    house/techno (ver _ELECTRONIC_ARTISTS) — atualiza sozinho a cada
-    carregamento, sem cache.
+    1. Playlist real do Spotify (SPOTIFY_TRENDING_PLAYLIST_ID), so funciona
+       logado (/auth/login).
+    2. Last.fm (tag.getTopTracks pra "house"/"techno") — automatico de
+       verdade, baseado em audicao real, atualiza sozinho a cada
+       carregamento. Precisa de LASTFM_API_KEY no .env.
+    3. Fallback fixo: busca por artistas atuais de destaque em house/techno
+       (ver _ELECTRONIC_ARTISTS), caso o Last.fm nao esteja configurado.
     """
     try:
         playlist_tracks = _get_playlist_tracks(limit)
         if playlist_tracks:
             return playlist_tracks
     except Exception:  # noqa: BLE001
-        log.exception("falha ao puxar playlist %s, caindo pra busca por genero", TRENDING_PLAYLIST_ID)
+        log.exception("falha ao puxar playlist %s, tentando Last.fm", TRENDING_PLAYLIST_ID)
+
+    try:
+        lastfm_tracks = _get_lastfm_chart_tracks(limit)
+        if lastfm_tracks:
+            return lastfm_tracks
+    except Exception:  # noqa: BLE001
+        log.exception("falha ao puxar chart do Last.fm, caindo pro fallback fixo")
 
     return _get_genre_chart_tracks(limit)
