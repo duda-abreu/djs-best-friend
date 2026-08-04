@@ -61,8 +61,15 @@ Tres fontes possiveis, nessa ordem de prioridade:
    [last.fm/api/account/create](https://www.last.fm/api/account/create)).
    Essa e a fonte automatica de verdade: reflete a audicao real dos usuarios
    do Last.fm pra cada tag, sem eu escolher nomes — atualiza sozinho a cada
-   carregamento. Cada faixa e resolvida de volta pro Spotify via busca
-   normal pra manter o mesmo formato de item usado no resto do site.
+   carregamento. `tag.getTopTracks` e por faixa e cheio de gente marcando
+   pop/k-pop como "house"/"techno" por engano, entao cada candidato passa
+   por um segundo filtro usando as tags do ARTISTA (`artist.gettoptags`,
+   olhando so as 3 primeiras) — bem mais confiavel pra separar eletronica de
+   verdade de pop com producao eletronica (Madonna, Lady Gaga etc). Depois
+   ordena pelo lancamento mais recente, mas como o ranking do Last.fm em si
+   e "de todos os tempos", ainda mistura classicos com coisa atual. Cada
+   faixa e resolvida de volta pro Spotify via busca normal pra manter o
+   mesmo formato de item usado no resto do site.
 3. Se nenhuma das duas funcionar (ou nao estiver configurada): fallback fixo
    buscando faixas de artistas atuais de destaque em house/techno (lista em
    `_ELECTRONIC_ARTISTS` no `spotify_search.py`). Nao e automatico de
