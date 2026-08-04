@@ -1,4 +1,5 @@
 import concurrent.futures
+import itertools
 import logging
 
 import spotipy
@@ -99,43 +100,50 @@ def _get_playlist_tracks(limit: int) -> list[dict]:
     return parsed
 
 
-# subgeneros usados pra montar o "em alta" quando nao tem playlist logada —
-# a Spotify marca cada faixa com genero real (tag "genre:" na busca), o que
-# da resultado bem mais preciso que um chart generico "eletronica" da Apple
-# (testado: aquele chart inclui gospel, hip-hop etc que a Apple tambem rotula
-# como "Eletronica" no catalogo dela)
-_ELECTRONIC_GENRES = [
-    "house",
-    "techno",
-    "edm",
-    "melodic house",
-    "tech house",
-    "trance",
-    "drum and bass",
+# busca generica por "genre:house" etc puxa o catalogo inteiro (qualquer
+# faixa marcada com a tag, de qualquer epoca/obscuridade) — pra ter nomes
+# conhecidos de verdade, busca direto por artistas atuais de destaque em
+# house/techno e pega as faixas deles. Sem endpoint de "charts" oficial
+# liberado pra esse app, essa e a aproximacao mais confiavel.
+_ELECTRONIC_ARTISTS = [
+    "Cloonee",
+    "Solomun",
+    "Prospa",
+    "Interplanetary Criminal",
+    "Fisher",
+    "John Summit",
+    "Dom Dolla",
+    "CamelPhat",
+    "Chris Lake",
+    "Charlotte de Witte",
+    "Amelie Lens",
+    "Overmono",
 ]
 
 
 def _get_genre_chart_tracks(limit: int) -> list[dict]:
     sp = get_client()
 
-    def _search_genre(genre: str) -> list[dict]:
+    def _search_artist(artist: str) -> list[dict]:
         try:
-            results = sp.search(q=f'genre:"{genre}"', type="track", limit=10)
+            results = sp.search(q=f'artist:"{artist}"', type="track", limit=3)
             return results.get("tracks", {}).get("items", [])
         except Exception:  # noqa: BLE001
-            log.exception("falha ao buscar genero %s", genre)
+            log.exception("falha ao buscar artista %s", artist)
             return []
 
-    with concurrent.futures.ThreadPoolExecutor(max_workers=len(_ELECTRONIC_GENRES)) as executor:
-        results = executor.map(_search_genre, _ELECTRONIC_GENRES)
+    with concurrent.futures.ThreadPoolExecutor(max_workers=len(_ELECTRONIC_ARTISTS)) as executor:
+        results = list(executor.map(_search_artist, _ELECTRONIC_ARTISTS))
 
     by_id: dict[str, dict] = {}
-    for tracks in results:
+    # intercala (1a faixa de cada artista, depois a 2a, etc) em vez de
+    # empilhar tudo de um artista antes do proximo
+    for tracks in itertools.zip_longest(*results):
         for t in tracks:
-            by_id[t["id"]] = t
+            if t is not None:
+                by_id[t["id"]] = t
 
-    ranked = sorted(by_id.values(), key=lambda t: t.get("popularity", 0), reverse=True)
-    return [_parse_track(t) for t in ranked[:limit]]
+    return [_parse_track(t) for t in list(by_id.values())[:limit]]
 
 
 def get_trending_tracks(limit: int = 10) -> list[dict]:
@@ -144,9 +152,9 @@ def get_trending_tracks(limit: int = 10) -> list[dict]:
     Se SPOTIFY_TRENDING_PLAYLIST_ID estiver configurado e o usuario logado
     com Spotify (/auth/login), tenta puxar essa playlist ao vivo — assim ela
     acompanha as mudancas da playlist de verdade. Caso contrario (ou se
-    falhar), monta a lista combinando buscas por subgenero eletronico
-    (house, techno, edm, etc) ordenadas por popularidade — atualiza sozinho
-    a cada carregamento, sem cache.
+    falhar), monta a lista buscando faixas de artistas atuais de destaque em
+    house/techno (ver _ELECTRONIC_ARTISTS) — atualiza sozinho a cada
+    carregamento, sem cache.
     """
     try:
         playlist_tracks = _get_playlist_tracks(limit)

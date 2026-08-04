@@ -57,12 +57,14 @@ Duas fontes possiveis, nessa ordem de prioridade:
    algumas playlists algoritmicas da Spotify (tipo a "mint") podem nao ter
    um ID estavel/acessivel via API — se der 404 mesmo logado, e isso.
 2. Se nao estiver configurada, ou se falhar mesmo logado: monta a lista
-   combinando buscas por subgenero eletronico (`house`, `techno`, `edm`,
-   `melodic house`, `tech house`, `trance`, `drum and bass`) direto na
-   Spotify, ordenadas por popularidade. Tentamos primeiro um grafico da
-   Apple Music filtrado por genero, mas o catalogo deles marca coisas como
-   gospel e hip-hop como "Eletronica" tambem — a busca por subgenero e mais
-   precisa. Atualiza sozinho a cada carregamento, sem cache.
+   buscando faixas de artistas atuais de destaque em house/techno (lista em
+   `_ELECTRONIC_ARTISTS` no `spotify_search.py` — Cloonee, Solomun, Fisher,
+   John Summit, CamelPhat, etc), intercalando entre eles. Tentamos antes
+   busca generica por genero (`genre:"house"` etc) e tambem o grafico da
+   Apple Music, mas ambos traziam faixas obscuras ou fora do estilo (a Apple
+   marca ate gospel/hip-hop como "Eletronica" no catalogo dela) — buscar por
+   artista conhecido da direto o resultado que da pra reconhecer. Atualiza
+   sozinho a cada carregamento, sem cache.
 
 ## Sobre qualidade de audio
 
