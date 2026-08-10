@@ -1,187 +1,56 @@
 # DJ's Best Friend
 
-Ferramenta pessoal em Python (FastAPI) pra buscar musicas e baixar o audio na
-melhor qualidade disponivel, com duas fontes:
+Ferramenta pessoal para pesquisar faixas, ouvir prévias, estimar BPM e preparar referências para sets de DJ. A busca usa Spotify e Last.fm; prévias e downloads podem usar YouTube como alternativa.
 
-- **Spotify** (via [spotdl](https://github.com/spotDL/spotify-downloader)): busca
-  metadados no Spotify, baixa o audio correspondente no YouTube Music e reencoda
-  para mp3 320kbps, com capa/artista/album embutidos.
-- **YouTube** (via [yt-dlp](https://github.com/yt-dlp/yt-dlp) direto): baixa o
-  melhor stream de audio disponivel **sem reencodar**, preservando o bitrate real
-  da fonte.
+## Ideia geral
 
-Feito pra rodar na sua propria maquina, pra uso pessoal — sem contas, sem
-pagamento, sem distribuicao pra terceiros.
+O projeto tenta reunir em uma tela o fluxo de descoberta musical:
 
-## Recursos
+- buscar músicas e artistas;
+- encontrar faixas de house e techno em alta;
+- ouvir uma prévia;
+- estimar BPM;
+- baixar uma referência e manter histórico local.
 
-- Sugestoes "em alta essa semana" na tela inicial
-- Busca com preview de audio antes de baixar, pra confirmar que e a musica certa
-- Duracao da faixa e **BPM** (batidas por minuto) mostrados ao lado de cada
-  resultado
-- Painel "tocando agora" com progresso do download em tempo real
-- Dashboard simples com total de musicas baixadas, espaco em disco usado e
-  quantas foram baixadas nos ultimos 7 dias (le do seu proprio historico local,
-  sem servidor nem conta)
+É um protótipo para uso pessoal, não um serviço de distribuição de música.
 
-### Sobre o calculo de BPM e o preview
+## Por que é difícil manter
 
-O endpoint do Spotify que entrega BPM pronto (`audio-features`) leva 403 com
-Client Credentials (app sem usuario logado) — e apps novos tambem quase nunca
-recebem `preview_url` (o clipe oficial de 30s) nas buscas. Duas formas de
-contornar isso, nessa ordem de prioridade:
+- A API do Spotify muda permissões, limites e endpoints. Recursos como `audio-features`, prévias e acesso a playlists podem retornar `403`, desaparecer ou exigir autenticação de usuário.
+- Aplicações novas podem ter acesso mais restrito que integrações antigas. Algo que funciona em uma conta pode falhar em outra.
+- O Spotify não fornece o áudio completo. O projeto depende de correspondência com vídeos externos, que pode encontrar versão errada, remix, gravação ao vivo ou áudio com qualidade diferente.
+- Downloads e redistribuição envolvem direitos autorais e termos de uso das plataformas. O usuário precisa ter autorização sobre qualquer conteúdo obtido.
+- YouTube, Spotify e Last.fm podem alterar páginas, APIs, limites e regras sem aviso. Isso torna os fallbacks frágeis.
+- Estimativa de BPM por trecho não é exata, principalmente em intros, mudanças de andamento e detecção em meio ou dobro do BPM real.
 
-1. **Conectar com Spotify** (botao no topo direito): faz login de verdade
-   (Authorization Code + PKCE, sem client secret, sem o app ver sua senha).
-   Autenticado como usuario real, o `audio-features` costuma funcionar —
-   assim o BPM vem oficial da Spotify, instantaneo, pra qualquer resultado.
-2. Sem estar conectado: BPM e **calculado localmente**
-   ([librosa](https://librosa.org/)) em cima do `preview_url` (quando existe)
-   ou de um clipe curto do video equivalente no YouTube (achado automaticamente
-   por titulo+artista). Resultados do YouTube (fonte "YouTube" na busca) usam
-   esse mesmo caminho.
+Essas limitações dificultam transformar o protótipo em produto público estável. O caminho mais seguro seria manter foco em descoberta, metadados e links oficiais, sem hospedar ou redistribuir áudio protegido.
 
-Precisa cadastrar o Redirect URI usado (`SPOTIFY_REDIRECT_URI`, padrao
-`http://127.0.0.1:8000/callback`) no dashboard do app Spotify pra "Conectar com
-Spotify" funcionar.
+## Rodar localmente
 
-### Sobre as sugestoes "em alta essa semana"
+Requer Python 3.11+, FFmpeg e credenciais próprias do Spotify.
 
-Tres fontes possiveis, nessa ordem de prioridade:
-
-1. **Uma playlist real do Spotify** (ex: a "mint"), configurada via
-   `SPOTIFY_TRENDING_PLAYLIST_ID` no `.env` — so funciona com login feito
-   (**Conectar com Spotify**) e com o escopo `playlist-read-private` (ja
-   pedido automaticamente no login). Puxada ao vivo a cada carregamento,
-   entao acompanha as mudancas da playlist de verdade. Mesmo publicas,
-   algumas playlists algoritmicas da Spotify (tipo a "mint") podem nao ter
-   um ID estavel/acessivel via API — se der 404 mesmo logado, e isso.
-2. **Last.fm** (`tag.getTopTracks` pra "house"/"techno") — precisa de
-   `LASTFM_API_KEY` no `.env` (gratis, crie em
-   [last.fm/api/account/create](https://www.last.fm/api/account/create)).
-   Essa e a fonte automatica de verdade: reflete a audicao real dos usuarios
-   do Last.fm pra cada tag, sem eu escolher nomes — atualiza sozinho a cada
-   carregamento. `tag.getTopTracks` e por faixa e cheio de gente marcando
-   pop/k-pop como "house"/"techno" por engano, entao cada candidato passa
-   por um segundo filtro usando as tags do ARTISTA (`artist.gettoptags`,
-   olhando so as 3 primeiras) — bem mais confiavel pra separar eletronica de
-   verdade de pop com producao eletronica (Madonna, Lady Gaga etc). Depois
-   ordena pelo lancamento mais recente, mas como o ranking do Last.fm em si
-   e "de todos os tempos", ainda mistura classicos com coisa atual. Cada
-   faixa e resolvida de volta pro Spotify via busca normal pra manter o
-   mesmo formato de item usado no resto do site.
-3. Se nenhuma das duas funcionar (ou nao estiver configurada): fallback fixo
-   buscando faixas de artistas atuais de destaque em house/techno (lista em
-   `_ELECTRONIC_ARTISTS` no `spotify_search.py`). Nao e automatico de
-   verdade (lista escrita a mao), mas garante que sempre aparece algo
-   reconhecivel mesmo sem nenhuma chave configurada. Tentamos antes busca
-   generica por genero (`genre:"house"` etc) e o grafico da Apple Music, mas
-   ambos traziam faixas obscuras ou fora do estilo (a Apple marca ate gospel
-   e hip-hop como "Eletronica" no catalogo dela).
-
-## Sobre qualidade de audio
-
-Nenhum desses caminhos baixa do "servidor original" do Spotify — o Spotify não
-expõe os arquivos de audio brutos. Tanto o spotdl quanto o modo YouTube direto
-buscam o audio no YouTube/YouTube Music, cujo stream de audio normalmente já vem
-limitado a algo entre 128-160kbps (opus/AAC). Reencodar para 320kbps não
-recupera qualidade que não estava lá — só aumenta o tamanho do arquivo. Por isso
-o site oferece as duas opções: "original" pra quem quer o stream cru sem
-retrabalho, e "320k mp3" pra quem quer compatibilidade máxima (tocadores antigos,
-metadados/capa embutidos) mesmo sabendo que o teto de qualidade é o mesmo.
-
-## Requisitos
-
-- Python 3.10+
-- [ffmpeg](https://ffmpeg.org/download.html) instalado e no PATH (usado pelo
-  spotdl, pelo yt-dlp e pelo librosa pra ler/reencodar audio) — depois de
-  instalar, **feche e abra um terminal novo** pra ele reconhecer o PATH
-- **spotdl >= 4.5.2** — versoes mais antigas tem um bug conhecido que trava
-  pra sempre em "Processing query" ([issue #2587](https://github.com/spotDL/spotify-downloader/issues/2587)).
-  O `requirements.txt` ja pede essa versao ou mais nova.
-- Uma app do Spotify criada em https://developer.spotify.com/dashboard (gratis)
-  pra obter `SPOTIFY_CLIENT_ID` e `SPOTIFY_CLIENT_SECRET`, com
-  `http://127.0.0.1:8000/callback` cadastrado como Redirect URI (usado pelo
-  botao "Conectar com Spotify")
-
-## Setup
-
-```bash
+```powershell
 python -m venv .venv
-.venv\Scripts\activate
+.venv\Scripts\Activate.ps1
 pip install -r requirements.txt
-copy .env.example .env
 ```
 
-Edite o `.env` e preencha `SPOTIFY_CLIENT_ID` e `SPOTIFY_CLIENT_SECRET`.
+Crie `.env` na raiz:
 
-## Rodando
+```env
+SPOTIFY_CLIENT_ID=
+SPOTIFY_CLIENT_SECRET=
+LASTFM_API_KEY=
+```
 
-No Windows (PowerShell), o jeito mais simples e rodar o script pronto, que ja
-chama o uvicorn de dentro do `.venv` sem precisar ativar nada:
+Inicie:
 
 ```powershell
 .\run.ps1
 ```
 
-Ou manualmente:
+Acesse `http://127.0.0.1:8000`.
 
-```bash
-.venv\Scripts\uvicorn.exe app.main:app --reload
-```
+## Aviso
 
-Acesse http://localhost:8000
-
-Os arquivos baixados ficam em `downloads/<job_id>/` e são apagados
-automaticamente após `FILE_TTL_SECONDS` (padrão 30 min, configuravel no
-`.env`) — entao mova o que quiser guardar pra outro lugar depois de baixar.
-
-## Hospedando (Railway)
-
-O app roda via Docker (o `Dockerfile` ja instala ffmpeg junto). Pra hospedar
-no [Railway](https://railway.app):
-
-1. Crie um projeto novo no Railway e conecte esse repositorio (voce faz login
-   e clica em "Deploy" — isso e uma etapa que so voce pode fazer)
-2. Nas variaveis de ambiente do projeto, configure `SPOTIFY_CLIENT_ID` e
-   `SPOTIFY_CLIENT_SECRET`, e **defina `BASIC_AUTH_USER` e
-   `BASIC_AUTH_PASSWORD`** — sem isso o site fica acessivel pra qualquer um
-   que descobrir a URL, ja que nao ha tela de login
-3. O Railway detecta o `Dockerfile` automaticamente e expoe a porta via `$PORT`
-   (ja tratado no `CMD` do Dockerfile)
-
-Localmente essas duas variaveis ficam em branco (uso sem senha), entao isso
-so afeta a versao hospedada.
-
-## Uso pessoal, nao redistribua
-
-O audio baixado é só pra uso pessoal. Nao faz parte deste repositorio, nao deve
-ser hospedado publicamente, nem vendido/redistribuido — isso e o que separa uma
-ferramenta pessoal de backup offline de um servico de pirataria comercial.
-
-## Estrutura
-
-```
-app/
-  main.py                 # app FastAPI, rotas estaticas, rate limit
-  config.py                # variaveis de ambiente
-  logging_config.py         # grava app.log (gitignored) pra debug
-  routers/
-    search.py              # GET /api/search
-    download.py             # POST /api/download, status e arquivo
-    preview.py               # GET /api/bpm, /api/bpm-spotify, /api/bpm-youtube, /api/trending, /api/history
-    auth.py                  # GET /auth/login, /callback, /auth/status
-  services/
-    spotify_search.py      # busca via spotipy + audio-features (autenticado)
-    spotify_auth.py          # login PKCE com Spotify
-    spotdl_service.py         # download via spotdl (subprocess)
-    youtube_service.py        # busca e download via yt-dlp
-    bpm_service.py             # estimativa de bpm via librosa
-    history_service.py         # historico local de downloads (json)
-    jobs.py                    # fila de jobs em memoria + limpeza
-  templates/index.html
-  static/style.css, app.js
-downloads/                  # arquivos temporarios + historico (gitignored)
-run.ps1                     # atalho pra rodar o servidor (Windows/PowerShell)
-Dockerfile                  # build pra hospedar (ex: Railway)
-```
+Use apenas conteúdo próprio, licenciado ou autorizado. Respeite direitos autorais e termos do Spotify, YouTube e Last.fm.
