@@ -4,9 +4,6 @@ from pathlib import Path
 
 
 def download_track(spotify_url: str, out_dir: Path, bitrate: str = "320k") -> Path:
-    """Baixa uma faixa do Spotify via spotdl (busca a melhor correspondencia no
-    YouTube Music e reencoda no bitrate pedido, com metadados/capa embutidos).
-    """
     out_dir.mkdir(parents=True, exist_ok=True)
     outtmpl = str(out_dir / "{title}.{output-ext}")
 

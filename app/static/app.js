@@ -3,8 +3,6 @@ const resultsEl = document.getElementById("results");
 const resultsTitle = document.getElementById("results-title");
 const resultLimitEl = document.getElementById("result-limit");
 
-// lembra o que esta sendo mostrado agora, pra recarregar do jeito certo
-// quando o usuario muda a quantidade de resultados
 let currentView = { type: "trending" };
 
 resultLimitEl.addEventListener("change", () => {
@@ -57,8 +55,6 @@ document.getElementById("home-link").addEventListener("click", () => {
   loadTrending();
 });
 
-// fila com um pouco de paralelismo pro calculo de bpm via youtube (nao 100%
-// paralelo pra nao sobrecarregar, mas tambem nao 100% serial pra nao demorar)
 const BPM_CONCURRENCY = 3;
 let bpmActive = 0;
 const bpmPending = [];
@@ -83,7 +79,7 @@ function drainBpmQueue() {
 }
 
 const POLL_INTERVAL_MS = 1500;
-const POLL_MAX_ATTEMPTS = 180; // ~4.5 minutos (um pouco acima do timeout do servidor)
+const POLL_MAX_ATTEMPTS = 180;
 
 function tickClock() {
   clockEl.textContent = new Date().toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" });
@@ -110,7 +106,6 @@ async function loadStats() {
     statGb.textContent = data.total_gb;
     statWeek.textContent = data.recent_week.length;
   } catch {
-    // silencioso: dashboard e so um extra, nao trava o app
   }
 }
 loadStats();
@@ -279,9 +274,6 @@ function renderResults(items) {
   }
 }
 
-// preenche o bpm de um resultado ANTES de baixar: usa o preview de 30s do
-// Spotify quando existe, senao acha o video equivalente no YouTube e usa um
-// clipe curto dele.
 async function populateBpm(item, bpmEl) {
   try {
     if (item.source === "spotify" && spotifyAuthenticated) {
@@ -293,7 +285,6 @@ async function populateBpm(item, bpmEl) {
           return;
         }
       }
-      // se falhar (ex: audio-features indisponivel mesmo logado), cai pro fallback abaixo
     }
 
     if (item.source === "spotify" && item.preview_url) {
@@ -325,7 +316,6 @@ async function populateBpm(item, bpmEl) {
   }
 }
 
-// resolve um video do YouTube pra usar de preview/bpm quando o Spotify nao da preview_url
 async function resolveYoutubeMatch(item) {
   if (item._matchId !== undefined) return item._matchId;
   try {

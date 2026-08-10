@@ -52,7 +52,6 @@ def add_entry(
 
 
 def delete_entry(entry_id: str) -> bool:
-    """Remove uma musica do historico e apaga o arquivo do disco se ainda existir."""
     with _lock:
         entries = _load()
         remaining = [e for e in entries if e.get("id") != entry_id]

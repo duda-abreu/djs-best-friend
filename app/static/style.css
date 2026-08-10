@@ -48,7 +48,6 @@ body {
     inset 0 1px 0 rgba(255, 255, 255, 0.25);
 }
 
-/* ---- header ---- */
 
 .topbar {
   display: flex;
@@ -93,7 +92,6 @@ body {
   background: linear-gradient(180deg, #3fbf6f 0%, #23834a 55%, #1a6238 100%);
 }
 
-/* ---- stats bar ---- */
 
 .stats-bar {
   display: flex;
@@ -127,7 +125,6 @@ body {
   letter-spacing: 0.03em;
 }
 
-/* ---- deck layout ---- */
 
 .deck {
   display: grid;
@@ -153,7 +150,6 @@ body {
   overflow: hidden;
 }
 
-/* ---- now panel ---- */
 
 .now-panel {
   display: flex;
@@ -235,7 +231,6 @@ body {
 .now-status.done { color: var(--accent); }
 .now-status.error { color: var(--danger); }
 
-/* ---- list panel ---- */
 
 .list-panel {
   display: flex;
@@ -282,7 +277,6 @@ body {
   color: var(--text);
 }
 
-/* glossy button, common to search + download actions */
 
 .glossy-btn {
   position: relative;
@@ -338,7 +332,6 @@ body {
   border-radius: 999px;
 }
 
-/* ---- track list ---- */
 
 .track-list {
   list-style: none;
@@ -449,7 +442,6 @@ body {
 .status.done { color: var(--accent); }
 .status.error { color: var(--danger); }
 
-/* ---- footer ---- */
 
 .statusbar {
   margin-top: 1.25rem;
@@ -468,7 +460,6 @@ body {
   opacity: 0.5;
 }
 
-/* ---- historico (mesma lista dos resultados) ---- */
 
 .result-card.history-row {
   cursor: default;

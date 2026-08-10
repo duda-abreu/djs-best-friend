@@ -40,9 +40,6 @@ def _parse_track(track: dict) -> dict:
     }
 
 
-# a Spotify passou a rejeitar (400 "Invalid limit") qualquer valor de limit
-# de busca acima de 10 nesse app — pra pedidos maiores, pagina com varias
-# chamadas de 10 e concatena
 _SEARCH_PAGE_SIZE = 10
 
 
@@ -62,8 +59,6 @@ def search_tracks(query: str, limit: int = 10) -> list[dict]:
 
 
 def get_audio_features_bpm(track_id: str) -> float | None:
-    """BPM oficial via /v1/audio-features. So funciona com um usuario
-    autenticado de verdade (login com Spotify) — Client Credentials leva 403."""
     from app.services import spotify_auth
 
     sp = spotify_auth.get_authenticated_client()
@@ -74,9 +69,6 @@ def get_audio_features_bpm(track_id: str) -> float | None:
 
 
 def _get_playlist_tracks(limit: int) -> list[dict]:
-    """Tenta puxar a playlist configurada (SPOTIFY_TRENDING_PLAYLIST_ID) ao
-    vivo — so funciona se o usuario estiver logado com Spotify de verdade
-    (Client Credentials leva 403/404 em qualquer playlist, testado)."""
     from app.services import spotify_auth
 
     if not TRENDING_PLAYLIST_ID:
@@ -104,17 +96,6 @@ _LASTFM_TAGS = ["house", "techno"]
 
 
 def _get_lastfm_chart_tracks(limit: int) -> list[dict]:
-    """Puxa candidatos via Last.fm (tag.getTopTracks pra house/techno) e
-    filtra ruido em duas etapas, tudo automatico (sem lista fixa de
-    artista):
-
-    1. tag.getTopTracks e por FAIXA e cheio de gente marcando pop/k-pop
-       como "house"/"techno" por engano — entao filtra de novo pelas tags
-       do ARTISTA (artist.gettoptags), que sao bem mais confiaveis.
-    2. Pede uma leva grande de candidatos (a tag e um ranking de todos os
-       tempos, entao tem bastante coisa antiga) e prioriza os lançamentos
-       mais recentes depois de filtrar.
-    """
     from app.services import lastfm_service
 
     sp = get_client()
@@ -132,8 +113,6 @@ def _get_lastfm_chart_tracks(limit: int) -> list[dict]:
 
     interleaved = [e for pair in itertools.zip_longest(*by_tag) for e in pair if e is not None]
 
-    # so checa a tag do artista uma vez por artista (varias faixas podem
-    # ser do mesmo artista, e cada checagem e uma chamada de rede)
     seen_artists: dict[str, bool] = {}
 
     def _resolve_and_filter(entry: dict) -> dict | None:
@@ -155,8 +134,6 @@ def _get_lastfm_chart_tracks(limit: int) -> list[dict]:
         if t is not None:
             by_id[t["id"]] = t
 
-    # prioriza lancamentos mais recentes primeiro (a tag e um ranking de
-    # todos os tempos, entao sem isso vem sempre os mesmos classicos)
     def _release_year(t: dict) -> int:
         date = t["album"].get("release_date", "")
         return int(date[:4]) if date[:4].isdigit() else 0
@@ -166,10 +143,6 @@ def _get_lastfm_chart_tracks(limit: int) -> list[dict]:
     return [_parse_track(t) for t in ranked[:limit]]
 
 
-# fallback final se o Last.fm nao estiver configurado/falhar: busca direto
-# por artistas atuais de destaque em house/techno. Nao e "automatico" de
-# verdade (lista escrita a mao), mas garante que sempre aparece algo
-# reconhecivel mesmo sem chave do Last.fm configurada.
 _ELECTRONIC_ARTISTS = [
     "Cloonee",
     "Solomun",
@@ -201,8 +174,6 @@ def _get_genre_chart_tracks(limit: int) -> list[dict]:
         results = list(executor.map(_search_artist, _ELECTRONIC_ARTISTS))
 
     by_id: dict[str, dict] = {}
-    # intercala (1a faixa de cada artista, depois a 2a, etc) em vez de
-    # empilhar tudo de um artista antes do proximo
     for tracks in itertools.zip_longest(*results):
         for t in tracks:
             if t is not None:
@@ -212,19 +183,6 @@ def _get_genre_chart_tracks(limit: int) -> list[dict]:
 
 
 def get_trending_tracks(limit: int = 10) -> list[dict]:
-    """Sugestoes 'em alta essa semana', nessa ordem de prioridade:
-
-    1. Playlist real do Spotify (SPOTIFY_TRENDING_PLAYLIST_ID), so funciona
-       logado (/auth/login).
-    2. Last.fm (tag.getTopTracks pra "house"/"techno"), filtrado pelas tags
-       do ARTISTA (artist.gettoptags) pra tirar ruido tipo pop/k-pop marcado
-       errado como eletronica, e ordenado por ano de lancamento mais
-       recente. Automatico de verdade (sem lista de nomes), mas o ranking
-       do Last.fm em si e historico/todos-os-tempos, entao ainda mistura
-       classicos com coisa atual. Precisa de LASTFM_API_KEY no .env.
-    3. Fallback fixo: busca por artistas atuais de destaque em house/techno
-       (ver _ELECTRONIC_ARTISTS), caso o Last.fm nao esteja configurado.
-    """
     try:
         playlist_tracks = _get_playlist_tracks(limit)
         if playlist_tracks:

@@ -1,8 +1,3 @@
-"""Login real do usuario com Spotify (Authorization Code + PKCE, sem client
-secret) — usado so pra tentar destravar o BPM via audio-features, que a
-Spotify bloqueia (403) pra apps sem usuario logado (so Client Credentials).
-O login acontece na propria pagina da Spotify; este app nunca ve a senha.
-"""
 
 import spotipy
 from spotipy.oauth2 import SpotifyPKCE

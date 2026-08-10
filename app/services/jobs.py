@@ -12,9 +12,6 @@ from app.services import bpm_service, history_service, spotdl_service, youtube_s
 
 log = logging.getLogger(__name__)
 
-# tempo maximo pra um download (spotdl ou yt-dlp podem ficar pendurados —
-# sem ffmpeg no PATH, por exemplo — sem isso o job fica "baixando..." pra
-# sempre e o usuario nunca sabe que algo deu errado)
 DOWNLOAD_TIMEOUT_SECONDS = 240
 _executor = concurrent.futures.ThreadPoolExecutor(max_workers=4)
 

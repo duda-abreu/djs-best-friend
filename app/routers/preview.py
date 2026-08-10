@@ -24,8 +24,6 @@ def bpm(key: str = Query(...), preview_url: str = Query(...)):
 
 @router.get("/bpm-spotify")
 def bpm_spotify(track_id: str = Query(...)):
-    """BPM oficial via audio-features — so funciona se o usuario estiver
-    logado com Spotify de verdade (ver /auth/login)."""
     try:
         value = spotify_search.get_audio_features_bpm(track_id)
         return {"bpm": value}
@@ -36,8 +34,6 @@ def bpm_spotify(track_id: str = Query(...)):
 
 @router.get("/bpm-youtube")
 def bpm_youtube(key: str = Query(...), video_url: str = Query(...)):
-    """Estima o BPM antes do download baixando so os primeiros ~20s do audio
-    do YouTube (usado quando o Spotify nao da preview_url pra faixa)."""
     tmp_dir = DOWNLOAD_DIR / f"_bpm_{uuid.uuid4().hex[:8]}"
     try:
         clip_path = youtube_service.download_clip(video_url, tmp_dir, seconds=10)
@@ -52,8 +48,6 @@ def bpm_youtube(key: str = Query(...), video_url: str = Query(...)):
 
 @router.get("/match")
 def match(title: str = Query(...), artist: str = Query(...)):
-    """Acha um video do YouTube pra usar como preview quando o Spotify nao
-    fornece preview_url pra uma faixa (comum em apps novos)."""
     video = youtube_service.match_video(title, artist)
     if video is None:
         log.warning("nenhum video encontrado pra preview: title=%s artist=%s", title, artist)

@@ -19,10 +19,6 @@ def callback(code: str = Query(default=""), error: str = Query(default="")):
     auth_manager = spotify_auth.get_auth_manager()
     auth_manager.get_access_token(code, check_cache=False)
 
-    # bug do spotipy: o token do fluxo PKCE nunca grava "scope", mas a
-    # validacao (validate_token) exige esse campo pra aceitar o token —
-    # sem isso, is_authenticated() e qualquer chamada autenticada falham
-    # pra sempre, mesmo com o token valido. Corrige gravando de volta.
     token = auth_manager.cache_handler.get_cached_token()
     if token is not None and "scope" not in token:
         token["scope"] = auth_manager.scope or ""

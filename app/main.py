@@ -45,9 +45,6 @@ class RateLimitMiddleware(BaseHTTPMiddleware):
 
 
 class BasicAuthMiddleware(BaseHTTPMiddleware):
-    """So entra em acao se BASIC_AUTH_USER/BASIC_AUTH_PASSWORD estiverem
-    configurados (pensado pra quando o site estiver hospedado publicamente,
-    nao pra uso local)."""
 
     async def dispatch(self, request: Request, call_next):
         if not BASIC_AUTH_USER or not BASIC_AUTH_PASSWORD:

@@ -5,18 +5,11 @@ import yt_dlp
 
 
 def match_video(title: str, artist: str) -> Optional[dict]:
-    """Acha o video do YouTube que melhor corresponde a uma faixa (usado como
-    fallback de preview/audio quando o Spotify nao da preview_url pra ela).
-    """
     results = search_videos(f"{title} {artist}", limit=1)
     return results[0] if results else None
 
 
 def download_clip(video_url: str, out_dir: Path, seconds: int = 20) -> Path:
-    """Baixa so os primeiros segundos do audio (usa o corte do proprio yt-dlp/
-    ffmpeg, que remuxa certinho — um Range HTTP cru corrompe containers tipo
-    webm/m4a no meio). Usado pra estimar o BPM antes de decidir baixar a
-    musica inteira."""
     out_dir.mkdir(parents=True, exist_ok=True)
     outtmpl = str(out_dir / "clip.%(ext)s")
 
@@ -66,13 +59,6 @@ def search_videos(query: str, limit: int = 10) -> list[dict]:
 
 
 def download_audio(video_url: str, out_dir: Path, quality: str) -> Path:
-    """Baixa audio de um video do YouTube.
-
-    quality="original": mantem o melhor stream de audio disponivel sem reencodar
-    (evita "upscale" falso de bitrate).
-    quality="mp3_320": reencoda para mp3 320kbps (util por compatibilidade,
-    nao aumenta a qualidade real acima do stream original).
-    """
     out_dir.mkdir(parents=True, exist_ok=True)
     outtmpl = str(out_dir / "%(title)s.%(ext)s")
 
