@@ -9,3 +9,4 @@ downloads/*
 !downloads/.gitkeep
 .DS_Store
 app.log
+.claude/
