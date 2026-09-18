@@ -1,6 +1,7 @@
 import concurrent.futures
 import itertools
 import logging
+import re
 
 import spotipy
 from spotipy.oauth2 import SpotifyClientCredentials
@@ -90,6 +91,76 @@ def _get_playlist_tracks(limit: int) -> list[dict]:
     parsed = [_parse_track(i["track"]) for i in items if i.get("track")]
     log.info("playlist %s retornou %d faixas", TRENDING_PLAYLIST_ID, len(parsed))
     return parsed
+
+
+_MIX_SUFFIX_RE = re.compile(r"\s*[(\[]\s*(original|extended|radio)(\s+(mix|edit|version))?\s*[)\]]\s*$", re.I)
+_COUNTRY_SUFFIX_RE = re.compile(r"\s*\([A-Z]{2}\)\s*$")
+_PLAIN_MIXES = {"original mix", "extended mix", "extended", "original", "radio edit", "radio mix"}
+
+_beatport_resolved: dict[tuple[str, str], dict | None] = {}
+
+
+def _resolve_beatport_track(sp: spotipy.Spotify, entry: dict) -> dict | None:
+    title = " ".join(_MIX_SUFFIX_RE.sub("", entry["title"]).replace('"', " ").split())
+    artists = [_COUNTRY_SUFFIX_RE.sub("", a).strip() for a in entry["artists"]]
+    mix = entry["mix"].strip().lower()
+    wants_mix = bool(mix) and mix not in _PLAIN_MIXES
+
+    cache_key = (f"{title} {mix}".lower() if wants_mix else title.lower(), artists[0].lower())
+    if cache_key in _beatport_resolved:
+        return _beatport_resolved[cache_key]
+
+    query = f'track:"{title}" artist:"{artists[0]}"'
+    items = sp.search(q=query, type="track", limit=5).get("tracks", {}).get("items", [])
+
+    wanted_artists = {a.lower() for a in artists}
+    found = None
+    for t in items:
+        name = t["name"].lower()
+        spotify_artists = {a["name"].lower() for a in t["artists"]}
+        if title.lower() not in name or not (wanted_artists & spotify_artists):
+            continue
+        if wants_mix and mix not in name:
+            continue
+        found = t
+        break
+
+    _beatport_resolved[cache_key] = found
+    return found
+
+
+def _get_beatport_chart_tracks(limit: int) -> list[dict]:
+    from app.services import beatport_service
+
+    chart = beatport_service.get_top_tracks()
+    if not chart:
+        return []
+
+    sp = get_client()
+    pool = chart[: min(limit * 2, 100)]
+
+    def _resolve(entry: dict) -> dict | None:
+        try:
+            return _resolve_beatport_track(sp, entry)
+        except Exception:  # noqa: BLE001
+            log.exception("falha ao resolver %s no Spotify", entry["title"])
+            return None
+
+    with concurrent.futures.ThreadPoolExecutor(max_workers=10) as executor:
+        resolved = list(executor.map(_resolve, pool))
+
+    tracks: list[dict] = []
+    seen_ids: set[str] = set()
+    for entry, t in zip(pool, resolved):
+        if t is None or t["id"] in seen_ids:
+            continue
+        seen_ids.add(t["id"])
+        parsed = _parse_track(t)
+        parsed["bpm"] = entry["bpm"]
+        tracks.append(parsed)
+
+    log.info("beatport: %d faixas no chart, %d candidatas, %d achadas no Spotify", len(chart), len(pool), len(tracks))
+    return tracks[:limit]
 
 
 _LASTFM_TAGS = ["house", "techno"]
@@ -183,6 +254,13 @@ def _get_genre_chart_tracks(limit: int) -> list[dict]:
 
 
 def get_trending_tracks(limit: int = 10) -> list[dict]:
+    try:
+        beatport_tracks = _get_beatport_chart_tracks(limit)
+        if beatport_tracks:
+            return beatport_tracks
+    except Exception:  # noqa: BLE001
+        log.exception("falha ao puxar chart do Beatport, tentando playlist/Last.fm")
+
     try:
         playlist_tracks = _get_playlist_tracks(limit)
         if playlist_tracks:

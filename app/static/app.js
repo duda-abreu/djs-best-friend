@@ -242,7 +242,7 @@ function renderResults(items) {
         <div class="artist">${escapeHtml(item.artist)}</div>
         <div class="meta">
           <span class="duration">${formatDuration(item.duration_ms)}</span>
-          <span class="bpm">bpm: calculando...</span>
+          <span class="bpm">${item.bpm ? `${item.bpm} bpm` : "bpm: calculando..."}</span>
         </div>
       </div>
       <div class="result-actions">
@@ -270,7 +270,7 @@ function renderResults(items) {
 
     resultsEl.appendChild(li);
 
-    queueBpmTask(() => populateBpm(item, bpmEl));
+    if (!item.bpm) queueBpmTask(() => populateBpm(item, bpmEl));
   }
 }
 
