@@ -13,8 +13,13 @@
       <stop offset="0" stop-color="#ffffff" stop-opacity="0.45" />
       <stop offset="1" stop-color="#ffffff" stop-opacity="0" />
     </linearGradient>
+    <clipPath id="round">
+      <circle cx="32" cy="32" r="32" />
+    </clipPath>
   </defs>
-  <rect width="64" height="64" rx="15" fill="url(#bg)" />
-  <rect width="64" height="64" rx="15" fill="url(#glow)" />
-  <path d="M0 15a15 15 0 0 1 15-15h34a15 15 0 0 1 15 15v14C46 34 18 34 0 29z" fill="url(#gloss)" />
+  <g clip-path="url(#round)">
+    <rect width="64" height="64" fill="url(#bg)" />
+    <rect width="64" height="64" fill="url(#glow)" />
+    <path d="M0 0h64v29C46 34 18 34 0 29z" fill="url(#gloss)" />
+  </g>
 </svg>
