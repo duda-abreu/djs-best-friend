@@ -12,7 +12,7 @@ Ferramenta pessoal para pesquisar faixas, ouvir prévias, ver BPM e preparar ref
 | Ouvir prévia | prévia oficial de 30s | prévia do Spotify ou embed do YouTube |
 | Faixa completa | link pro Apple Music | download pessoal via spotdl / yt-dlp |
 | BPM | não | estimado localmente (librosa) |
-| "Em alta essa semana" | não | house e techno via Last.fm |
+| "Em alta essa semana" | não | Top 100 do Beatport (house, tech house, techno, melodic) |
 | Histórico de downloads | não | sim, com opção de excluir |
 | Precisa de chaves de API | não | sim |
 
@@ -24,7 +24,7 @@ A versão online é 100% estática (pasta [`docs/`](docs)) e só usa fontes que 
 - Prévia antes de baixar.
 - Duração e BPM em cada resultado. O BPM é estimado com `librosa` e corrigido para erros de oitava (por exemplo 80 detectado quando o real é 120).
 - Download em MP3 320 kbps (Spotify via spotdl) ou no áudio original do YouTube.
-- "Em alta essa semana": faixas de house e techno montadas automaticamente a partir do Last.fm, sem lista fixa de artistas. Um segundo filtro usa as tags do artista para descartar pop com tag eletrônica.
+- "Em alta essa semana": os Top 100 de house, tech house, techno e melodic house & techno do Beatport, intercalados por posição e ligados às faixas do Spotify. Automático, sem lista fixa de artistas, e já traz o BPM oficial do Beatport. Se o Beatport falhar, cai pro Last.fm e depois pra uma lista fixa.
 - Painel "tocando agora" com progresso do download.
 - Histórico local com total de músicas, GB e últimos 7 dias, com exclusão de arquivos.
 - Login opcional com Spotify (PKCE, sem client secret no navegador).
@@ -37,8 +37,9 @@ navegador ──> FastAPI ──> Spotify API / Last.fm / YouTube
                  └──> jobs em background ──> spotdl / yt-dlp + ffmpeg ──> downloads/
 ```
 
-- `app/services/spotify_search.py`: busca e lógica do "em alta".
-- `app/services/lastfm_service.py`: tags e top tracks do Last.fm.
+- `app/services/spotify_search.py`: busca e lógica do "em alta" (Beatport, depois Last.fm, depois lista fixa).
+- `app/services/beatport_service.py`: lê os charts de gênero do Beatport (cache de 1h).
+- `app/services/lastfm_service.py`: tags e top tracks do Last.fm (fallback).
 - `app/services/bpm_service.py`: estimativa de BPM.
 - `app/services/jobs.py`: fila de downloads com timeout.
 - `app/services/history_service.py`: histórico em `downloads/history.json`.
@@ -96,8 +97,8 @@ O GitHub Pages só serve arquivos estáticos, então o backend Python não roda 
 
 ## Limitações conhecidas
 
-- **Spotify em modo de desenvolvimento:** apps novos não acessam `audio-features`, `artists/{id}/top-tracks` nem playlists de terceiros (como a "mint"), e a busca é limitada a 10 resultados por chamada. Por isso o BPM é calculado localmente e o "em alta" vem do Last.fm.
-- **"Em alta" do Last.fm:** vem de `tag.getTopTracks`, um ranking de todos os tempos, não semanal. Clássicos antigos podem aparecer junto com lançamentos.
+- **Spotify em modo de desenvolvimento:** apps novos não acessam `audio-features`, `artists/{id}/top-tracks` nem playlists de terceiros (como a "mint"), e a busca é limitada a 10 resultados por chamada. Por isso o BPM é calculado localmente quando a faixa não vem do Beatport.
+- **"Em alta" via Beatport:** não há API pública, então o app lê os dados embutidos na página do chart. Se o Beatport mudar o site, o app cai pro fallback do Last.fm (`tag.getTopTracks`, ranking de todos os tempos, com clássicos antigos misturados). Faixas que não existem no Spotify ficam de fora.
 - **Correspondência de áudio:** o Spotify não fornece o áudio. O spotdl procura a faixa no YouTube Music, então pode vir uma versão diferente (remix, ao vivo).
 - **BPM estimado:** em intros, mudanças de andamento e faixas com batida em meio tempo pode errar.
 - **APIs de terceiros** (Spotify, YouTube, Last.fm) mudam sem aviso, e os fallbacks podem quebrar.
