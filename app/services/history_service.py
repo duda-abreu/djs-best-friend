@@ -62,8 +62,10 @@ def delete_entry(entry_id: str) -> bool:
 
     file_path = removed[0].get("file_path")
     if file_path:
-        job_dir = Path(file_path).parent
-        shutil.rmtree(job_dir, ignore_errors=True)
+        job_dir = Path(file_path).resolve().parent
+        downloads_root = DOWNLOAD_DIR.resolve()
+        if job_dir != downloads_root and downloads_root in job_dir.parents:
+            shutil.rmtree(job_dir, ignore_errors=True)
     return True
 
 
