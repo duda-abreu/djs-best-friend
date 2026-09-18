@@ -19,7 +19,7 @@ def bpm(key: str = Query(...), preview_url: str = Query(...)):
         return {"bpm": value}
     except Exception as exc:  # noqa: BLE001
         log.exception("falha ao estimar bpm (preview_url) key=%s", key)
-        raise HTTPException(500, f"nao foi possivel estimar o bpm: {exc}") from exc
+        raise HTTPException(500, f"não foi possível estimar o bpm: {exc}") from exc
 
 
 @router.get("/bpm-spotify")
@@ -29,7 +29,7 @@ def bpm_spotify(track_id: str = Query(...)):
         return {"bpm": value}
     except Exception as exc:  # noqa: BLE001
         log.exception("falha ao pegar audio-features track_id=%s", track_id)
-        raise HTTPException(500, f"nao foi possivel pegar o bpm oficial: {exc}") from exc
+        raise HTTPException(500, f"não foi possível pegar o bpm oficial: {exc}") from exc
 
 
 @router.get("/bpm-youtube")
@@ -41,7 +41,7 @@ def bpm_youtube(key: str = Query(...), video_url: str = Query(...)):
         return {"bpm": value}
     except Exception as exc:  # noqa: BLE001
         log.exception("falha ao estimar bpm (youtube) key=%s video_url=%s", key, video_url)
-        raise HTTPException(500, f"nao foi possivel estimar o bpm: {exc}") from exc
+        raise HTTPException(500, f"não foi possível estimar o bpm: {exc}") from exc
     finally:
         shutil.rmtree(tmp_dir, ignore_errors=True)
 
@@ -50,8 +50,8 @@ def bpm_youtube(key: str = Query(...), video_url: str = Query(...)):
 def match(title: str = Query(...), artist: str = Query(...)):
     video = youtube_service.match_video(title, artist)
     if video is None:
-        log.warning("nenhum video encontrado pra preview: title=%s artist=%s", title, artist)
-        raise HTTPException(404, "nenhum video encontrado pra preview")
+        log.warning("nenhum vídeo encontrado pra prévia: title=%s artist=%s", title, artist)
+        raise HTTPException(404, "nenhum vídeo encontrado pra prévia")
     return video
 
 
@@ -72,5 +72,5 @@ def history():
 def delete_history_entry(entry_id: str):
     removed = history_service.delete_entry(entry_id)
     if not removed:
-        raise HTTPException(404, "entrada nao encontrada")
+        raise HTTPException(404, "entrada não encontrada")
     return {"removed": True}

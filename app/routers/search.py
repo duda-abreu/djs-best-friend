@@ -16,6 +16,6 @@ def search(
             return spotify_search.search_tracks(q, limit=limit)
         elif source == "youtube":
             return youtube_service.search_videos(q, limit=limit)
-        raise HTTPException(400, f"fonte invalida: {source}")
+        raise HTTPException(400, f"fonte inválida: {source}")
     except RuntimeError as exc:
         raise HTTPException(500, str(exc)) from exc

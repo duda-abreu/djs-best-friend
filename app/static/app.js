@@ -119,11 +119,11 @@ statsBar.addEventListener("click", async () => {
 });
 
 function renderHistoryList() {
-  resultsTitle.textContent = "Musicas baixadas";
+  resultsTitle.textContent = "músicas baixadas";
   const entries = lastHistory.entries || [];
 
   if (entries.length === 0) {
-    resultsEl.innerHTML = "<li class='empty-hint'>Nenhuma musica baixada ainda.</li>";
+    resultsEl.innerHTML = "<li class='empty-hint'>nenhuma música baixada ainda.</li>";
     return;
   }
 
@@ -142,7 +142,7 @@ function renderHistoryList() {
 
     li.innerHTML = `
       <div class="result-info">
-        <div class="title">${escapeHtml(e.title || "(sem titulo)")}</div>
+        <div class="title">${escapeHtml(e.title || "(sem título)")}</div>
         <div class="artist">${escapeHtml(e.artist || "")}</div>
         <div class="meta">
           <span>${date}</span>
@@ -152,7 +152,7 @@ function renderHistoryList() {
         </div>
       </div>
       <div class="result-actions">
-        <button type="button" class="glossy-btn small delete-btn">Excluir</button>
+        <button type="button" class="glossy-btn small delete-btn">excluir</button>
       </div>
     `;
 
@@ -168,24 +168,24 @@ async function deleteHistoryEntry(entryId, li) {
     li.remove();
     await loadStats();
     if ((lastHistory.entries || []).length === 0) {
-      resultsEl.innerHTML = "<li class='empty-hint'>Nenhuma musica baixada ainda.</li>";
+      resultsEl.innerHTML = "<li class='empty-hint'>nenhuma música baixada ainda.</li>";
     }
   } catch {
-    footerMsg.textContent = "erro ao excluir musica";
+    footerMsg.textContent = "erro ao excluir música";
   }
 }
 
 async function loadTrending() {
   currentView = { type: "trending" };
-  resultsTitle.textContent = "Em alta essa semana";
-  resultsEl.innerHTML = "<li class='empty-hint'>Carregando sugestoes...</li>";
+  resultsTitle.textContent = "em alta essa semana";
+  resultsEl.innerHTML = "<li class='empty-hint'>carregando sugestões...</li>";
   try {
     const res = await fetch(`/api/trending?limit=${resultLimitEl.value}`);
-    if (!res.ok) throw new Error((await res.json()).detail || "erro ao carregar sugestoes");
+    if (!res.ok) throw new Error((await res.json()).detail || "erro ao carregar sugestões");
     const items = await res.json();
     renderResults(items);
   } catch (err) {
-    resultsEl.innerHTML = `<li class="empty-hint">Nao foi possivel carregar sugestoes: ${escapeHtml(err.message)}</li>`;
+    resultsEl.innerHTML = `<li class="empty-hint">não foi possível carregar sugestões: ${escapeHtml(err.message)}</li>`;
   }
 }
 loadTrending();
@@ -199,7 +199,7 @@ form.addEventListener("submit", async (e) => {
 
   currentView = { type: "search" };
   resultsTitle.textContent = `Resultados para "${query}"`;
-  resultsEl.innerHTML = "<li class='empty-hint'>Buscando...</li>";
+  resultsEl.innerHTML = "<li class='empty-hint'>buscando...</li>";
   footerMsg.textContent = "buscando...";
 
   try {
@@ -209,7 +209,7 @@ form.addEventListener("submit", async (e) => {
     renderResults(items);
     footerMsg.textContent = `${items.length} resultado(s)`;
   } catch (err) {
-    resultsEl.innerHTML = `<li class="empty-hint">Erro: ${escapeHtml(err.message)}</li>`;
+    resultsEl.innerHTML = `<li class="empty-hint">erro: ${escapeHtml(err.message)}</li>`;
     footerMsg.textContent = "erro na busca";
   }
 });
@@ -219,7 +219,7 @@ function renderResults(items) {
   bpmPending.length = 0;
 
   if (items.length === 0) {
-    resultsEl.innerHTML = "<li class='empty-hint'>Nenhum resultado encontrado.</li>";
+    resultsEl.innerHTML = "<li class='empty-hint'>nenhum resultado encontrado.</li>";
     return;
   }
 
@@ -246,11 +246,11 @@ function renderResults(items) {
         </div>
       </div>
       <div class="result-actions">
-        <button type="button" class="glossy-btn round small preview-btn" title="Ouvir preview">▶</button>
+        <button type="button" class="glossy-btn round small preview-btn" title="ouvir prévia">▶</button>
         <select class="quality">
           ${qualityOptions.map(([v, label]) => `<option value="${v}">${label}</option>`).join("")}
         </select>
-        <button class="glossy-btn small download-btn">Baixar</button>
+        <button class="glossy-btn small download-btn">baixar</button>
       </div>
       <div class="status"></div>
     `;
@@ -367,7 +367,7 @@ async function togglePreview(item, btn) {
     li.appendChild(frame);
     currentPreviewMedia = frame;
   } else if (!currentPreviewMedia) {
-    btn.textContent = "sem preview";
+    btn.textContent = "sem prévia";
     btn.disabled = false;
     currentPreviewBtn = null;
     return;
@@ -395,8 +395,8 @@ function stopPreview() {
 
 function resetNowPanel() {
   nowArt.style.backgroundImage = "";
-  nowTitle.textContent = "Nenhum download ainda";
-  nowArtist.textContent = "Busque uma musica ao lado pra comecar";
+  nowTitle.textContent = "nenhum download ainda";
+  nowArtist.textContent = "busque uma música ao lado pra começar";
   nowSource.textContent = " ";
   nowBpm.textContent = " ";
   nowStatus.textContent = "em espera";
@@ -408,7 +408,7 @@ function setNowPanel(item, statusText, statusClass) {
   nowArt.style.backgroundImage = item.thumbnail ? `url("${item.thumbnail}")` : "";
   nowTitle.textContent = item.title;
   nowArtist.textContent = item.artist || "";
-  nowSource.textContent = item.source === "spotify" ? "Spotify · mp3 320k" : "YouTube · audio original";
+  nowSource.textContent = item.source === "spotify" ? "Spotify · mp3 320k" : "YouTube · áudio original";
   nowBpm.textContent = "";
   nowStatus.textContent = statusText;
   nowStatus.className = `now-status ${statusClass || ""}`.trim();
@@ -454,7 +454,7 @@ async function startDownload(item, quality, btn, statusEl) {
 
 async function pollStatus(jobId, btn, statusEl, item, attempt) {
   if (attempt >= POLL_MAX_ATTEMPTS) {
-    const msg = "download demorou demais e foi cancelado (verifique se o ffmpeg esta instalado e no PATH)";
+    const msg = "download demorou demais e foi cancelado (verifique se o ffmpeg está instalado e no PATH)";
     statusEl.textContent = "tempo esgotado";
     statusEl.className = "status error";
     setNowPanel(item, msg, "error");
@@ -479,7 +479,7 @@ async function pollStatus(jobId, btn, statusEl, item, attempt) {
     setNowPanel(item, "pronto para baixar", "done");
     if (data.bpm) nowBpm.textContent = `${data.bpm} bpm`;
     setProgress(false, 100);
-    footerMsg.textContent = "download concluido";
+    footerMsg.textContent = "download concluído";
     window.location.href = `/api/download/${jobId}/file`;
     btn.disabled = false;
     loadStats();

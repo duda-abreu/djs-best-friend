@@ -15,7 +15,7 @@ def login():
 @router.get("/callback")
 def callback(code: str = Query(default=""), error: str = Query(default="")):
     if error:
-        raise HTTPException(400, f"login com spotify falhou: {error}")
+        raise HTTPException(400, f"login com Spotify falhou: {error}")
     auth_manager = spotify_auth.get_auth_manager()
     auth_manager.get_access_token(code, check_cache=False)
 

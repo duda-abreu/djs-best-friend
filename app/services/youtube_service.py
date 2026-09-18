@@ -27,7 +27,7 @@ def download_clip(video_url: str, out_dir: Path, seconds: int = 20) -> Path:
 
     files = [f for f in out_dir.iterdir() if f.is_file()]
     if not files:
-        raise RuntimeError("nao foi possivel baixar o clipe pra estimar o bpm")
+        raise RuntimeError("não foi possível baixar o clipe pra estimar o bpm")
     return files[0]
 
 
@@ -46,7 +46,7 @@ def search_videos(query: str, limit: int = 10) -> list[dict]:
         {
             "source": "youtube",
             "id": entry["id"],
-            "title": entry.get("title", "Sem titulo"),
+            "title": entry.get("title", "sem título"),
             "artist": entry.get("uploader", ""),
             "album": "",
             "duration_ms": (entry.get("duration") or 0) * 1000,
@@ -84,5 +84,5 @@ def download_audio(video_url: str, out_dir: Path, quality: str) -> Path:
 
     files = [f for f in out_dir.iterdir() if f.is_file()]
     if not files:
-        raise RuntimeError("Download do YouTube nao gerou nenhum arquivo")
+        raise RuntimeError("download do YouTube não gerou nenhum arquivo")
     return files[0]

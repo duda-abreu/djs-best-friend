@@ -12,7 +12,7 @@ _API_URL = "https://ws.audioscrobbler.com/2.0/"
 
 def get_top_tracks_for_tag(tag: str, limit: int = 20) -> list[dict]:
     if not LASTFM_API_KEY:
-        raise RuntimeError("LASTFM_API_KEY nao configurada no .env")
+        raise RuntimeError("LASTFM_API_KEY não configurada no .env")
 
     resp = requests.get(
         _API_URL,

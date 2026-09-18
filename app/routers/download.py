@@ -18,7 +18,7 @@ class DownloadRequest(BaseModel):
 @router.post("")
 def start_download(req: DownloadRequest, background_tasks: BackgroundTasks):
     if req.source not in ("spotify", "youtube"):
-        raise HTTPException(400, f"fonte invalida: {req.source}")
+        raise HTTPException(400, f"fonte inválida: {req.source}")
 
     job = jobs.create_job(req.source, req.title, req.artist)
     background_tasks.add_task(jobs.run_job, job.id, req.source, req.ref, req.quality)
@@ -29,7 +29,7 @@ def start_download(req: DownloadRequest, background_tasks: BackgroundTasks):
 def download_status(job_id: str):
     job = jobs.get_job(job_id)
     if job is None:
-        raise HTTPException(404, "job nao encontrado")
+        raise HTTPException(404, "job não encontrado")
     return {"job_id": job.id, "status": job.status, "error": job.error, "bpm": job.bpm}
 
 
@@ -37,7 +37,7 @@ def download_status(job_id: str):
 def download_file(job_id: str):
     job = jobs.get_job(job_id)
     if job is None:
-        raise HTTPException(404, "job nao encontrado")
+        raise HTTPException(404, "job não encontrado")
     if job.status != "done" or job.file_path is None:
-        raise HTTPException(409, f"job ainda nao concluido (status={job.status})")
+        raise HTTPException(409, f"job ainda não concluído (status={job.status})")
     return FileResponse(job.file_path, filename=job.file_path.name)

@@ -37,7 +37,7 @@ def _fetch_chart(path: str) -> list[dict]:
     resp.raise_for_status()
     match = _NEXT_DATA_RE.search(resp.text)
     if not match:
-        raise RuntimeError(f"Beatport: __NEXT_DATA__ nao encontrado em {path}")
+        raise RuntimeError(f"Beatport: __NEXT_DATA__ não encontrado em {path}")
 
     queries = json.loads(match.group(1))["props"]["pageProps"]["dehydratedState"]["queries"]
     for query in queries:
@@ -53,7 +53,7 @@ def _fetch_chart(path: str) -> list[dict]:
                 for t in data["results"]
                 if t.get("name") and t.get("artists")
             ]
-    raise RuntimeError(f"Beatport: lista de faixas nao encontrada em {path}")
+    raise RuntimeError(f"Beatport: lista de faixas não encontrada em {path}")
 
 
 def _safe_fetch_chart(path: str) -> list[dict]:

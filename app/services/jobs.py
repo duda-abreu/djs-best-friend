@@ -61,7 +61,7 @@ def run_job(job_id: str, source: str, ref: str, quality: str) -> None:
             log.error("job %s: timeout depois de %ss", job_id, DOWNLOAD_TIMEOUT_SECONDS)
             raise RuntimeError(
                 "download demorou demais e foi cancelado — confira se o ffmpeg "
-                "esta instalado e no PATH (feche e reabra o terminal depois de instalar)"
+                "está instalado e no PATH (feche e reabra o terminal depois de instalar)"
             ) from exc
 
         job.file_path = file_path

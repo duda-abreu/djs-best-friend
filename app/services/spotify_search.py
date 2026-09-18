@@ -18,7 +18,7 @@ def get_client() -> spotipy.Spotify:
     if _client is None:
         if not SPOTIFY_CLIENT_ID or not SPOTIFY_CLIENT_SECRET:
             raise RuntimeError(
-                "SPOTIFY_CLIENT_ID / SPOTIFY_CLIENT_SECRET nao configurados no .env"
+                "SPOTIFY_CLIENT_ID / SPOTIFY_CLIENT_SECRET não configurados no .env"
             )
         auth = SpotifyClientCredentials(
             client_id=SPOTIFY_CLIENT_ID, client_secret=SPOTIFY_CLIENT_SECRET
