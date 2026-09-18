@@ -17,10 +17,6 @@
   box-sizing: border-box;
 }
 
-html {
-  height: 100%;
-}
-
 body {
   margin: 0;
   font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
@@ -29,6 +25,7 @@ body {
     radial-gradient(ellipse at 30% -10%, rgba(255, 255, 255, 0.25), transparent 45%),
     radial-gradient(ellipse at 80% 110%, rgba(20, 120, 180, 0.4), transparent 55%),
     linear-gradient(180deg, var(--blue-2) 0%, var(--blue-1) 45%, var(--deep) 100%);
+  background-color: var(--deep);
   min-height: 100vh;
   display: flex;
   align-items: center;
