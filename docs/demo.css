@@ -1,0 +1,49 @@
+.banner {
+  margin-bottom: 1.25rem;
+  padding: 0.9rem 1.25rem;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: var(--muted);
+}
+
+.banner strong {
+  color: var(--text);
+}
+
+.banner a {
+  color: var(--accent);
+}
+
+a.glossy-btn {
+  display: inline-block;
+  text-decoration: none;
+  text-align: center;
+  color: var(--text);
+}
+
+.now-actions {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+}
+
+.now-actions a[hidden] {
+  display: none;
+}
+
+.play-btn {
+  width: 36px;
+  height: 36px;
+  padding: 0;
+}
+
+.result-card.playing {
+  border-color: var(--accent);
+}
+
+.footer-note {
+  margin-top: 1rem;
+  text-align: center;
+  font-size: 0.75rem;
+  color: var(--muted);
+}
