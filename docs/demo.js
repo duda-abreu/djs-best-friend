@@ -6,6 +6,12 @@ const limitEl = document.getElementById("result-limit");
 const resultsEl = document.getElementById("results");
 const titleEl = document.getElementById("results-title");
 const footerMsg = document.getElementById("footer-msg");
+const footerSep = document.getElementById("footer-sep");
+
+function setFooter(text) {
+  footerMsg.textContent = text;
+  footerSep.hidden = !text;
+}
 
 const nowArt = document.getElementById("now-art");
 const nowTitle = document.getElementById("now-title");
@@ -158,11 +164,6 @@ function renderTrack(track) {
 let currentView = { type: "trending" };
 let trendingData = null;
 
-function formatDate(iso) {
-  const [y, m, d] = iso.split("-");
-  return `${d}/${m}/${y}`;
-}
-
 async function loadTrending() {
   currentView = { type: "trending" };
   titleEl.textContent = "em alta essa semana";
@@ -175,7 +176,7 @@ async function loadTrending() {
     }
     const tracks = trendingData.tracks.slice(0, Number(limitEl.value));
     resultsEl.replaceChildren(...tracks.map(renderTrack));
-    footerMsg.textContent = `atualizado em ${formatDate(trendingData.updated_at)}`;
+    setFooter("");
   } catch {
     titleEl.textContent = "resultados";
     setHint("digite o nome de uma música ou artista e clique em buscar.");
@@ -194,7 +195,7 @@ async function search(term) {
   });
 
   setHint("buscando...");
-  footerMsg.textContent = "buscando...";
+  setFooter("buscando...");
   try {
     const resp = await fetch(url);
     if (!resp.ok) throw new Error(`erro ${resp.status}`);
@@ -204,14 +205,14 @@ async function search(term) {
     titleEl.textContent = `resultados para "${term}"`;
     if (!tracks.length) {
       setHint("nenhum resultado encontrado.");
-      footerMsg.textContent = "sem resultados";
+      setFooter("sem resultados");
       return;
     }
     resultsEl.replaceChildren(...tracks.map(renderTrack));
-    footerMsg.textContent = `${tracks.length} resultados`;
+    setFooter(`${tracks.length} resultados`);
   } catch (err) {
     setHint(`não foi possível buscar: ${err.message}`);
-    footerMsg.textContent = "erro na busca";
+    setFooter("erro na busca");
   }
 }
 
