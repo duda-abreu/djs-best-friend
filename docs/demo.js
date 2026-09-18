@@ -70,7 +70,7 @@ function play(track, card) {
   playingCard = card;
   audio.src = track.previewUrl;
   audio.play().catch(() => {
-    nowStatus.textContent = "nao foi possivel tocar a previa";
+    nowStatus.textContent = "não foi possível tocar a prévia";
     nowStatus.className = "now-status error";
   });
   showNow(track);
@@ -78,7 +78,7 @@ function play(track, card) {
 
 audio.addEventListener("play", () => {
   if (playingCard) setPlayIcon(playingCard, true);
-  nowStatus.textContent = "tocando previa de 30s";
+  nowStatus.textContent = "tocando prévia de 30s";
   nowStatus.className = "now-status done";
 });
 
@@ -89,7 +89,7 @@ audio.addEventListener("pause", () => {
 
 audio.addEventListener("ended", () => {
   nowFill.style.width = "0%";
-  nowStatus.textContent = "fim da previa";
+  nowStatus.textContent = "fim da prévia";
 });
 
 audio.addEventListener("timeupdate", () => {
@@ -118,6 +118,11 @@ function renderTrack(track) {
   const duration = document.createElement("span");
   duration.textContent = formatDuration(track.trackTimeMillis || 0);
   meta.append(duration);
+  if (track.bpm) {
+    const bpm = document.createElement("span");
+    bpm.textContent = `${track.bpm} bpm`;
+    meta.append(bpm);
+  }
   info.append(title, artist, meta);
 
   const actions = document.createElement("div");
@@ -126,8 +131,8 @@ function renderTrack(track) {
   const playBtn = document.createElement("button");
   playBtn.type = "button";
   playBtn.className = "glossy-btn round play-btn";
-  playBtn.title = "Ouvir previa";
-  playBtn.setAttribute("aria-label", "Ouvir previa");
+  playBtn.title = "ouvir prévia";
+  playBtn.setAttribute("aria-label", "ouvir prévia");
   playBtn.innerHTML = PLAY_ICON;
   playBtn.disabled = !isHttps(track.previewUrl);
   actions.append(playBtn);
@@ -150,7 +155,35 @@ function renderTrack(track) {
   return li;
 }
 
+let currentView = { type: "trending" };
+let trendingData = null;
+
+function formatDate(iso) {
+  const [y, m, d] = iso.split("-");
+  return `${d}/${m}/${y}`;
+}
+
+async function loadTrending() {
+  currentView = { type: "trending" };
+  titleEl.textContent = "em alta essa semana";
+  try {
+    if (!trendingData) {
+      setHint("carregando...");
+      const resp = await fetch("trending.json", { cache: "no-cache" });
+      if (!resp.ok) throw new Error(`erro ${resp.status}`);
+      trendingData = await resp.json();
+    }
+    const tracks = trendingData.tracks.slice(0, Number(limitEl.value));
+    resultsEl.replaceChildren(...tracks.map(renderTrack));
+    footerMsg.textContent = `atualizado em ${formatDate(trendingData.updated_at)}`;
+  } catch {
+    titleEl.textContent = "resultados";
+    setHint("digite o nome de uma música ou artista e clique em buscar.");
+  }
+}
+
 async function search(term) {
+  currentView = { type: "search", term };
   const url = new URL(API);
   url.search = new URLSearchParams({
     term,
@@ -160,7 +193,7 @@ async function search(term) {
     country: "BR",
   });
 
-  setHint("Buscando...");
+  setHint("buscando...");
   footerMsg.textContent = "buscando...";
   try {
     const resp = await fetch(url);
@@ -168,19 +201,24 @@ async function search(term) {
     const data = await resp.json();
     const tracks = data.results.filter((t) => t.trackName);
 
-    titleEl.textContent = `Resultados para "${term}"`;
+    titleEl.textContent = `resultados para "${term}"`;
     if (!tracks.length) {
-      setHint("Nenhum resultado encontrado.");
+      setHint("nenhum resultado encontrado.");
       footerMsg.textContent = "sem resultados";
       return;
     }
     resultsEl.replaceChildren(...tracks.map(renderTrack));
     footerMsg.textContent = `${tracks.length} resultados`;
   } catch (err) {
-    setHint(`Nao foi possivel buscar: ${err.message}`);
+    setHint(`não foi possível buscar: ${err.message}`);
     footerMsg.textContent = "erro na busca";
   }
 }
+
+limitEl.addEventListener("change", () => {
+  if (currentView.type === "search") search(currentView.term);
+  else loadTrending();
+});
 
 form.addEventListener("submit", (e) => {
   e.preventDefault();
@@ -193,17 +231,15 @@ document.getElementById("home-link").addEventListener("click", () => {
   audio.removeAttribute("src");
   playingCard = null;
   queryEl.value = "";
-  titleEl.textContent = "Resultados";
-  setHint("Digite o nome de uma musica ou artista e clique em buscar.");
-  nowTitle.textContent = "Nenhuma faixa tocando";
-  nowArtist.textContent = "Busque uma musica ao lado pra comecar";
+  nowTitle.textContent = "nenhuma faixa tocando";
+  nowArtist.textContent = "busque uma música ao lado pra começar";
   nowSource.innerHTML = "&nbsp;";
   nowArt.style.backgroundImage = "";
   nowFill.style.width = "0%";
   nowStatus.textContent = "em espera";
   nowStatus.className = "now-status";
   nowLink.hidden = true;
-  footerMsg.textContent = "pronto";
+  loadTrending();
 });
 
 function tickClock() {
@@ -215,3 +251,4 @@ function tickClock() {
 
 tickClock();
 setInterval(tickClock, 30000);
+loadTrending();

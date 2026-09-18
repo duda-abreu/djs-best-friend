@@ -11,8 +11,8 @@ Ferramenta pessoal para pesquisar faixas, ouvir prévias, ver BPM e preparar ref
 | Busca de músicas | iTunes Search API | Spotify e YouTube |
 | Ouvir prévia | prévia oficial de 30s | prévia do Spotify ou embed do YouTube |
 | Faixa completa | link pro Apple Music | download pessoal via spotdl / yt-dlp |
-| BPM | não | estimado localmente (librosa) |
-| "Em alta essa semana" | não | Top 100 do Beatport (house, tech house, techno, melodic) |
+| BPM | o do Beatport, nas faixas em alta | do Beatport ou estimado localmente (librosa) |
+| "Em alta essa semana" | sim, atualizada toda sexta pelo GitHub Actions | Top 100 do Beatport (house, tech house, techno, melodic), ao vivo |
 | Histórico de downloads | não | sim, com opção de excluir |
 | Precisa de chaves de API | não | sim |
 
@@ -93,7 +93,11 @@ O `Dockerfile` serve para rodar em um servidor **privado**. Se hospedar em qualq
 3. Selecione a branch `main` e a pasta `/docs`, e salve.
 4. Após alguns minutos o site fica em `https://<usuario>.github.io/djs-best-friend/`.
 
-O GitHub Pages só serve arquivos estáticos, então o backend Python não roda lá. O `docs/style.css` é uma cópia de `app/static/style.css`; se mudar o visual do app, copie de novo.
+O GitHub Pages só serve arquivos estáticos, então o backend Python não roda lá.
+
+### Em alta na versão online
+
+O navegador não consegue ler o Beatport direto, então o workflow [`update-trending.yml`](.github/workflows/update-trending.yml) roda `scripts/update_trending.py` toda sexta às 12h UTC. Ele lê os charts do Beatport, liga cada faixa à iTunes Search API (capa, prévia, link) e grava `docs/trending.json`, que a página lê. Para atualizar na hora: aba **Actions > Atualiza em alta da semana > Run workflow**. Se o Beatport bloquear o GitHub ou mudar o site, o workflow falha e a página continua com a última lista. O `docs/style.css` é uma cópia de `app/static/style.css`; se mudar o visual do app, copie de novo.
 
 ## Limitações conhecidas
 
