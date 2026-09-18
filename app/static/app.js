@@ -317,16 +317,21 @@ async function populateBpm(item, bpmEl) {
 }
 
 async function resolveYoutubeMatch(item) {
-  if (item._matchId !== undefined) return item._matchId;
-  try {
-    const res = await fetch(`/api/match?title=${encodeURIComponent(item.title)}&artist=${encodeURIComponent(item.artist)}`);
-    if (!res.ok) throw new Error();
-    const data = await res.json();
-    item._matchId = data.id;
-  } catch {
-    item._matchId = null;
+  if (item._matchId) return item._matchId;
+  const url = `/api/match?title=${encodeURIComponent(item.title)}&artist=${encodeURIComponent(item.artist)}`;
+  for (let attempt = 0; attempt < 2; attempt++) {
+    try {
+      const res = await fetch(url);
+      if (res.ok) {
+        item._matchId = (await res.json()).id;
+        return item._matchId;
+      }
+    } catch {
+      // servidor ocupado ou reiniciando, tenta de novo
+    }
+    await new Promise((resolve) => setTimeout(resolve, 800));
   }
-  return item._matchId;
+  return null;
 }
 
 async function togglePreview(item, btn) {
