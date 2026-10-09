@@ -1,25 +1,25 @@
 {
- "updated_at": "2026-10-02",
+ "updated_at": "2026-10-09",
  "tracks": [
   {
-   "trackName": "1997 (Radio Edit)",
-   "artistName": "Beave",
-   "collectionName": "1997 - Single",
-   "artworkUrl100": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/13/cc/41/13cc4186-9d12-932d-3068-cb87d8ae0120/13313.jpg/100x100bb.jpg",
-   "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/31/4b/c0/314bc0fe-0b58-d566-d364-600e6ba0e469/mzaf_4041398207602715081.plus.aac.p.m4a",
-   "trackViewUrl": "https://music.apple.com/br/album/1997-radio-edit/6791262251?i=6791262252&uo=4",
-   "trackTimeMillis": 160000,
-   "bpm": 132
+   "trackName": "Fancy Footwork",
+   "artistName": "Chromeo",
+   "collectionName": "Fancy Footwork",
+   "artworkUrl100": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/69/f1/bc/69f1bcd8-206c-7a03-9c81-3a62676cfc98/4062548000979.png/100x100bb.jpg",
+   "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/0b/7a/be/0b7abe5b-bf4b-c24b-fc88-20d0a4cc1af7/mzaf_9299264727693300174.plus.aac.p.m4a",
+   "trackViewUrl": "https://music.apple.com/br/album/fancy-footwork/1471576717?i=1471577047&uo=4",
+   "trackTimeMillis": 198020,
+   "bpm": 130
   },
   {
-   "trackName": "1,2,3",
-   "artistName": "James Hype & Volkoder",
-   "collectionName": "1,2,3 - Single",
-   "artworkUrl100": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/99/b7/85/99b7854c-4c3c-da29-2c37-c923456b503f/4191169.jpg/100x100bb.jpg",
-   "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/7d/0a/9d/7d0a9d1a-17ab-ff96-1632-508c832da5da/mzaf_14364689979266223463.plus.aac.p.m4a",
-   "trackViewUrl": "https://music.apple.com/br/album/1-2-3/6802449183?i=6802449184&uo=4",
-   "trackTimeMillis": 167510,
-   "bpm": 127
+   "trackName": "DANGER DANGER",
+   "artistName": "Dom Dolla, Solomun & Skepta",
+   "collectionName": "DANGER DANGER - Single",
+   "artworkUrl100": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/1e/ee/cd/1eeecdcc-ce2f-22a4-3411-1792f6990309/885288480832.jpg/100x100bb.jpg",
+   "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/11/0a/ff/110aff59-d16d-7939-83cb-88e0575572ba/mzaf_17982017748755538073.plus.aac.p.m4a",
+   "trackViewUrl": "https://music.apple.com/br/album/danger-danger/6812546255?i=6812546587&uo=4",
+   "trackTimeMillis": 180151,
+   "bpm": 130
   },
   {
    "trackName": "Stay",
@@ -32,23 +32,23 @@
    "bpm": 125
   },
   {
-   "trackName": "Come Get Up (Extended Mix)",
-   "artistName": "Butch & Santos",
-   "collectionName": "Come Get Up - Single",
-   "artworkUrl100": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/28/b2/bc/28b2bc2d-4caa-312b-f79a-d04f9b3b413a/826194722098.png/100x100bb.jpg",
-   "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/0c/f6/32/0cf6329c-c154-3d42-6b89-65b4d29a3a9b/mzaf_11094178485766162953.plus.aac.p.m4a",
-   "trackViewUrl": "https://music.apple.com/br/album/come-get-up-extended-mix/6807945377?i=6807945379&uo=4",
-   "trackTimeMillis": 467371,
-   "bpm": 126
+   "trackName": "1997 (Radio Edit)",
+   "artistName": "Beave",
+   "collectionName": "1997 - Single",
+   "artworkUrl100": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/13/cc/41/13cc4186-9d12-932d-3068-cb87d8ae0120/13313.jpg/100x100bb.jpg",
+   "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/31/4b/c0/314bc0fe-0b58-d566-d364-600e6ba0e469/mzaf_4041398207602715081.plus.aac.p.m4a",
+   "trackViewUrl": "https://music.apple.com/br/album/1997-radio-edit/6791262251?i=6791262252&uo=4",
+   "trackTimeMillis": 160000,
+   "bpm": 132
   },
   {
-   "trackName": "Ooo la La",
-   "artistName": "RSquared",
-   "collectionName": "Ooo la La - Single",
-   "artworkUrl100": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/2c/cb/8f/2ccb8f99-1eac-a1e0-2603-871c038110b0/cover.jpg/100x100bb.jpg",
-   "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/c4/a3/52/c4a352ce-1f48-b508-7de1-b1bf1c0452ab/mzaf_18296457635392162575.plus.aac.p.m4a",
-   "trackViewUrl": "https://music.apple.com/br/album/ooo-la-la/6807759920?i=6807759922&uo=4",
-   "trackTimeMillis": 375203,
+   "trackName": "Free Your Mind",
+   "artistName": "Prospa, Cloonee & Sybil",
+   "collectionName": "Free Your Mind",
+   "artworkUrl100": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/1e/03/50/1e03508a-6c55-9da3-fd4c-2d181919d760/820200597014.jpg/100x100bb.jpg",
+   "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/1f/8c/64/1f8c64ea-a711-12b1-9bfd-a24e909a75c0/mzaf_16510898991127196512.plus.aac.p.m4a",
+   "trackViewUrl": "https://music.apple.com/br/album/free-your-mind/1884730177?i=1884730735&uo=4",
+   "trackTimeMillis": 201700,
    "bpm": 128
   },
   {
@@ -72,14 +72,54 @@
    "bpm": 130
   },
   {
-   "trackName": "Free Your Mind",
-   "artistName": "Prospa, Sybil & Cloonee",
-   "collectionName": "Free Your Mind",
-   "artworkUrl100": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/1e/03/50/1e03508a-6c55-9da3-fd4c-2d181919d760/820200597014.jpg/100x100bb.jpg",
-   "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/1f/8c/64/1f8c64ea-a711-12b1-9bfd-a24e909a75c0/mzaf_16510898991127196512.plus.aac.p.m4a",
-   "trackViewUrl": "https://music.apple.com/br/album/free-your-mind/1884730177?i=1884730735&uo=4",
-   "trackTimeMillis": 201700,
+   "trackName": "Ooo la La",
+   "artistName": "RSquared",
+   "collectionName": "Ooo la La - Single",
+   "artworkUrl100": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/2c/cb/8f/2ccb8f99-1eac-a1e0-2603-871c038110b0/cover.jpg/100x100bb.jpg",
+   "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/c4/a3/52/c4a352ce-1f48-b508-7de1-b1bf1c0452ab/mzaf_18296457635392162575.plus.aac.p.m4a",
+   "trackViewUrl": "https://music.apple.com/br/album/ooo-la-la/6807759920?i=6807759922&uo=4",
+   "trackTimeMillis": 375203,
    "bpm": 128
+  },
+  {
+   "trackName": "God Gave Us Techno",
+   "artistName": "Sarah de Warren & Tao Andra",
+   "collectionName": "God Gave Us Techno - Single",
+   "artworkUrl100": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/be/e5/f8/bee5f87d-4f0b-e5e2-b165-8396c58f9985/cover.jpg/100x100bb.jpg",
+   "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/90/43/df/9043dfee-4744-4cca-98e1-e152b3a5ed94/mzaf_16745871329001964247.plus.aac.p.m4a",
+   "trackViewUrl": "https://music.apple.com/br/album/god-gave-us-techno/6808684986?i=6808684989&uo=4",
+   "trackTimeMillis": 188357,
+   "bpm": 140
+  },
+  {
+   "trackName": "Come To Life",
+   "artistName": "Cassian & AR/CO",
+   "collectionName": "Come To Life - Single",
+   "artworkUrl100": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/32/93/f2/3293f2b2-1113-6dba-e96d-f9c3427a7c87/1200214437510.jpg/100x100bb.jpg",
+   "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/6a/77/98/6a7798ec-31aa-a37a-348c-e05219df737c/mzaf_9817701531477269090.plus.aac.p.m4a",
+   "trackViewUrl": "https://music.apple.com/br/album/come-to-life/6784356751?i=6784356874&uo=4",
+   "trackTimeMillis": 192209,
+   "bpm": 130
+  },
+  {
+   "trackName": "Come Get Up (Extended Mix)",
+   "artistName": "Butch & Santos",
+   "collectionName": "Come Get Up - Single",
+   "artworkUrl100": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/28/b2/bc/28b2bc2d-4caa-312b-f79a-d04f9b3b413a/826194722098.png/100x100bb.jpg",
+   "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/0c/f6/32/0cf6329c-c154-3d42-6b89-65b4d29a3a9b/mzaf_11094178485766162953.plus.aac.p.m4a",
+   "trackViewUrl": "https://music.apple.com/br/album/come-get-up-extended-mix/6807945377?i=6807945379&uo=4",
+   "trackTimeMillis": 467371,
+   "bpm": 126
+  },
+  {
+   "trackName": "1,2,3",
+   "artistName": "James Hype & Volkoder",
+   "collectionName": "1,2,3 - Single",
+   "artworkUrl100": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/99/b7/85/99b7854c-4c3c-da29-2c37-c923456b503f/4191169.jpg/100x100bb.jpg",
+   "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/7d/0a/9d/7d0a9d1a-17ab-ff96-1632-508c832da5da/mzaf_14364689979266223463.plus.aac.p.m4a",
+   "trackViewUrl": "https://music.apple.com/br/album/1-2-3/6802449183?i=6802449184&uo=4",
+   "trackTimeMillis": 167510,
+   "bpm": 127
   },
   {
    "trackName": "Easy A",
@@ -102,106 +142,6 @@
    "bpm": 125
   },
   {
-   "trackName": "Control",
-   "artistName": "Joseph Capriati & GENNARO",
-   "collectionName": "Control - Single",
-   "artworkUrl100": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/44/24/87/44248732-3cad-441e-1f2d-f5429415ed78/8721554295668.png/100x100bb.jpg",
-   "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/06/5f/04/065f040b-e4db-4cd2-22be-cc1c18265fbc/mzaf_16599805872891923779.plus.aac.p.m4a",
-   "trackViewUrl": "https://music.apple.com/br/album/control/6805903931?i=6805903932&uo=4",
-   "trackTimeMillis": 161250,
-   "bpm": 128
-  },
-  {
-   "trackName": "Miami Vice",
-   "artistName": "DJ PP, Mark Knight & James Hurr",
-   "collectionName": "Miami Vice - Single",
-   "artworkUrl100": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/ee/14/80/ee1480ef-9038-bb5b-c760-f4e164d7d8d4/5052075036946.png/100x100bb.jpg",
-   "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/e2/4c/10/e24c109b-ed4e-51d5-cced-5818c758efd4/mzaf_14167638456831714277.plus.aac.p.m4a",
-   "trackViewUrl": "https://music.apple.com/br/album/miami-vice/6808310197?i=6808310198&uo=4",
-   "trackTimeMillis": 179524,
-   "bpm": 126
-  },
-  {
-   "trackName": "The Resistance (feat. Theo Nasa)",
-   "artistName": "Charlotte de Witte",
-   "collectionName": "The Resistance - EP",
-   "artworkUrl100": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/06/17/8b/06178b8e-efa3-9dba-6a81-8ded690e4ea1/885288340563.jpg/100x100bb.jpg",
-   "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/70/6f/de/706fde3b-b566-2d3d-b282-1ec702886a3a/mzaf_12803167261245307887.plus.aac.p.m4a",
-   "trackViewUrl": "https://music.apple.com/br/album/the-resistance-feat-theo-nasa/6805480120?i=6805480236&uo=4",
-   "trackTimeMillis": 394896,
-   "bpm": 142
-  },
-  {
-   "trackName": "Fancy Footwork",
-   "artistName": "Chromeo",
-   "collectionName": "Fancy Footwork",
-   "artworkUrl100": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/69/f1/bc/69f1bcd8-206c-7a03-9c81-3a62676cfc98/4062548000979.png/100x100bb.jpg",
-   "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/0b/7a/be/0b7abe5b-bf4b-c24b-fc88-20d0a4cc1af7/mzaf_9299264727693300174.plus.aac.p.m4a",
-   "trackViewUrl": "https://music.apple.com/br/album/fancy-footwork/1471576717?i=1471577047&uo=4",
-   "trackTimeMillis": 198020,
-   "bpm": 130
-  },
-  {
-   "trackName": "Get Up And Dance",
-   "artistName": "Cloonee",
-   "collectionName": "Get Up And Dance - Single",
-   "artworkUrl100": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/29/9a/4b/299a4bb7-2750-3689-c006-edf93b56cb35/15432.jpg/100x100bb.jpg",
-   "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/d7/c6/5d/d7c65d64-dc4b-2752-acb4-97676d83779a/mzaf_18342361613405686698.plus.aac.p.m4a",
-   "trackViewUrl": "https://music.apple.com/br/album/get-up-and-dance/6806203024?i=6806203025&uo=4",
-   "trackTimeMillis": 155082,
-   "bpm": 130
-  },
-  {
-   "trackName": "Come To Life",
-   "artistName": "Cassian & AR/CO",
-   "collectionName": "Come To Life - Single",
-   "artworkUrl100": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/32/93/f2/3293f2b2-1113-6dba-e96d-f9c3427a7c87/1200214437510.jpg/100x100bb.jpg",
-   "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/6a/77/98/6a7798ec-31aa-a37a-348c-e05219df737c/mzaf_9817701531477269090.plus.aac.p.m4a",
-   "trackViewUrl": "https://music.apple.com/br/album/come-to-life/6784356751?i=6784356874&uo=4",
-   "trackTimeMillis": 192209,
-   "bpm": 130
-  },
-  {
-   "trackName": "Talk To You (feat. 54 Ultra)",
-   "artistName": "ANOTR",
-   "collectionName": "Talk To You (feat. 54 Ultra) - Single",
-   "artworkUrl100": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/6a/77/f9/6a77f93a-9286-60d8-3a0b-7d01a4b222cf/5665.jpg/100x100bb.jpg",
-   "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/aa/c0/52/aac05210-37d4-0d74-5013-48156d87d74c/mzaf_573344203389765709.plus.aac.p.m4a",
-   "trackViewUrl": "https://music.apple.com/br/album/talk-to-you-feat-54-ultra/1870514329?i=1870514330&uo=4",
-   "trackTimeMillis": 191077,
-   "bpm": 132
-  },
-  {
-   "trackName": "Landlords Nightmare",
-   "artistName": "CamelPhat",
-   "collectionName": "Landlords Nightmare - Single",
-   "artworkUrl100": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/6f/cd/51/6fcd51c0-270b-1d11-6254-0fddf52c6165/885288319361.jpg/100x100bb.jpg",
-   "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/33/ea/26/33ea26a5-6b23-0dbe-88b7-4230727ed4fb/mzaf_2049045152622432128.plus.aac.p.m4a",
-   "trackViewUrl": "https://music.apple.com/br/album/landlords-nightmare/6802225094?i=6802225095&uo=4",
-   "trackTimeMillis": 295488,
-   "bpm": 130
-  },
-  {
-   "trackName": "Another Place",
-   "artistName": "Charlotte de Witte",
-   "collectionName": "The Resistance - EP",
-   "artworkUrl100": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/06/17/8b/06178b8e-efa3-9dba-6a81-8ded690e4ea1/885288340563.jpg/100x100bb.jpg",
-   "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/5c/f7/69/5cf76934-f78a-8656-7039-be4e933489b3/mzaf_7089373717802091583.plus.aac.p.m4a",
-   "trackViewUrl": "https://music.apple.com/br/album/another-place/6805480120?i=6805480422&uo=4",
-   "trackTimeMillis": 387757,
-   "bpm": 140
-  },
-  {
-   "trackName": "Disruption",
-   "artistName": "Frankey & Sandrino",
-   "collectionName": "Disruption - Single",
-   "artworkUrl100": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/b4/92/90/b4929084-d973-c1f8-8015-3fb164f40867/4255940802610_cover.jpg/100x100bb.jpg",
-   "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/6e/32/25/6e3225e2-211c-1e7c-b155-2a4641fc1324/mzaf_2000189089187370980.plus.aac.p.m4a",
-   "trackViewUrl": "https://music.apple.com/br/album/disruption/6810627798?i=6810627811&uo=4",
-   "trackTimeMillis": 348387,
-   "bpm": 124
-  },
-  {
    "trackName": "Shinjuku",
    "artistName": "Franky Rizardo",
    "collectionName": "Shinjuku - Single",
@@ -222,33 +162,73 @@
    "bpm": 132
   },
   {
-   "trackName": "Go Go Go",
-   "artistName": "Space 92 & Marie Vaunt",
-   "collectionName": "Go Go Go - Single",
-   "artworkUrl100": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/c4/f9/24/c4f924f2-13a9-98ba-718d-634237880f21/cover.jpg/100x100bb.jpg",
-   "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/3d/7f/f6/3d7ff6d6-bb2a-100a-01ae-4d357365bfb4/mzaf_985161685988066075.plus.aac.p.m4a",
-   "trackViewUrl": "https://music.apple.com/br/album/go-go-go/6798643006?i=6798643007&uo=4",
-   "trackTimeMillis": 169241,
+   "trackName": "Stella",
+   "artistName": "Nelayan",
+   "collectionName": "Stella - Single",
+   "artworkUrl100": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/db/a7/65/dba765d3-48a5-8848-876d-9e25de5dadf2/cover.jpg/100x100bb.jpg",
+   "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/e6/2b/33/e62b336a-2a2e-6d56-fb59-1aa6cbdc177b/mzaf_5838786103396128245.plus.aac.p.m4a",
+   "trackViewUrl": "https://music.apple.com/br/album/stella/6811962300?i=6811962301&uo=4",
+   "trackTimeMillis": 204206,
    "bpm": 145
   },
   {
-   "trackName": "Good Girl",
-   "artistName": "Cloonee, Prospa & Tristan Henry",
-   "collectionName": "Good Girl - Single",
-   "artworkUrl100": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/0b/f2/2f/0bf22fd7-ef5d-cb6a-91ce-40d54aff5b85/13180.jpg/100x100bb.jpg",
-   "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/d5/ae/c6/d5aec627-f6e1-c524-342e-c5f808ff2cbf/mzaf_5750792667774287974.plus.aac.p.m4a",
-   "trackViewUrl": "https://music.apple.com/br/album/good-girl/6785909845?i=6785909848&uo=4",
-   "trackTimeMillis": 181411,
+   "trackName": "Chemical (feat. Ross Quinn)",
+   "artistName": "Marten Lou",
+   "collectionName": "Chemical (feat. Ross Quinn) - Single",
+   "artworkUrl100": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/9f/cf/11/9fcf11e9-48db-29aa-e6a9-8a073712c6d5/1200214904845.jpg/100x100bb.jpg",
+   "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/a5/00/48/a500483a-7ab8-92b4-1325-26191e29925b/mzaf_290471918000729976.plus.aac.p.m4a",
+   "trackViewUrl": "https://music.apple.com/br/album/chemical-feat-ross-quinn/6805542560?i=6805542563&uo=4",
+   "trackTimeMillis": 233696,
+   "bpm": 124
+  },
+  {
+   "trackName": "Flashing Lights (Extended Mix)",
+   "artistName": "Trace, Disla & Danis",
+   "collectionName": "Flashing Lights - Single",
+   "artworkUrl100": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/7e/f0/b1/7ef0b125-50a1-f98d-f3cd-e1fcae3e7484/5063857152082_cover.jpg/100x100bb.jpg",
+   "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/22/98/ec/2298ec9c-dfd8-ff02-94b7-8baa6be85123/mzaf_2061397082385931200.plus.aac.p.m4a",
+   "trackViewUrl": "https://music.apple.com/br/album/flashing-lights-extended-mix/6810565380?i=6810565382&uo=4",
+   "trackTimeMillis": 311841,
+   "bpm": 127
+  },
+  {
+   "trackName": "Miami Vice",
+   "artistName": "DJ PP, Mark Knight & James Hurr",
+   "collectionName": "Miami Vice - Single",
+   "artworkUrl100": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/ee/14/80/ee1480ef-9038-bb5b-c760-f4e164d7d8d4/5052075036946.png/100x100bb.jpg",
+   "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/e2/4c/10/e24c109b-ed4e-51d5-cced-5818c758efd4/mzaf_14167638456831714277.plus.aac.p.m4a",
+   "trackViewUrl": "https://music.apple.com/br/album/miami-vice/6808310197?i=6808310198&uo=4",
+   "trackTimeMillis": 179524,
+   "bpm": 126
+  },
+  {
+   "trackName": "The 11th Hour",
+   "artistName": "Brunello & Celia Babini",
+   "collectionName": "The 11th Hour - Single",
+   "artworkUrl100": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/9c/32/b2/9c32b200-9e31-4fc9-4d95-a53e37b13449/1228210.jpg/100x100bb.jpg",
+   "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/ef/69/da/ef69da95-a510-8936-f138-d9bc739a75d8/mzaf_9463388064534638095.plus.aac.p.m4a",
+   "trackViewUrl": "https://music.apple.com/br/album/the-11th-hour/6791660276?i=6791660278&uo=4",
+   "trackTimeMillis": 433920,
+   "bpm": 125
+  },
+  {
+   "trackName": "Viciosa (Rework)",
+   "artistName": "Franky Rizardo & Valeria Vix",
+   "collectionName": "Marido Dansa Ep - Single",
+   "artworkUrl100": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/b7/d1/2a/b7d12ac6-6e5f-68a9-9395-9d10e67eaa18/8718274972962.png/100x100bb.jpg",
+   "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/63/e2/ee/63e2eecb-69f4-1070-ed6d-2f5bfe500667/mzaf_17349650279533281338.plus.aac.p.m4a",
+   "trackViewUrl": "https://music.apple.com/br/album/viciosa-rework/6814391020?i=6814391022&uo=4",
+   "trackTimeMillis": 221250,
    "bpm": 128
   },
   {
-   "trackName": "Act Up",
-   "artistName": "SEBS",
-   "collectionName": "Act Up - Single",
-   "artworkUrl100": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/8b/dc/ca/8bdcca71-d4db-aa24-3068-a7bead5f5957/1200220063277.jpg/100x100bb.jpg",
-   "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/d1/83/05/d1830529-6ecc-a73c-889e-cba9ecf1ddfa/mzaf_7933728226355992813.plus.aac.p.m4a",
-   "trackViewUrl": "https://music.apple.com/br/album/act-up/6808739699?i=6808739704&uo=4",
-   "trackTimeMillis": 168000,
+   "trackName": "Landlords Nightmare",
+   "artistName": "CamelPhat",
+   "collectionName": "Landlords Nightmare - Single",
+   "artworkUrl100": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/6f/cd/51/6fcd51c0-270b-1d11-6254-0fddf52c6165/885288319361.jpg/100x100bb.jpg",
+   "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/33/ea/26/33ea26a5-6b23-0dbe-88b7-4230727ed4fb/mzaf_2049045152622432128.plus.aac.p.m4a",
+   "trackViewUrl": "https://music.apple.com/br/album/landlords-nightmare/6802225094?i=6802225095&uo=4",
+   "trackTimeMillis": 295488,
    "bpm": 130
   },
   {
@@ -262,24 +242,14 @@
    "bpm": 135
   },
   {
-   "trackName": "Love Is the Dance (Ivory Remix)",
-   "artistName": "Âme & RY X",
-   "collectionName": "Love Is the Dance (Ivory Remix) - Single",
-   "artworkUrl100": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/d6/ab/1d/d6ab1db3-0cda-c3ee-d8a1-2c9f94b7c4f4/810458020440.png/100x100bb.jpg",
-   "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/a3/98/b7/a398b7b0-145f-5484-fb5d-0d7ed5644bde/mzaf_3586140372846629504.plus.aac.p.m4a",
-   "trackViewUrl": "https://music.apple.com/br/album/love-is-the-dance-ivory-remix/6799941310?i=6799941311&uo=4",
-   "trackTimeMillis": 336290,
-   "bpm": 126
-  },
-  {
-   "trackName": "Hey Everybody",
-   "artistName": "Kolter",
-   "collectionName": "Hey Everybody - Single",
-   "artworkUrl100": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/0f/e7/e4/0fe7e437-fcf5-9a0c-850f-70c40aaf11e7/26UMGIM83403.rgb.jpg/100x100bb.jpg",
-   "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/d6/8e/95/d68e95c4-0135-d09f-65ec-84ff02f6d23c/mzaf_1190215784265976371.plus.aac.p.m4a",
-   "trackViewUrl": "https://music.apple.com/br/album/hey-everybody/6784787844?i=6784787846&uo=4",
-   "trackTimeMillis": 156498,
-   "bpm": 132
+   "trackName": "Control",
+   "artistName": "Joseph Capriati & GENNARO",
+   "collectionName": "Control - Single",
+   "artworkUrl100": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/44/24/87/44248732-3cad-441e-1f2d-f5429415ed78/8721554295668.png/100x100bb.jpg",
+   "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/06/5f/04/065f040b-e4db-4cd2-22be-cc1c18265fbc/mzaf_16599805872891923779.plus.aac.p.m4a",
+   "trackViewUrl": "https://music.apple.com/br/album/control/6805903931?i=6805903932&uo=4",
+   "trackTimeMillis": 161250,
+   "bpm": 128
   },
   {
    "trackName": "Reason Why",
@@ -292,24 +262,164 @@
    "bpm": 130
   },
   {
-   "trackName": "See Through The Lies (feat. XSALT)",
+   "trackName": "Decay",
+   "artistName": "MalYar & OLEXO",
+   "collectionName": "Decay - Single",
+   "artworkUrl100": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/18/67/46/1867468e-2845-5080-fac6-08b5ec47a2ca/cover.jpg/100x100bb.jpg",
+   "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/5e/51/f8/5e51f847-2ce7-e1ce-fabd-6f10780bc166/mzaf_2933424952371178835.plus.aac.p.m4a",
+   "trackViewUrl": "https://music.apple.com/br/album/decay/6813512083?i=6813512085&uo=4",
+   "trackTimeMillis": 175802,
+   "bpm": 122
+  },
+  {
+   "trackName": "Talk To You (feat. 54 Ultra)",
+   "artistName": "ANOTR",
+   "collectionName": "Talk To You (feat. 54 Ultra) - Single",
+   "artworkUrl100": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/6a/77/f9/6a77f93a-9286-60d8-3a0b-7d01a4b222cf/5665.jpg/100x100bb.jpg",
+   "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/aa/c0/52/aac05210-37d4-0d74-5013-48156d87d74c/mzaf_573344203389765709.plus.aac.p.m4a",
+   "trackViewUrl": "https://music.apple.com/br/album/talk-to-you-feat-54-ultra/1870514329?i=1870514330&uo=4",
+   "trackTimeMillis": 191077,
+   "bpm": 132
+  },
+  {
+   "trackName": "Never Leave U",
+   "artistName": "Sonny Kane",
+   "collectionName": "Never Leave U - Single",
+   "artworkUrl100": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/2a/3c/be/2a3cbef1-9c89-6440-a801-308f1b2e103b/12416.jpg/100x100bb.jpg",
+   "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/85/c7/4d/85c74d7a-3bdd-fd11-5730-859318c5bc04/mzaf_5091100495308568284.plus.aac.p.m4a",
+   "trackViewUrl": "https://music.apple.com/br/album/never-leave-u/6783303215?i=6783303219&uo=4",
+   "trackTimeMillis": 221787,
+   "bpm": 128
+  },
+  {
+   "trackName": "The Resistance (feat. Theo Nasa)",
    "artistName": "Charlotte de Witte",
    "collectionName": "The Resistance - EP",
    "artworkUrl100": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/06/17/8b/06178b8e-efa3-9dba-6a81-8ded690e4ea1/885288340563.jpg/100x100bb.jpg",
-   "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/bc/87/eb/bc87eb00-538c-6f69-9095-8a30a93205e9/mzaf_7973207091168234814.plus.aac.p.m4a",
-   "trackViewUrl": "https://music.apple.com/br/album/see-through-the-lies-feat-xsalt/6805480120?i=6805480401&uo=4",
-   "trackTimeMillis": 429151,
+   "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/70/6f/de/706fde3b-b566-2d3d-b282-1ec702886a3a/mzaf_12803167261245307887.plus.aac.p.m4a",
+   "trackViewUrl": "https://music.apple.com/br/album/the-resistance-feat-theo-nasa/6805480120?i=6805480236&uo=4",
+   "trackTimeMillis": 394896,
+   "bpm": 142
+  },
+  {
+   "trackName": "This Is How",
+   "artistName": "David Mackay & Meloko",
+   "collectionName": "This Is How - Single",
+   "artworkUrl100": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/6f/fc/77/6ffc77ac-75e2-4ac0-a47b-cdc63538c9eb/1200220127252.jpg/100x100bb.jpg",
+   "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/15/d1/cb/15d1cb01-312b-2623-5fc9-0292b08022c9/mzaf_14618708503617709076.plus.aac.p.m4a",
+   "trackViewUrl": "https://music.apple.com/br/album/this-is-how/6812468333?i=6812468335&uo=4",
+   "trackTimeMillis": 164516,
+   "bpm": 124
+  },
+  {
+   "trackName": "Good Girl",
+   "artistName": "Cloonee, Prospa & Tristan Henry",
+   "collectionName": "Are You Still You?",
+   "artworkUrl100": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/c0/6e/14/c06e1421-70b6-8cda-0ac3-6c125be70e15/13915.jpg/100x100bb.jpg",
+   "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/f2/a9/6a/f2a96a90-db00-e12b-2418-3663cd6af427/mzaf_7960723961531545587.plus.aac.p.m4a",
+   "trackViewUrl": "https://music.apple.com/br/album/good-girl/6796002394?i=6796002398&uo=4",
+   "trackTimeMillis": 181411,
+   "bpm": 128
+  },
+  {
+   "trackName": "Pop This",
+   "artistName": "Öwnboss",
+   "collectionName": "Pop This - Single",
+   "artworkUrl100": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/7c/9c/8f/7c9c8f1b-6c98-af33-d143-7984f5d80520/cover.jpg/100x100bb.jpg",
+   "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/ae/ff/4f/aeff4fbf-4665-fc47-8c86-65e8a27af4a4/mzaf_8520436548039268641.plus.aac.p.m4a",
+   "trackViewUrl": "https://music.apple.com/br/album/pop-this/6807908986?i=6807908987&uo=4",
+   "trackTimeMillis": 179077,
+   "bpm": 130
+  },
+  {
+   "trackName": "Talk (Wehbba Remix)",
+   "artistName": "ADRIANNA",
+   "collectionName": "Talk (Wehbba Remix) - Single",
+   "artworkUrl100": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/f1/e8/7f/f1e87f99-c867-187e-27dd-2056d95f5dc7/cover.jpg/100x100bb.jpg",
+   "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/ec/31/e6/ec31e61f-442d-e387-0f1b-bda135d4eb22/mzaf_5680465912358191752.plus.aac.p.m4a",
+   "trackViewUrl": "https://music.apple.com/br/album/talk-wehbba-remix/6812460189?i=6812460190&uo=4",
+   "trackTimeMillis": 200000,
+   "bpm": 138
+  },
+  {
+   "trackName": "Souvenir",
+   "artistName": "Josh Baker & rhys from the sticks",
+   "collectionName": "Souvenir - Single",
+   "artworkUrl100": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/51/ba/13/51ba135c-1541-6f33-03e3-8621af2d8e1b/1200220169993.jpg/100x100bb.jpg",
+   "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/ca/1f/bd/ca1fbd62-7c47-445c-3b06-4641cf359fa8/mzaf_10665122576108545583.plus.aac.p.m4a",
+   "trackViewUrl": "https://music.apple.com/br/album/souvenir/6813667302?i=6813667309&uo=4",
+   "trackTimeMillis": 183187,
+   "bpm": 132
+  },
+  {
+   "trackName": "Get Up And Dance",
+   "artistName": "Cloonee",
+   "collectionName": "Get Up And Dance - Single",
+   "artworkUrl100": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/29/9a/4b/299a4bb7-2750-3689-c006-edf93b56cb35/15432.jpg/100x100bb.jpg",
+   "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/d7/c6/5d/d7c65d64-dc4b-2752-acb4-97676d83779a/mzaf_18342361613405686698.plus.aac.p.m4a",
+   "trackViewUrl": "https://music.apple.com/br/album/get-up-and-dance/6806203024?i=6806203025&uo=4",
+   "trackTimeMillis": 155082,
+   "bpm": 130
+  },
+  {
+   "trackName": "Go Go Go",
+   "artistName": "Space 92 & Marie Vaunt",
+   "collectionName": "Go Go Go - Single",
+   "artworkUrl100": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/c4/f9/24/c4f924f2-13a9-98ba-718d-634237880f21/cover.jpg/100x100bb.jpg",
+   "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/3d/7f/f6/3d7ff6d6-bb2a-100a-01ae-4d357365bfb4/mzaf_985161685988066075.plus.aac.p.m4a",
+   "trackViewUrl": "https://music.apple.com/br/album/go-go-go/6798643006?i=6798643007&uo=4",
+   "trackTimeMillis": 169241,
+   "bpm": 145
+  },
+  {
+   "trackName": "Higher (Chris Luno Remix)",
+   "artistName": "Rodriguez Jr.",
+   "collectionName": "Higher (Chris Luno Remix) - Single",
+   "artworkUrl100": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/f8/24/ae/f824aeaf-c7d2-e726-b910-ca29ed54828f/cover.jpg/100x100bb.jpg",
+   "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/da/35/18/da3518cb-c965-eb1c-7124-35268667a236/mzaf_18392698786867114588.plus.aac.p.m4a",
+   "trackViewUrl": "https://music.apple.com/br/album/higher-chris-luno-remix/6803971648?i=6803971650&uo=4",
+   "trackTimeMillis": 192609,
+   "bpm": 125
+  },
+  {
+   "trackName": "Hey Everybody",
+   "artistName": "Kolter",
+   "collectionName": "Hey Everybody - Single",
+   "artworkUrl100": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/0f/e7/e4/0fe7e437-fcf5-9a0c-850f-70c40aaf11e7/26UMGIM83403.rgb.jpg/100x100bb.jpg",
+   "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/d6/8e/95/d68e95c4-0135-d09f-65ec-84ff02f6d23c/mzaf_1190215784265976371.plus.aac.p.m4a",
+   "trackViewUrl": "https://music.apple.com/br/album/hey-everybody/6784787844?i=6784787846&uo=4",
+   "trackTimeMillis": 156498,
+   "bpm": 132
+  },
+  {
+   "trackName": "Mi Casa",
+   "artistName": "Patrick Topping",
+   "collectionName": "Mi Casa - Single",
+   "artworkUrl100": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/79/ea/a1/79eaa163-22aa-2865-53b2-b94b6f743c86/885288513837.jpg/100x100bb.jpg",
+   "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/8a/b7/1c/8ab71c62-e9ea-4362-d94a-35b7718b3702/mzaf_12450140756154733823.plus.aac.p.m4a",
+   "trackViewUrl": "https://music.apple.com/br/album/mi-casa/6808245378?i=6808245382&uo=4",
+   "trackTimeMillis": 229175,
+   "bpm": 131
+  },
+  {
+   "trackName": "Another Place",
+   "artistName": "Charlotte de Witte",
+   "collectionName": "The Resistance - EP",
+   "artworkUrl100": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/06/17/8b/06178b8e-efa3-9dba-6a81-8ded690e4ea1/885288340563.jpg/100x100bb.jpg",
+   "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/5c/f7/69/5cf76934-f78a-8656-7039-be4e933489b3/mzaf_7089373717802091583.plus.aac.p.m4a",
+   "trackViewUrl": "https://music.apple.com/br/album/another-place/6805480120?i=6805480422&uo=4",
+   "trackTimeMillis": 387757,
    "bpm": 140
   },
   {
-   "trackName": "Warehouse",
-   "artistName": "HotLap & Yanick",
-   "collectionName": "Warehouse - Single",
-   "artworkUrl100": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/ab/08/16/ab0816af-48d2-0634-bf9b-64076b76f8dd/cover.jpg/100x100bb.jpg",
-   "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/81/29/67/81296797-5bce-e9f7-9a8a-987aaa9e6a11/mzaf_5372088497899130907.plus.aac.p.m4a",
-   "trackViewUrl": "https://music.apple.com/br/album/warehouse/6808253676?i=6808253677&uo=4",
-   "trackTimeMillis": 193564,
-   "bpm": 124
+   "trackName": "Here in My Arms (Enjoy the Silence)",
+   "artistName": "Armin van Buuren & Silver Panda",
+   "collectionName": "Here in My Arms (Enjoy the Silence) - Single",
+   "artworkUrl100": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/fc/8e/34/fc8e3453-eb19-3422-d23c-a21073c9ec69/8718522602177.png/100x100bb.jpg",
+   "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/ab/b3/2a/abb32af7-d102-1aa5-17d3-39f3fa06f474/mzaf_9139428283934937368.plus.aac.p.m4a",
+   "trackViewUrl": "https://music.apple.com/br/album/here-in-my-arms-enjoy-the-silence/6783824390?i=6783824391&uo=4",
+   "trackTimeMillis": 189091,
+   "bpm": 132
   },
   {
    "trackName": "Legacy (Assanssan)",
@@ -332,164 +442,44 @@
    "bpm": 129
   },
   {
-   "trackName": "Nuff Said",
-   "artistName": "Kaufmann (DE)",
-   "collectionName": "Easy A - Single",
-   "artworkUrl100": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/14/15/db/1415db3d-54ed-9204-1112-86b3435ea035/5060191686860.jpg/100x100bb.jpg",
-   "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/ae/e6/00/aee600d0-7921-e290-1b20-2ab7d6474195/mzaf_411239204507590475.plus.aac.p.m4a",
-   "trackViewUrl": "https://music.apple.com/br/album/nuff-said/6809796802?i=6809796806&uo=4",
-   "trackTimeMillis": 344000,
-   "bpm": 130
-  },
-  {
-   "trackName": "The 11th Hour",
-   "artistName": "Brunello & Celia Babini",
-   "collectionName": "The 11th Hour - Single",
-   "artworkUrl100": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/9c/32/b2/9c32b200-9e31-4fc9-4d95-a53e37b13449/1228210.jpg/100x100bb.jpg",
-   "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/ef/69/da/ef69da95-a510-8936-f138-d9bc739a75d8/mzaf_9463388064534638095.plus.aac.p.m4a",
-   "trackViewUrl": "https://music.apple.com/br/album/the-11th-hour/6791660276?i=6791660278&uo=4",
-   "trackTimeMillis": 433920,
-   "bpm": 125
-  },
-  {
-   "trackName": "Flashing Lights (Extended Mix)",
-   "artistName": "Trace, Disla & Danis",
-   "collectionName": "Flashing Lights - Single",
-   "artworkUrl100": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/7e/f0/b1/7ef0b125-50a1-f98d-f3cd-e1fcae3e7484/5063857152082_cover.jpg/100x100bb.jpg",
-   "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/22/98/ec/2298ec9c-dfd8-ff02-94b7-8baa6be85123/mzaf_2061397082385931200.plus.aac.p.m4a",
-   "trackViewUrl": "https://music.apple.com/br/album/flashing-lights-extended-mix/6810565380?i=6810565382&uo=4",
-   "trackTimeMillis": 311841,
-   "bpm": 127
-  },
-  {
-   "trackName": "Never Leave U",
-   "artistName": "Sonny Kane",
-   "collectionName": "Never Leave U - Single",
-   "artworkUrl100": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/2a/3c/be/2a3cbef1-9c89-6440-a801-308f1b2e103b/12416.jpg/100x100bb.jpg",
-   "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/85/c7/4d/85c74d7a-3bdd-fd11-5730-859318c5bc04/mzaf_5091100495308568284.plus.aac.p.m4a",
-   "trackViewUrl": "https://music.apple.com/br/album/never-leave-u/6783303215?i=6783303219&uo=4",
-   "trackTimeMillis": 221787,
-   "bpm": 128
-  },
-  {
-   "trackName": "Jaguar (Peak Mode Mix)",
-   "artistName": "YellowHeads & Sarah de Warren",
-   "collectionName": "Jaguar - Single",
-   "artworkUrl100": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/e5/51/ee/e551ee30-a2e4-9aa6-61d3-82621481ed1a/cover.jpg/100x100bb.jpg",
-   "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/e4/5a/a1/e45aa1d2-e186-0bbf-175e-e4ad0a8ad2d6/mzaf_6639436229814637678.plus.aac.p.m4a",
-   "trackViewUrl": "https://music.apple.com/br/album/jaguar-peak-mode-mix/6802396408?i=6802396409&uo=4",
-   "trackTimeMillis": 302885,
-   "bpm": 130
-  },
-  {
-   "trackName": "Science Fiction",
-   "artistName": "Brunello",
-   "collectionName": "Science Fiction - Single",
-   "artworkUrl100": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/8c/78/75/8c78759e-1101-6839-ff60-e7d22dd67fc9/1003068.jpg/100x100bb.jpg",
-   "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/67/5c/31/675c3111-f7d3-e25e-a031-9e27da231ad8/mzaf_7523514662571336062.plus.aac.p.m4a",
-   "trackViewUrl": "https://music.apple.com/br/album/science-fiction/1880439193?i=1880439198&uo=4",
-   "trackTimeMillis": 396852,
-   "bpm": 127
-  },
-  {
-   "trackName": "It's Time",
-   "artistName": "Dennis Quin",
-   "collectionName": "It's Time EP - EP",
-   "artworkUrl100": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/19/7b/b8/197bb8f3-9ee4-956f-b1d8-e078d16dea73/16005.jpg/100x100bb.jpg",
-   "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/3f/7a/ab/3f7aabcf-d129-b139-bc41-71d6e3a3f8f4/mzaf_263345848687357586.plus.aac.p.m4a",
-   "trackViewUrl": "https://music.apple.com/br/album/its-time/6809801575?i=6809801577&uo=4",
-   "trackTimeMillis": 180000,
+   "trackName": "Blow Out (Short Mix)",
+   "artistName": "Phoenix Movement & Bora Project",
+   "collectionName": "Blow Out - Single",
+   "artworkUrl100": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/9c/93/95/9c939552-42b9-00d3-e5ff-6fe5ba4ed4b3/00_Cover_Art.jpg/100x100bb.jpg",
+   "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/fd/1c/82/fd1c828d-48d7-495c-2d23-c5f3457ea4c9/mzaf_5215595330073300034.plus.aac.p.m4a",
+   "trackViewUrl": "https://music.apple.com/br/album/blow-out-short-mix/6791258495?i=6791258496&uo=4",
+   "trackTimeMillis": 249346,
    "bpm": 132
   },
   {
-   "trackName": "Here in My Arms (Enjoy the Silence)",
-   "artistName": "Armin van Buuren & Silver Panda",
-   "collectionName": "Here in My Arms (Enjoy the Silence) - Single",
-   "artworkUrl100": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/fc/8e/34/fc8e3453-eb19-3422-d23c-a21073c9ec69/8718522602177.png/100x100bb.jpg",
-   "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/ab/b3/2a/abb32af7-d102-1aa5-17d3-39f3fa06f474/mzaf_9139428283934937368.plus.aac.p.m4a",
-   "trackViewUrl": "https://music.apple.com/br/album/here-in-my-arms-enjoy-the-silence/6783824390?i=6783824391&uo=4",
-   "trackTimeMillis": 189091,
-   "bpm": 132
-  },
-  {
-   "trackName": "Want To Know",
-   "artistName": "Rooléh",
-   "collectionName": "Want To Know - Single",
-   "artworkUrl100": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/a9/60/b9/a960b928-303b-5dcc-bdb5-ba0191d0ecd5/1200214689735.jpg/100x100bb.jpg",
-   "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/7d/1f/14/7d1f1454-3582-817e-76e7-a1b084e47194/mzaf_6297459972487520079.plus.aac.p.m4a",
-   "trackViewUrl": "https://music.apple.com/br/album/want-to-know/6795683620?i=6795683857&uo=4",
-   "trackTimeMillis": 182442,
-   "bpm": 129
-  },
-  {
-   "trackName": "Musica Infinita",
-   "artistName": "Carloh",
-   "collectionName": "Musica Infinita - Single",
-   "artworkUrl100": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/9c/c3/71/9cc37147-692c-0ad4-c9bf-acbdd1724186/cover.jpg/100x100bb.jpg",
-   "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/16/6a/cc/166acc61-1270-18f3-3f3d-8c7fdf800d94/mzaf_11970014675302960302.plus.aac.p.m4a",
-   "trackViewUrl": "https://music.apple.com/br/album/musica-infinita/6802767788?i=6802767790&uo=4",
-   "trackTimeMillis": 177187,
-   "bpm": 96
-  },
-  {
-   "trackName": "Lost Keys",
-   "artistName": "Alex Wann",
-   "collectionName": "Lost Keys - Single",
-   "artworkUrl100": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/ae/cf/f4/aecff470-f4d3-71fe-c704-ed13fb1f27d4/1200214918866.jpg/100x100bb.jpg",
-   "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/15/16/4f/15164fbf-6f01-00fe-3b25-b92260617d36/mzaf_10131018118680959285.plus.aac.p.m4a",
-   "trackViewUrl": "https://music.apple.com/br/album/lost-keys/6804837062?i=6804837069&uo=4",
-   "trackTimeMillis": 168387,
+   "trackName": "Disruption",
+   "artistName": "Frankey & Sandrino",
+   "collectionName": "Disruption - Single",
+   "artworkUrl100": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/b4/92/90/b4929084-d973-c1f8-8015-3fb164f40867/4255940802610_cover.jpg/100x100bb.jpg",
+   "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/6e/32/25/6e3225e2-211c-1e7c-b155-2a4641fc1324/mzaf_2000189089187370980.plus.aac.p.m4a",
+   "trackViewUrl": "https://music.apple.com/br/album/disruption/6810627798?i=6810627811&uo=4",
+   "trackTimeMillis": 348387,
    "bpm": 124
   },
   {
-   "trackName": "Your Lovin'",
-   "artistName": "CASSIMM",
-   "collectionName": "Your Lovin' - Single",
-   "artworkUrl100": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/7f/50/b7/7f50b7db-eeaf-6668-1937-3f640dfb14da/8718274972948.png/100x100bb.jpg",
-   "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/47/52/9a/47529ab3-7a2c-dc07-8775-f86f16a9cb2d/mzaf_9923163043352304419.plus.aac.p.m4a",
-   "trackViewUrl": "https://music.apple.com/br/album/your-lovin/6812776685?i=6812776688&uo=4",
-   "trackTimeMillis": 171120,
-   "bpm": 128
+   "trackName": "Power Back (T78 Peak Time Remix)",
+   "artistName": "ADRIANNA",
+   "collectionName": "Talk (Wehbba Remix) - Single",
+   "artworkUrl100": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/f1/e8/7f/f1e87f99-c867-187e-27dd-2056d95f5dc7/cover.jpg/100x100bb.jpg",
+   "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/29/7e/59/297e5973-f58b-83a3-499c-ead2853595df/mzaf_12140089635641975039.plus.aac.p.m4a",
+   "trackViewUrl": "https://music.apple.com/br/album/power-back-t78-peak-time-remix/6812460189?i=6812460191&uo=4",
+   "trackTimeMillis": 219939,
+   "bpm": 145
   },
   {
-   "trackName": "Back Of The Club",
-   "artistName": "Cloonee",
-   "collectionName": "Are You Still You?",
-   "artworkUrl100": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/c0/6e/14/c06e1421-70b6-8cda-0ac3-6c125be70e15/13915.jpg/100x100bb.jpg",
-   "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/50/21/77/50217729-70d9-4da7-8621-eb43f2ce15bf/mzaf_4738343388498994401.plus.aac.p.m4a",
-   "trackViewUrl": "https://music.apple.com/br/album/back-of-the-club/6796002394?i=6796002556&uo=4",
-   "trackTimeMillis": 171351,
-   "bpm": 130
-  },
-  {
-   "trackName": "Keep Up",
-   "artistName": "Argy, Alok & Adam Beyer",
-   "collectionName": "Keep Up - Single",
-   "artworkUrl100": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/32/b7/fa/32b7fa99-76df-fb29-5ac3-baef57daae6f/885288271683.jpg/100x100bb.jpg",
-   "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/f0/61/cb/f061cbd5-12e1-83ce-3c5e-8145d1fc7229/mzaf_7074455253904316246.plus.aac.p.m4a",
-   "trackViewUrl": "https://music.apple.com/br/album/keep-up/6802711589?i=6802711839&uo=4",
-   "trackTimeMillis": 158182,
+   "trackName": "Speechless",
+   "artistName": "Obskür",
+   "collectionName": "Speechless - Single",
+   "artworkUrl100": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/b3/65/4d/b3654df0-9ced-d33e-671e-30f39c83c168/823375292142_Cover.jpg/100x100bb.jpg",
+   "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/7c/5c/0e/7c5c0e31-eaf9-b5c7-7440-53d44a1ea73f/mzaf_14418786728398405865.plus.aac.p.m4a",
+   "trackViewUrl": "https://music.apple.com/br/album/speechless/6814396537?i=6814396540&uo=4",
+   "trackTimeMillis": 202124,
    "bpm": 132
-  },
-  {
-   "trackName": "There's A Party Goin' On",
-   "artistName": "HARTY (UK)",
-   "collectionName": "There's A Party Goin' On - Single",
-   "artworkUrl100": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/60/31/31/6031316f-02ae-f148-0074-58ef40864967/14750.jpg/100x100bb.jpg",
-   "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/86/bb/d6/86bbd6db-9515-d9aa-d720-8adcf42596d9/mzaf_7809337867903639215.plus.aac.p.m4a",
-   "trackViewUrl": "https://music.apple.com/br/album/theres-a-party-goin-on/6803243621?i=6803243625&uo=4",
-   "trackTimeMillis": 199114,
-   "bpm": 128
-  },
-  {
-   "trackName": "Echoes from the 90s",
-   "artistName": "Desmond, Summum & Atlantic Ocean",
-   "collectionName": "Echoes from the 90s - Single",
-   "artworkUrl100": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/9a/63/7d/9a637d3b-6a77-bab6-2534-be5a4a285381/8718274972603.png/100x100bb.jpg",
-   "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/54/c8/d7/54c8d787-f2f0-1434-fb1a-017e73abd5ed/mzaf_17941338152628514430.plus.aac.p.m4a",
-   "trackViewUrl": "https://music.apple.com/br/album/echoes-from-the-90s/6793133533?i=6793133534&uo=4",
-   "trackTimeMillis": 195115,
-   "bpm": 131
   },
   {
    "trackName": "Circus",
@@ -500,6 +490,16 @@
    "trackViewUrl": "https://music.apple.com/br/album/circus/6798826047?i=6798826048&uo=4",
    "trackTimeMillis": 271475,
    "bpm": 122
+  },
+  {
+   "trackName": "Nuff Said",
+   "artistName": "Kaufmann (DE)",
+   "collectionName": "Easy A - Single",
+   "artworkUrl100": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/14/15/db/1415db3d-54ed-9204-1112-86b3435ea035/5060191686860.jpg/100x100bb.jpg",
+   "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/ae/e6/00/aee600d0-7921-e290-1b20-2ab7d6474195/mzaf_411239204507590475.plus.aac.p.m4a",
+   "trackViewUrl": "https://music.apple.com/br/album/nuff-said/6809796802?i=6809796806&uo=4",
+   "trackTimeMillis": 344000,
+   "bpm": 130
   }
  ]
 }
